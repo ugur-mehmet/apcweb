@@ -38,7 +38,7 @@ class GPIO_Daemon():
 				outlet_dict[key]=HIGH
 			return outlet_dict
 		else:
-			for key, value in outlet_dict:
+			for key, value in outlet_dict.iteritems():
 				outlet_dict[key]=LOW
 			return outlet_dict
 	
@@ -69,13 +69,13 @@ class GPIO_Daemon():
 			if cache.get('action_name') == '2' or cache.get('action_name') == '4': # Selected outlets will be on immediately
 				cache_all_cur = cache.get('all_pins_state')  #{0:LOW, 1: HIGH, 7:LOW} gibi
 				cache_checked_cur = cache.get('checked_outlets_state')  # Secilen outletlerin o anki durumu {1:HIGH, 3:LOW} gibi
-				update_checked_out=self.set_outlet(cache_checked_cur,HIGH)
+				
 				if cache.get('action_name') == '2':
-					for pin_num in cache_checked_cur:
-						update_checked_out[pin_num]=HIGH
+					update_checked_out=self.set_outlet(cache_checked_cur,HIGH)
+					
 				else:
-					for pin_num in cache_checked_cur:
-						update_checked_out[pin_num]=LOW
+					update_checked_out=self.set_outlet(cache_checked_cur,LOW)
+					
 				cache_all_cur.update(update_checked_out)
 				startupMode(cache_all_cur, True)
 				self.save_db(cache_all_cur)

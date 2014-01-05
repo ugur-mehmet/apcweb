@@ -141,7 +141,7 @@ def control(request,**kwargs):
 			# 	'''
 			# 	pass
 
-		return StreamingHttpResponse(cache.get('outlet_state_dict'))
+		return HttpResponse(cache.get('outlet_state_dict'))
 		
 		# for id in outlet_ids:
 		# 	if action_list == '1':
