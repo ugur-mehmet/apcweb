@@ -32,7 +32,7 @@ class GPIO_Daemon():
 		self.pidfile_path = '/run/apc_gpio_daemon.pid'
 		self.pidfile_timeout = 5
 	
-	def set_outlet(outlet_dict, on_off):
+	def set_outlet(self,outlet_dict, on_off):
 		if on_off == HIGH:
 			for key, value in outlet_dict.iteritems():
 				outlet_dict[key]=HIGH
@@ -42,18 +42,18 @@ class GPIO_Daemon():
 				outlet_dict[key]=LOW
 			return outlet_dict
 	
-	def save_db(outlet_state_dict):
-		con = lite.connect('db.sqlite3')
+	def save_db(self,outlet_state_dict):
+		con = lite.connect('/home/pi/projects/apcweb/db.sqlite3')
 
 		with con:
 
 			cur = con.cursor()    
 			for key,value in outlet_state_dict.iteritems(): # {0:HIGH, 1:LOW, 2: LOW ... 7:LOW} gibi
 				if value==HIGH:
-					cur.execute("UPDATE Config SET status=? WHERE Id=?", (True,int(key)+1))        
+					cur.execute("UPDATE apc_config SET state=? WHERE Id=?", (True,int(key)+1))        
 					con.commit()
 				if value==LOW:
-					cur.execute("UPDATE Config SET status=? WHERE Id=?", (False,int(key)+1))  
+					cur.execute("UPDATE apc_config SET state=? WHERE Id=?", (False,int(key)+1))  
 
 					
 					con.commit()
@@ -63,13 +63,13 @@ class GPIO_Daemon():
 		outlet_state_dict={}
 		
 		while True:
-			if cache.get('action_name','0') == '2': # Selected outlets will be on immediately
-				cache_all_cur = cache.get['all_pins_state']  #{0:LOW, 1: HIGH, 7:LOW} gibi
-				cache_checked_cur = cache.get['checked_outlets_state']  # Secilen outletlerin o anki durumu {1:HIGH, 3:LOW} gibi
+			if cache.get('action_name') == '2': # Selected outlets will be on immediately
+				cache_all_cur = cache.get('all_pins_state')  #{0:LOW, 1: HIGH, 7:LOW} gibi
+				cache_checked_cur = cache.get('checked_outlets_state')  # Secilen outletlerin o anki durumu {1:HIGH, 3:LOW} gibi
 				cache_all_cur.update(cache_checked_cur)
-				startupMode1(cache_all_cur, True)
-				save_db(cache_all_cur)
-				cache.set('outlet_state_dict',set_outlet(cache_checked_cur,HIGH)) #Donecek deger {1:HIGH, 3:HIGH} gibi
+				startupMode(cache_all_cur, True)
+				self.save_db(cache_all_cur)
+				cache.set('outlet_state_dict',self.set_outlet(cache_checked_cur,HIGH)) #Donecek deger {1:HIGH, 3:HIGH} gibi
 				
 				
 			time.sleep(1)
