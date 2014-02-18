@@ -9,4 +9,7 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-)
+    url(r'^$','apc.views.index', name='control'),
+    url(r'^login/$', 'apc.views.login', name='login'),
+    url(r'logout/', 'apc.views.logout', name='logout' ),
+    )

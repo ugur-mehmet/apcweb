@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/mystyle.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+  </head>
+  <body>
+    
+   <!--<div class="container"> -->
+    <div class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <!-- btn-navbar is used as the toggle for collapsed navbar content -->
+                <button type="button" class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" >
+                
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                </button>
+                <!-- Be sure to leave the brand out there if you want it shown -->
+                <a class="navbar-brand" href="#" >APC CONTROL</a>
+            </div>
+                <!--Everything you want to hidden at 940 px or less, place within here -->
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Outlets <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#control" data-toggle="tab">Control</a></li>
+                                <li><a href="#config" data-toggle="tab">Configure</a></li>
+                                
+                            </ul>
+                        </li>
+                        <li><a href="#">Settings</a></li>
+                        <li><a href="#">Logs</a></li>
+                        
+                    </ul>
+                    
+                    <ul class="nav pull-right">
+                        <li class="divider-vertical"></li>
+                        
+                                <li><a href="logout/">Logout</a></li>
+                                
+                    </ul>
+                        
+                </div>
+        </div>
+    </div>
+    
+    <div class="jumbotron">
+      
+    </div>
+   
+<div class="container">
+  <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Oulet Control</h3>
+          </div>
+      <div class="panel-body">
+        <div class="row"> <!--Row beginning-->
+            <div class="col-sm-3">
+            
+              <label >Select Outlet Control Action: </label></br>
+              <label >Aply To: </label>
+            
+            </div>
+            <!-- <div class="col-sm-3 col-sm-3-offset-3"></div> -->
+            
+            <div class="col-sm-8 col-sm-offset-1">
+              
+              <Select name="action_list" class="select">
+                  <option value="1" selected>No Action</option>
+                  <option value="2">On Immediate</option>
+                  <option value="3">On Delayed</option>
+
+              </Select></br>
+              <input type="checkbox"></input>All outlets
+            </div>
+
+              
+        </div> <!--row end-->
+        
+        
+       </div> <!--Panel body end-->
+          <table class="table">
+            <tr>
+              <th width="3%">?</th>
+              <th width="3%">#</th>
+              <th width="8%">State</th>
+              <th >Name</th>
+           </tr>
+           <TR ALIGN="left">
+              <TD><input type="checkbox"></input></TD>
+              <TD>1</TD>
+              <TD>ON</TD>
+              <TD>Data 2</TD>
+           </TR>
+           <TR ALIGN="left">
+              <TD><input type="checkbox"></input></TD>
+              <TD>2</TD>
+              <TD>ON</TD>
+              <TD>Data 2</TD>
+           </TR>
+           <TR ALIGN="left">
+              <TD><input type="checkbox"></input></TD>
+              <TD>3</TD>
+              <TD>OFF</TD>
+              <TD>Data 2</TD>
+           </TR>
+           <TR ALIGN="left">
+              <TD><input type="checkbox"></input></TD>
+              <TD>4</TD>
+              <TD>OFF</TD>
+              <TD>Data 2</TD>
+           </TR>
+           <TR ALIGN="left">
+              <TD><input type="checkbox"></input></TD>
+              <TD>5</TD>
+              <TD>ON</TD>
+              <TD>Data 2</TD>
+           </TR>
+           <TR ALIGN="left">
+              <TD><input type="checkbox"></input></TD>
+              <TD>6</TD>
+              <TD>OFF</TD>
+              <TD>Data 2</TD>
+           </TR>
+           <TR ALIGN="left">
+              <TD><input type="checkbox"></input></TD>
+              <TD>7</TD>
+              <TD>ON</TD>
+              <TD>Data 2</TD>
+           </TR>
+
+          </table>
+        <button class="btn btn-lg btn-primary" type="submit" name="submit">Next>></button>
+        <button class="btn btn-lg btn-danger" type="reset" name="cancel">Cancel</button>
+  </div>
+</div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins)
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/static/js/bootstrap.min.js"></script>
+   
+  </body>
+</html>

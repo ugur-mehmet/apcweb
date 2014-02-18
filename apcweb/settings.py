@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'apc',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -75,8 +76,21 @@ USE_L10N = True
 
 USE_TZ = True
 
+PROJECT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),os.pardir))
+
+TEMPLATE_DIRS=(
+    os.path.join(PROJECT_PATH,'templates'),
+)
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGIN_URL = '/login'
+
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_PATH,'static'),
+)
+
