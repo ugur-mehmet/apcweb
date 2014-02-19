@@ -9,8 +9,10 @@ from apc.models import Config, Log, Parameter
 @login_required
 def index(request):
 
-	#return render_to_response("control.html")
-	return render_to_response("config.html")
+	outlet_list=Config.objects.all()
+	c={'outlets':outlet_list}
+	return render_to_response("status.html",c)
+	#return render_to_response("config.html")
 
 
 def login(request):
@@ -20,8 +22,8 @@ def login(request):
 			if user.is_active:
 				auth.login(request,user)
 				request.session['kullanici_id']=user.id 
-				response = redirect('control')
-				response.set_cookie('remind_me', True)
+				response = redirect('status')
+				#response.set_cookie('remind_me', True)
 				return response
 	'''elif 'cancel' in request.POST:
 		return redirect('login')'''
@@ -34,3 +36,13 @@ def logout(request):
 	auth.logout(request)
 	#return redirect('/')
 	return redirect('login')
+@login_required
+def control(request,**kwargs):
+	outlet_list=Config.objects.all()
+	c={'outlets':outlet_list}
+
+	return render_to_response('control.html',c)
+
+@login_required
+def config(request):
+	return render_to_response('config.html')

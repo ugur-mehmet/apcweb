@@ -19,98 +19,82 @@
     
   </head>
   <body>
-  	
-   <!--<div class="container"> -->
-    <div class="navbar navbar-inverse" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <!-- btn-navbar is used as the toggle for collapsed navbar content -->
-                <button type="button" class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" >
-                
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                </button>
-                <!-- Be sure to leave the brand out there if you want it shown -->
-                <a class="navbar-brand" href="#" >APC CONTROL</a>
-            </div>
-                <!--Everything you want to hidden at 940 px or less, place within here -->
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="dropdown">
-                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Outlets <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#control" data-toggle="tab">Control</a></li>
-                                <li><a href="#config" data-toggle="tab">Configure</a></li>
-                                
-                            </ul>
-                        </li>
-                        <li><a href="#">Settings</a></li>
-                        <li><a href="#">Logs</a></li>
-                        
-                    </ul>
-                    
-                    <ul class="nav pull-right">
-                        <li class="divider-vertical"></li>
-                        
-                                <li><a href="#">Login</a></li>
-                                
-                    </ul>
-                        
-                </div>
-        </div>
-    </div>
-    
-    <div class="jumbotron">
-      
-    </div>
-   <!--
-    <div class="col-sm-3">
-      <ul class="nav nav-pills nav-stacked">
-        <li class="dropdown">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Outlets <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Control</a></li>
-                <li><a href="#">Configure</a></li>
-              </ul>
-      
-        </li>
-        <li><a href="#">Settings</a></li>
-        <li><a href="#">Logs</a></li>
-      </ul> 
+<div class="container">
 
-    </div>
-    <div class="col-sm-9">asdasd</div>
-  -->
-  <div class="col-sm-3 hidden-xs bg-success">
-    <ul class="nav nav-tabs nav-stacked">
-        <li class="dropdown">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Outlets <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="#control" data-toggle="tab">Control</a></li>
-                <li><a href="#config" data-toggle="tab">Configure</a></li>
-              </ul>
-      
-        </li>
-        <li><a href="#">Settings</a></li>
-        <li><a href="#">Logs</a></li>
-    </ul>     
+  <div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">APC Status</a>
+          </div>
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Outlets <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/control">Control</a></li>
+                  <li><a href="/config">Config</a></li>
+                  
+                </ul>
+              </li>
+              
+              <li><a href="#">Settings</a></li>
+              <li><a href="#">Logs</a></li>
+            </ul>
+            <ul class="nav pull-right">
+              <li class="active"><a href="/logout">Logout</a></li>
+              
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
   </div>
-  <div class="col-sm-9">
-  <div class="tab-content">
-    <div class="tab-pane" id="control">
-      Control
-    </div>
-    <div class="tab-pane" id="config">
-      Configure
-    </div>
-  </div>
-  </div>
+    
+    
+  <div class="jumbotron"> </div>
+   
+  <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title">Oulet Status</h3>
+              </div>
+              <div class="panel-body">
+              <!--Table beginning-->  
+
+                    <table class="table">
+                      <tr>
+                        <th width="3%">#</th>
+                        <th width="8%">State</th>
+                        <th >Name</th>
+                      </tr>
+                      {% for outlet in outlets%}
+                          <tr align="left">
+                            <td>{{outlet.id}}</td>
+                            
+                            {% if outlet.state %}
+                                <td><a href="control/{{outlet.id}}/"><font color="green">On</font></a></td>
+                            {% elif not outlet.state %}
+                                 <td><a href="control/{{outlet.id}}/"><font color="#636b63">Off</font></a></td>
+                            {% endif %}   
+
+                            <td>{{outlet.name}}</td>
+                          </tr>
+                      {%endfor%}
+
+                    </table>
+              <!--Table End-->
+              </div> <!--End Panel-body -->
+  </div> <!--End panel primary-->
+  
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/static/js/bootstrap.min.js"></script>
-   
+ </div>    
   </body>
 </html>

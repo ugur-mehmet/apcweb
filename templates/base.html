@@ -19,8 +19,9 @@
     
   </head>
   <body>
-  <div class="container">  
-   <div class="navbar navbar-default" role="navigation">
+<div class="container">
+
+  <div class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
           <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -29,7 +30,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">APC Status</a>
+            <a class="navbar-brand" href="#">APC Control</a>
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -37,8 +38,8 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Outlets <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="/control">Control</a></li>
-                  <li><a href="/config">Config</a></li>
+                  <li><a href="control/">Control</a></li>
+                  <li><a href="config/">Config</a></li>
                   
                 </ul>
               </li>
@@ -47,7 +48,7 @@
               <li><a href="#">Logs</a></li>
             </ul>
             <ul class="nav pull-right">
-              <li class="active"><a href="/logout">Logout</a></li>
+              <li class="active"><a href="./">Logout</a></li>
               
             </ul>
           </div><!--/.nav-collapse -->
@@ -55,43 +56,15 @@
   </div>
     
     
-    <div class="jumbotron">
-      
-    </div>
-   <!--
-    <div class="col-sm-3">
-      <ul class="nav nav-pills nav-stacked">
-        <li class="dropdown">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Outlets <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Control</a></li>
-                <li><a href="#">Configure</a></li>
-              </ul>
-      
-        </li>
-        <li><a href="#">Settings</a></li>
-        <li><a href="#">Logs</a></li>
-      </ul> 
+  <div class="jumbotron"> </div>
 
-    </div>
-    <div class="col-sm-9">asdasd</div>
-  -->
-  
-  <div class="panel panel-primary">
-  <div class="panel-heading">
-    <h3 class="panel-title">Oulet Config</h3>
-  </div>
-  <div class="panel-body">
-    Panel content
-    Yolsuzluk soruşturmasını karartmak amacıyla yürütülen algı operasyonunda, 'paralel yapı' söylemiyle gönüllüler hareketi hedef yapılıyor. Bu çerçevede iftira ve yalan içeren demeçler veriliyor, haberler yazılıyor. Enerji ve Tabii Kaynaklar Bakanı Yıldız da, bu operasyonda kullanılan bir iddiaya imza attı ve bunu gerçekmiş gibi aktardı. Bakan, bir televizyon programında "Eğer dershaneler konu olsaydı 'uzun adamın ölümünü 3 yıldan beri istiyoruz ama hala ölmedi' denmezdi. Bunu duyduğumda dondum kaldım. Bu itikaden de yanlış bir şeydir." demişti. Önceki gün bu yöndeki sorulara muhatap kaldı. Bunun üzerine de, "Uzun adam için üç yıldır, dua ediyoruz. Hala ayakta.' diyen bir grup var. Demek ki, halisane söylemiyorlar. Başka ve farklı icraatlar da olabilir.” ifadelerini kullandı.
-  </div>
-</div>
-
+  {{block}}
+  {{endblock}}
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/static/js/bootstrap.min.js"></script>
-</div> 
+ </div>    
   </body>
 </html>
