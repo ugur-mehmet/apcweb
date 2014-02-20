@@ -22,7 +22,7 @@
                   <option value="3">On Delayed</option>
 
               </Select></br>
-              <input type="checkbox"></input>All outlets
+              <input type="checkbox" id="check_all"></input>All outlets
             </div>
 
               
@@ -31,7 +31,7 @@
         
        </div> <!--Panel body end-->
   
-          <table class="table">
+          <table class="table" id="tableOne">
                 <tr>
                   <th width="3%">?</th>
                   <th width="3%">#</th>
@@ -40,7 +40,14 @@
                 </tr>
                 {% for outlet in outlets%}
                     <tr align="left">
-                      <td><input type="checkbox"></input></td>
+                      {% if outlet_id == outlet.id %}
+
+                        <td><input type="checkbox" checked="checked" name="checkbox_{{outlet.id}}"></input></td>
+                      
+                      {%else%}
+                        <td><input type="checkbox" name="checkbox_{{outlet.id}}"></input></td>
+                      {%endif%}
+                      
                       <td>{{outlet.id}}</td>
                       
                       {% if outlet.state %}
@@ -54,7 +61,21 @@
                 {%endfor%}
 
               </table>
+              
         <button class="btn btn-lg btn-primary" type="submit" name="submit">Next>></button>
         <button class="btn btn-lg btn-danger" type="reset" name="cancel">Cancel</button>
   </div>
   {%endblock%}
+  {% block customscripts %}
+  <script type="text/javascript">
+          $(document).ready(function() {
+          $("#check_all").click(function() {
+          var checkedStatus = this.checked;
+          $("#tableOne tbody tr td:first-child input:checkbox").each(function() {
+          this.checked = checkedStatus;
+          });
+          });
+           
+          });
+  </script>
+  {% endblock %}

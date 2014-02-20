@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from apc.models import Config, Log, Parameter
+from django.http import HttpResponse
 
 # Create your views here.
 @login_required
@@ -38,10 +39,13 @@ def logout(request):
 	return redirect('login')
 @login_required
 def control(request,**kwargs):
-	outlet_list=Config.objects.all()
+	outlet_list = Config.objects.all()
 	c={'outlets':outlet_list}
+	if 'outlet_id' in kwargs.keys():
+		c['outlet_id'] = int(kwargs['outlet_id'])
 
 	return render_to_response('control.html',c)
+	#return HttpResponse(c['outlet_id'])
 
 @login_required
 def config(request):

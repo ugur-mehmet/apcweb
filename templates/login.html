@@ -32,7 +32,7 @@
     <div class="container">
    
       <form action="/login/" method="POST" class="form-signin" role="form">
-        {%csrf_token%}
+        {% csrf_token %}
         
         <h2><span class="label label-info">   APC Administration   </span></h2><br>
         <input type="texy" name="username" class="form-control" placeholder="Username" required autofocus>
