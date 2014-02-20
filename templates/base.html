@@ -30,7 +30,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">APC Control</a>
+            <a class="navbar-brand" href="/">APC Status</a>
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -38,8 +38,8 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Outlets <b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="control/">Control</a></li>
-                  <li><a href="config/">Config</a></li>
+                  <li><a href="/control/">Control</a></li>
+                  <li><a href="/config/">Config</a></li>
                   
                 </ul>
               </li>
@@ -48,7 +48,7 @@
               <li><a href="#">Logs</a></li>
             </ul>
             <ul class="nav pull-right">
-              <li class="active"><a href="./">Logout</a></li>
+              <li class="active"><a href="/logout">Logout</a></li>
               
             </ul>
           </div><!--/.nav-collapse -->
@@ -58,8 +58,9 @@
     
   <div class="jumbotron"> </div>
 
-  {{block}}
-  {{endblock}}
+  {%block panel%}
+
+  {%endblock%}
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://code.jquery.com/jquery.js"></script>

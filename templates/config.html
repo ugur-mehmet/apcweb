@@ -1,82 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap 101 Template</title>
-
-    <!-- Bootstrap -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/mystyle.css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    
-  </head>
-  <body>
-  <div class="container">  
-   <div class="navbar navbar-default" role="navigation">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">APC Status</a>
-          </div>
-          <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-              
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Outlets <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="/control">Control</a></li>
-                  <li><a href="/config">Config</a></li>
-                  
-                </ul>
-              </li>
-              
-              <li><a href="#">Settings</a></li>
-              <li><a href="#">Logs</a></li>
-            </ul>
-            <ul class="nav pull-right">
-              <li class="active"><a href="/logout">Logout</a></li>
-              
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div><!--/.container-fluid -->
-  </div>
-    
-    
-    <div class="jumbotron">
-      
+{%extends "base.html" %}      
     </div>
-   <!--
-    <div class="col-sm-3">
-      <ul class="nav nav-pills nav-stacked">
-        <li class="dropdown">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle">Outlets <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Control</a></li>
-                <li><a href="#">Configure</a></li>
-              </ul>
-      
-        </li>
-        <li><a href="#">Settings</a></li>
-        <li><a href="#">Logs</a></li>
-      </ul> 
-
-    </div>
-    <div class="col-sm-9">asdasd</div>
-  -->
-  
+   {%block panel%}  
   <div class="panel panel-primary">
   <div class="panel-heading">
     <h3 class="panel-title">Oulet Config</h3>
@@ -86,12 +10,4 @@
     Yolsuzluk soruşturmasını karartmak amacıyla yürütülen algı operasyonunda, 'paralel yapı' söylemiyle gönüllüler hareketi hedef yapılıyor. Bu çerçevede iftira ve yalan içeren demeçler veriliyor, haberler yazılıyor. Enerji ve Tabii Kaynaklar Bakanı Yıldız da, bu operasyonda kullanılan bir iddiaya imza attı ve bunu gerçekmiş gibi aktardı. Bakan, bir televizyon programında "Eğer dershaneler konu olsaydı 'uzun adamın ölümünü 3 yıldan beri istiyoruz ama hala ölmedi' denmezdi. Bunu duyduğumda dondum kaldım. Bu itikaden de yanlış bir şeydir." demişti. Önceki gün bu yöndeki sorulara muhatap kaldı. Bunun üzerine de, "Uzun adam için üç yıldır, dua ediyoruz. Hala ayakta.' diyen bir grup var. Demek ki, halisane söylemiyorlar. Başka ve farklı icraatlar da olabilir.” ifadelerini kullandı.
   </div>
 </div>
-
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/static/js/bootstrap.min.js"></script>
-</div> 
-  </body>
-</html>
+  {%endblock%}
