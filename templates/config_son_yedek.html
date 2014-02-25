@@ -1,0 +1,59 @@
+{%extends "base.html" %}      
+    </div>
+   {%block panel%}  
+  <div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Oulet Settings</h3>
+  </div>
+  <div class="panel-body">
+    <!--Table beginning-->  
+  <form id="config_form" method="post" action="/config">
+
+                {{formsets.management_form}}
+               
+                {% endfor %}
+                {% for form in formsets.forms %}
+                    {{ form.outlet }}
+                    {{form.name}}
+                    {{form.pwr_on_delay}}
+                    {{form.pwr_off_delay}}
+                    {{form.reboot_duration}}
+                    <button class="btn btn-sm btn-primary" type="submit" name="submit">Edit</button>
+                    </br>
+                    </br>
+                {% endfor %}
+
+
+
+                <input type="submit" name="submit" value="Edit Config" />
+            </form>
+  
+  </div> <!--End panel-body-->
+</div>
+  {%endblock%}
+  {% block customscripts %}
+  <script type="text/javascript">
+   /*$(document).ready(function () {
+    $("td").click(function () {
+        var OriginalContent = $(this).text();
+          
+        $(this).addClass("cellEditing");
+        $(this).html("<input type='text' value='" + OriginalContent + "' />");
+        $(this).children().first().focus();
+  
+        $(this).children().first().keypress(function (e) {
+            if (e.which == 13) {
+                var newContent = $(this).val();
+                $(this).parent().text(newContent);
+                $(this).parent().removeClass("cellEditing");
+            }
+        });
+          
+    $(this).children().first().blur(function(){
+        $(this).parent().text(OriginalContent);
+        $(this).parent().removeClass("cellEditing");
+    });
+    });
+}); */
+    </script>
+  {% endblock %}

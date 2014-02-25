@@ -3,11 +3,49 @@
    {%block panel%}  
   <div class="panel panel-primary">
   <div class="panel-heading">
-    <h3 class="panel-title">Oulet Config</h3>
+    <h3 class="panel-title">Oulet Settings</h3>
   </div>
   <div class="panel-body">
-    Panel content
-    Yolsuzluk soruşturmasını karartmak amacıyla yürütülen algı operasyonunda, 'paralel yapı' söylemiyle gönüllüler hareketi hedef yapılıyor. Bu çerçevede iftira ve yalan içeren demeçler veriliyor, haberler yazılıyor. Enerji ve Tabii Kaynaklar Bakanı Yıldız da, bu operasyonda kullanılan bir iddiaya imza attı ve bunu gerçekmiş gibi aktardı. Bakan, bir televizyon programında "Eğer dershaneler konu olsaydı 'uzun adamın ölümünü 3 yıldan beri istiyoruz ama hala ölmedi' denmezdi. Bunu duyduğumda dondum kaldım. Bu itikaden de yanlış bir şeydir." demişti. Önceki gün bu yöndeki sorulara muhatap kaldı. Bunun üzerine de, "Uzun adam için üç yıldır, dua ediyoruz. Hala ayakta.' diyen bir grup var. Demek ki, halisane söylemiyorlar. Başka ve farklı icraatlar da olabilir.” ifadelerini kullandı.
-  </div>
+    
+    <!--Table beginning-->  
+
+                    <table class="table">
+                      <tr>
+                        <th width="5%">#</th>
+                        <th width="20%">Name</th>
+                        <th width="15%">Power On Delay</th>
+                        <th width="15%">Power Off Delay</th>
+                        <th width="15%"> Reboot Duration</th>
+                        <th>Edit</th>
+                      </tr>
+                      
+                      {{formsets.management_form}}
+                      
+                      {% for form in formsets %}
+
+                          
+                          <tr align="left">
+
+                            <td>{{forloop.counter}}</td>
+                            <td>{{form.name}}</td>
+                            <td>{{form.pwr_on_delay}}</td>
+                            <td>{{form.pwr_off_delay}}</td>
+                            <td>{{form.reboot_duration}}</td>
+                            <td><button class="btn btn-sm btn-primary" type="submit" name="submit">Edit</button></td>
+
+                          </tr>
+                      {%endfor%}
+                      
+
+                    </table>
+              <!--Table End-->
+  
+  </div> <!--End panel-body-->
 </div>
   {%endblock%}
+  {% block customscripts %}
+  <script type="text/javascript">
+          $('input[name^=form-]').prop('disabled', true);
+          $('select[name^=form-]').prop('disabled', true);
+  </script>
+  {% endblock %}

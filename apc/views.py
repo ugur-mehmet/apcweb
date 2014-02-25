@@ -5,6 +5,8 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from apc.models import Config, Log, Parameter
 from django.http import HttpResponse
+from apc.forms import ConfigForm
+from django.forms.models import modelformset_factory
 
 # Create your views here.
 @login_required
@@ -49,4 +51,23 @@ def control(request,**kwargs):
 
 @login_required
 def config(request):
-	return render_to_response('config.html')
+	#config_lists = Config.objects.all()
+	data=[]
+	outlet_dict={}
+	for i in range(1,9):
+		outlet_dict={}
+		outlet=Config.objects.get(id=i)
+		outlet_dict['outlet_num']=outlet.id
+		outlet_dict['name']=outlet.name
+		outlet_dict['pwr_on_delay']=outlet.pwr_on_delay
+		outlet_dict['pwr_off_delay']=outlet.pwr_off_delay
+		outlet_dict['reboot_duration']=outlet.reboot_duration
+		data.append(outlet_dict)
+
+	'''
+	c = {}
+	c['config_list'] = configs'''
+	ConfigFormSet = modelformset_factory(Config,ConfigForm, extra=0)
+	configset = ConfigFormSet(initial=data)
+	#form=ConfigForm()
+	return render_to_response('config.html',{'formsets':configset})
