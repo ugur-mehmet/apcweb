@@ -17,6 +17,7 @@
                         <th width="15%">Power Off Delay</th>
                         <th width="15%"> Reboot Duration</th>
                         <th>Edit</th>
+                        
                       </tr>
                       
                       {{formsets.management_form}}
@@ -31,7 +32,14 @@
                             <td>{{form.pwr_on_delay}}</td>
                             <td>{{form.pwr_off_delay}}</td>
                             <td>{{form.reboot_duration}}</td>
-                            <td><button class="btn btn-sm btn-primary" type="submit" name="submit">Edit</button></td>
+                            <td>
+                            
+                                <button id="edit_{{forloop.counter}}" class="btn btn-sm btn-primary" type="submit" name="submit">Edit</button>
+                                <button id="save_{{forloop.counter}}" class="btn btn-sm btn-primary" type="submit" name="submit" style="display:none;">Save</button>
+                                <button id="cancel_{{forloop.counter}}" class="btn btn-sm btn-warning" type="submit" name="submit" style="display:none;">Cancel</button>
+
+                            
+                            </td>
 
                           </tr>
                       {%endfor%}
@@ -45,7 +53,53 @@
   {%endblock%}
   {% block customscripts %}
   <script type="text/javascript">
+    $(document).ready(function(){
           $('input[name^=form-]').prop('disabled', true);
           $('select[name^=form-]').prop('disabled', true);
+          /*$('button[id^=save_]').hide();
+          $('button[id^=cancel_]').hide();*/
+
+          /*$('[id^="edit_"]').one('click', function(){*/
+            $('[id^="edit_"]').click(function(){
+              $edit_id = $(this).attr('id');
+              $id_num = $edit_id.substring(5,6);
+              $('button[id^=save_'+$id_num+']').css({"display": "inline"});
+              $('button[id^=cancel_'+$id_num+']').css({"display": "inline"});
+              
+              //alert($id_num);
+
+              //$(this).hide();
+              /*$(this).prop('value', 'Save');
+              $(this).attr('value','save'); */
+              $form_num=(parseInt($id_num))-1 +'';
+              $('select[id^=id_form-'+$form_num+']').prop('disabled', false);
+              $('input[name^=form-'+$form_num+']').prop('disabled', false); 
+              
+
+
+          });
+            $('[id^="cancel_"]').click(function(){
+              $cancel_id = $(this).attr('id');
+              $cancel_num = $cancel_id.substring(7,8);
+              //alert($cancel_id);
+              $form_num=(parseInt($cancel_num))-1 +'';
+                            
+              $('button[id^=save_'+$cancel_num+']').css({"display": "none"});
+              $('button[id^=cancel_'+$cancel_num+']').css({"display": "none"});
+              $('input[name^=form-'+$form_num+']').prop('disabled', true);
+              $('select[id^=id_form-'+$form_num+']').prop('disabled', true);
+              
+              //alert($id_num);
+
+              //$(this).hide();
+              /*$(this).prop('value', 'Save');
+              $(this).attr('value','save'); */
+               
+
+
+          });
+
+
+        });
   </script>
   {% endblock %}

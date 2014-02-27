@@ -14,6 +14,7 @@ class Config(models.Model):
 		)
 	outlet = models.CharField(max_length=100,
 								choices=outlet_choices,
+
 								)
 	name = models.CharField(max_length=100)
 	state = models.BooleanField(default=True)
@@ -29,6 +30,8 @@ class Config(models.Model):
 		)
 	pwr_on_delay = models.CharField(max_length=10,
 									choices=pwr_on_choices,
+									default='IMMEDIATE',
+									blank=False,
 									)
 	pwr_off_choices = (
 		('IMMEDIATE', 'Immediate'),
@@ -42,6 +45,8 @@ class Config(models.Model):
 		)
 	pwr_off_delay = models.CharField(max_length=10,
 									choices=pwr_off_choices,
+									default='IMMEDIATE',
+									blank=False,
 									)
 	reboot_choices = (
 		('SECONDS05', '05 Seconds'),
@@ -54,6 +59,8 @@ class Config(models.Model):
 		)
 	reboot_duration = models.CharField(max_length=10,
 									choices = reboot_choices,
+									default='SECONDS05',
+									blank=False,
 									)
 
 	def __str__(self):
