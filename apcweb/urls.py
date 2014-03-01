@@ -11,8 +11,9 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$','apc.views.index', name='status'),
     url(r'^login/$', 'apc.views.login', name='login'),
-    url(r'logout/', 'apc.views.logout', name='logout' ),
+    url(r'^logout/', 'apc.views.logout', name='logout' ),
     url(r'^control/$', 'apc.views.control', name='control'),
-    url(r'control/(?P<outlet_id>\d+)/$', 'apc.views.control', name='outletcontrol'),
-    url(r'config/$', 'apc.views.config', name='config')
+    url(r'^control/(?P<outlet_id>\d+)/$', 'apc.views.control', name='outletcontrol'),
+    url(r'^config/$', 'apc.views.config', name='config'),
+    url(r'^cancel_default/$', 'apc.views.cancel_default', name='cancel_def'),
     )

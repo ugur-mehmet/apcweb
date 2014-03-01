@@ -89,11 +89,43 @@
               $('input[name^=form-'+$form_num+']').prop('disabled', true);
               $('select[id^=id_form-'+$form_num+']').prop('disabled', true);
               
-              //alert($id_num);
+              $.ajax({
+                      //async:false,
+                      type: "GET",
+                      dataType: "json",
+                      contentType: "application/x-www-form-urlencoded",
+                      url : '/cancel_default/',
+                      data : {cancel_number: $cancel_num},
+                      success:function(response){             
 
-              //$(this).hide();
-              /*$(this).prop('value', 'Save');
-              $(this).attr('value','save'); */
+                              console.log(response);
+                                      alert(response.pwr_off_delay);
+
+                      },
+                      timeout:10000
+                      
+              });
+              /*$.getJSON('/cancel_default/', {cancel_number: $cancel_num}, function(result){
+               var data=$.parseJSON(result);
+               alert(data.name);
+               
+                });
+              */
+                /*$.ajax({
+
+                    type: "GET",
+                    url: "/cancel_default/",
+                    dataType: "json",
+                    data: {cancel_number: $cancel_num},  
+                    success: function(result) {
+                      var data=$.parseJSON(result);
+
+                        alert(data.name);
+
+                    },
+
+                });*/
+
                
 
 

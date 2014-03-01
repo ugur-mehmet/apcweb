@@ -7,6 +7,7 @@ from apc.models import Config, Log, Parameter
 from django.http import HttpResponse
 from apc.forms import ConfigForm
 from django.forms.models import modelformset_factory
+import json
 
 # Create your views here.
 @login_required
@@ -71,3 +72,23 @@ def config(request):
 	configset = ConfigFormSet(initial=data)
 	#form=ConfigForm()
 	return render_to_response('config.html',{'formsets':configset})
+
+#@login_required
+def cancel_default(request):
+	id_num=None
+
+	if request.method == 'GET':
+		id_num=request.GET['cancel_number']
+	if id_num:
+		outlet = Config.objects.get(id=int(id_num))
+		if outlet:
+			result={}
+			result['id'] = outlet.id
+			result['name'] = outlet.name
+			result['pwr_on_delay'] = outlet.get_pwr_on_delay_display()
+			result['pwr_off_delay'] = outlet.get_pwr_off_delay_display()
+			result['reboot_duration'] = outlet.get_reboot_duration_display()
+	# id_num = 5
+	return HttpResponse(json.dumps(result),mimetype='application/json')
+	#return HttpResponse(id_num)
+
