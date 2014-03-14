@@ -17,7 +17,8 @@ class Config(models.Model):
 
 								)
 	name = models.CharField(max_length=100)
-	state = models.BooleanField(default=True)
+	state = models.NullBooleanField()
+	#state = models.BooleanField(default=True)
 	pwr_on_choices = (
 		('IMMEDIATE', 'Immediate'),
 		('SECONDS15', '15 Seconds'),

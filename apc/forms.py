@@ -10,4 +10,9 @@ class ConfigForm(forms.ModelForm):
 		model=Config
 
 		fields = ('name','pwr_on_delay','pwr_off_delay','reboot_duration')
+		labels= {
+			'name':'','pwr_on_delay':'',
+			'pwr_off_delay':'','reboot_duration':''
+
+		}
 		

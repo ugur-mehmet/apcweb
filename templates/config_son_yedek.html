@@ -6,54 +6,108 @@
     <h3 class="panel-title">Oulet Settings</h3>
   </div>
   <div class="panel-body">
+    
     <!--Table beginning-->  
-  <form id="config_form" method="post" action="/config">
 
-                {{formsets.management_form}}
-               
-                {% endfor %}
-                {% for form in formsets.forms %}
-                    {{ form.outlet }}
-                    {{form.name}}
-                    {{form.pwr_on_delay}}
-                    {{form.pwr_off_delay}}
-                    {{form.reboot_duration}}
-                    <button class="btn btn-sm btn-primary" type="submit" name="submit">Edit</button>
-                    </br>
-                    </br>
-                {% endfor %}
+                    <table class="table">
+                      <tr>
+                        <th width="5%">#</th>
+                        <th width="20%">Name</th>
+                        <th width="15%">Power On Delay</th>
+                        <th width="15%">Power Off Delay</th>
+                        <th width="15%"> Reboot Duration</th>
+                        <th>Edit</th>
+                        
+                      </tr>
+                      
+                                            
+                      {% for field in formset %}
+                          
+                          
+                          <tr align="left">
+                          <form id=form-{{forloop.counter}}>  
+                            <td>{{forloop.counter}}</td>
+                            <td>{{field.name}}</td>
+                            <td>{{field.pwr_on_delay}}</td>
+                            <td>{{field.pwr_off_delay}}</td>
+                            <td>{{field.reboot_duration}}</td>
+                            <td> 
+                                <button id="edit_{{forloop.counter}}" class="btn btn-sm btn-primary" type="button" name="submit">Edit</button>
+                                <button id="save_{{forloop.counter}}" class="btn btn-sm btn-primary" type="reset" name="submit" style="display:none;">Save</button>
+                                <button id="cancel_{{forloop.counter}}" class="btn btn-sm btn-warning" type="button" name="submit" style="display:none;">Cancel</button>
+                            </td>
+                          </form>
+                          </tr>
+                          
+                      {%endfor%}
+                      
 
-
-
-                <input type="submit" name="submit" value="Edit Config" />
-            </form>
+                    </table>
+              <!--Table End-->
   
   </div> <!--End panel-body-->
 </div>
   {%endblock%}
   {% block customscripts %}
   <script type="text/javascript">
-   /*$(document).ready(function () {
-    $("td").click(function () {
-        var OriginalContent = $(this).text();
-          
-        $(this).addClass("cellEditing");
-        $(this).html("<input type='text' value='" + OriginalContent + "' />");
-        $(this).children().first().focus();
-  
-        $(this).children().first().keypress(function (e) {
-            if (e.which == 13) {
-                var newContent = $(this).val();
-                $(this).parent().text(newContent);
-                $(this).parent().removeClass("cellEditing");
-            }
+    $(document).ready(function(){
+          $('input[id^=id_]').prop('disabled', true);
+          $('select[id^=id_]').prop('disabled', true);
+          /*$('button[id^=save_]').hide();
+          $('button[id^=cancel_]').hide();*/
+
+          /*$('[id^="edit_"]').one('click', function(){*/
+            $('[id^="edit_"]').click(function(){
+              $edit_id = $(this).attr('id');
+              //alert($edit_id);
+              $id_num = $edit_id.substring(5,6);
+              $('button[id^=save_'+$id_num+']').css({"display": "inline"});
+              $('button[id^=cancel_'+$id_num+']').css({"display": "inline"});
+             
+              $form_num=$id_num;
+             
+              $('select[id^=id_form-'+$form_num+']').prop('disabled', false);
+              $('input[name^=form-'+$form_num+']').prop('disabled', false); 
+             
+
+          });
+            
+            //cancel button beginning
+
+            $('[id^="cancel_"]').click(function(){
+              $cancel_id = $(this).attr('id');
+              $cancel_num = $cancel_id.substring(7,8);
+              //alert($cancel_id);
+              //$form_num=(parseInt($cancel_num))-1 +'';
+              $form_num=$cancel_num             
+              $('button[id^=save_'+$cancel_num+']').css({"display": "none"});
+              $('button[id^=cancel_'+$cancel_num+']').css({"display": "none"});
+              $('input[name^=form-'+$form_num+']').prop('disabled', true);
+              $('select[id^=id_form-'+$form_num+']').prop('disabled', true);
+              
+              //ajax beginning
+              $.ajax({
+                      
+                      type: "GET",
+                      dataType: "json",
+                      contentType: "application/x-www-form-urlencoded",
+                      url : '/cancel_default/',
+                      data : {cancel_number: $cancel_num},
+                      success:function(response){             
+
+                              console.log(response);
+                                      alert(response.pwr_off_delay);
+
+                      },
+                      timeout:10000
+                      
+              }); //ajax end
+                   
+
+
+            }); //cancel button end
+
+
         });
-          
-    $(this).children().first().blur(function(){
-        $(this).parent().text(OriginalContent);
-        $(this).parent().removeClass("cellEditing");
-    });
-    });
-}); */
-    </script>
+  </script>
   {% endblock %}

@@ -15,12 +15,16 @@
             <!-- <div class="col-sm-3 col-sm-3-offset-3"></div> -->
             
             <div class="col-sm-8 col-sm-offset-1">
-              
+              <form id='form-control' name='control_form' method='post' action='/control/'>
               <Select name="action_list" class="select">
                   <option value="1" selected>No Action</option>
-                  <option value="2">On Immediate</option>
-                  <option value="3">On Delayed</option>
-
+                  <option value="2">Immediate On</option>
+                  <option value="3">Delayed On</option>
+                  <option value="4">Immediate Off</option>
+                  <option value="5">Delayed Off</option>
+                  <option value="6">Immediate Reboot</option>
+                  <option value="7">Delayed Reboot</option>
+                  <option value="8">Cancel Pending Commands</option>
               </Select></br>
               <input type="checkbox" id="check_all"></input>All outlets
             </div>
@@ -50,10 +54,12 @@
                       
                       <td>{{outlet.id}}</td>
                       
-                      {% if outlet.state %}
+                      {% if outlet.state == 1 %}
                           <td><font color="green">On</font></td>
-                      {% elif not outlet.state %}
+                      {% elif outlet.state == 0%}
                            <td><font color="#636b63">Off</font></td>
+                      {% else %}     
+                            <td><font color="red">Off*</font></td>
                       {% endif %}   
 
                       <td>{{outlet.name}}</td>
@@ -61,9 +67,16 @@
                 {%endfor%}
 
               </table>
-              
+        {%csrf_token%}      
         <button class="btn btn-lg btn-primary" type="submit" name="submit">Next>></button>
         <button class="btn btn-lg btn-danger" type="reset" name="cancel">Cancel</button>
+    
+        
+        </form>
+        </br>
+        </br>
+        <font color="red">* Indicates a pending state change</font>
+        </br>
   </div>
   {%endblock%}
   {% block customscripts %}

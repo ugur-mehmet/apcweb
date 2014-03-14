@@ -42,36 +42,84 @@ def logout(request):
 	return redirect('login')
 @login_required
 def control(request,**kwargs):
-	outlet_list = Config.objects.all()
-	c={'outlets':outlet_list}
-	if 'outlet_id' in kwargs.keys():
-		c['outlet_id'] = int(kwargs['outlet_id'])
+	c={}
+	c.update(csrf(request))
+	if request.method != 'POST':
 
-	return render_to_response('control.html',c)
-	#return HttpResponse(c['outlet_id'])
+		outlet_list = Config.objects.all()
+		c['outlets'] = outlet_list
+		if 'outlet_id' in kwargs.keys():
+			c['outlet_id'] = int(kwargs['outlet_id'])
+
+		return render_to_response('control.html',c)
+	else:
+		check_list=['checkbox_1', 'checkbox_2','checkbox_3','checkbox_4',
+					'checkbox_5','checkbox_6','checkbox_7','checkbox_8']
+		checked_list = []
+		outlet_ids = []
+		action_list=request.POST['action_list']
+		
+		for check in check_list:
+			if check in request.POST:
+				checked_list.append(check)
+				outlet_ids.append(int(check[-1])) #Convert checked_list to outlet id
+		return HttpResponse(outlet_ids[0])
+		
+		# for id in outlet_ids:
+		# 	if action_list == '1':
+		# 		pass
+		# 	elif action_list == '2':
+		# 		Digital
+		
+
+		# #if action_list == 
+		# '''
+		# "1" 'No Action'
+  #       "2" 'Immediate On'
+  #       "3" 'Delayed On'
+  #       "4" 'Immediate Off'
+  #       "5" 'Delayed Off'
+  #       "6" 'Immediate Reboot'
+  #       "7" 'Delayed Reboot'
+  #       "8" 'Cancel Pending Commands'
+		# '''	
+		
+
+		
+
+	
 
 @login_required
 def config(request):
 	#config_lists = Config.objects.all()
-	data=[]
-	outlet_dict={}
-	for i in range(1,9):
-		outlet_dict={}
-		outlet=Config.objects.get(id=i)
-		outlet_dict['outlet_num']=outlet.id
-		outlet_dict['name']=outlet.name
-		outlet_dict['pwr_on_delay']=outlet.pwr_on_delay
-		outlet_dict['pwr_off_delay']=outlet.pwr_off_delay
-		outlet_dict['reboot_duration']=outlet.reboot_duration
-		data.append(outlet_dict)
+	forms={}
+	total_outlet=Config.objects.count()
+	for i in range(1,total_outlet+1):
+		forms['form_%s'%i]=ConfigForm(instance=Config.objects.get(id=i), prefix='form-'+str(i))
+		form_list=sorted(forms.items())
+	formset_list=[]
+	for i in range(0,total_outlet):
+		formset_list.append(form_list[i][1])
 
-	'''
-	c = {}
-	c['config_list'] = configs'''
-	ConfigFormSet = modelformset_factory(Config,ConfigForm, extra=0)
-	configset = ConfigFormSet(initial=data)
-	#form=ConfigForm()
-	return render_to_response('config.html',{'formsets':configset})
+	counter=range(8)
+	return render_to_response('config.html',{'formset':formset_list, 'loop_times':counter})
+
+@login_required
+def config_save(request):
+	if request.method == 'GET':
+		out_id = request.GET['out_number']
+		name = request.GET['name']
+		pwr_on_delay = request.GET['pwr_on_delay']
+		pwr_off_delay = request.GET['pwr_off_delay']
+		reboot_duration = request.GET['reboot_duration']
+	#if out_id:
+		outlet=Config(id=int(out_id), name=name, pwr_on_delay=pwr_on_delay,
+		 			pwr_off_delay=pwr_off_delay, reboot_duration=reboot_duration)
+		outlet.save()
+		result="success"
+	
+	return HttpResponse(json.dumps(result),mimetype='application/json')	
+
 
 #@login_required
 def cancel_default(request):
@@ -85,10 +133,13 @@ def cancel_default(request):
 			result={}
 			result['id'] = outlet.id
 			result['name'] = outlet.name
-			result['pwr_on_delay'] = outlet.get_pwr_on_delay_display()
-			result['pwr_off_delay'] = outlet.get_pwr_off_delay_display()
-			result['reboot_duration'] = outlet.get_reboot_duration_display()
-	# id_num = 5
+			# result['pwr_on_delay'] = outlet.get_pwr_on_delay_display()
+			# result['pwr_off_delay'] = outlet.get_pwr_off_delay_display()
+			# result['reboot_duration'] = outlet.get_reboot_duration_display()
+			result['pwr_on_delay'] = outlet.pwr_on_delay
+			result['pwr_off_delay'] = outlet.pwr_off_delay
+			result['reboot_duration'] = outlet.reboot_duration
+
 	return HttpResponse(json.dumps(result),mimetype='application/json')
 	#return HttpResponse(id_num)
 

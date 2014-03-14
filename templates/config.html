@@ -20,28 +20,25 @@
                         
                       </tr>
                       
-                      {{formsets.management_form}}
-                      
-                      {% for form in formsets %}
-
+                                            
+                      {% for field in formset %}
+                          
                           
                           <tr align="left">
-
+                          <form id=form-{{forloop.counter}} >  
                             <td>{{forloop.counter}}</td>
-                            <td>{{form.name}}</td>
-                            <td>{{form.pwr_on_delay}}</td>
-                            <td>{{form.pwr_off_delay}}</td>
-                            <td>{{form.reboot_duration}}</td>
-                            <td>
-                            
-                                <button id="edit_{{forloop.counter}}" class="btn btn-sm btn-primary" type="submit" name="submit">Edit</button>
-                                <button id="save_{{forloop.counter}}" class="btn btn-sm btn-primary" type="submit" name="submit" style="display:none;">Save</button>
-                                <button id="cancel_{{forloop.counter}}" class="btn btn-sm btn-warning" type="submit" name="submit" style="display:none;">Cancel</button>
-
-                            
+                            <td>{{field.name}}</td>
+                            <td>{{field.pwr_on_delay}}</td>
+                            <td>{{field.pwr_off_delay}}</td>
+                            <td>{{field.reboot_duration}}</td>
+                            <td> 
+                                <button id="edit_{{forloop.counter}}" class="btn btn-sm btn-primary" type="button" name="edit_{{forloop.counter}}">Edit</button>
+                                <button id="save_{{forloop.counter}}" class="btn btn-sm btn-primary" type="button" name="submit_{{forloop.counter}}" style="display:none;">Save</button>
+                                <button id="cancel_{{forloop.counter}}" class="btn btn-sm btn-warning" type="button" name="reset_{{forloop.counter}}" style="display:none;">Cancel</button>
                             </td>
-
+                          </form>
                           </tr>
+                          
                       {%endfor%}
                       
 
@@ -54,43 +51,123 @@
   {% block customscripts %}
   <script type="text/javascript">
     $(document).ready(function(){
-          $('input[name^=form-]').prop('disabled', true);
-          $('select[name^=form-]').prop('disabled', true);
-          /*$('button[id^=save_]').hide();
-          $('button[id^=cancel_]').hide();*/
-
-          /*$('[id^="edit_"]').one('click', function(){*/
+          $('input[id^=id_]').prop('disabled', true);
+          $('select[id^=id_]').prop('disabled', true);
+          
+          //Edit button beginning
             $('[id^="edit_"]').click(function(){
               $edit_id = $(this).attr('id');
+              //alert($edit_id);
               $id_num = $edit_id.substring(5,6);
               $('button[id^=save_'+$id_num+']').css({"display": "inline"});
               $('button[id^=cancel_'+$id_num+']').css({"display": "inline"});
-              
-              //alert($id_num);
-
-              //$(this).hide();
-              /*$(this).prop('value', 'Save');
-              $(this).attr('value','save'); */
-              $form_num=(parseInt($id_num))-1 +'';
+             
+              $form_num=$id_num;
+             
               $('select[id^=id_form-'+$form_num+']').prop('disabled', false);
               $('input[name^=form-'+$form_num+']').prop('disabled', false); 
+           
+            });
+          //Edit button end
+            
+          //Cancel button beginning  
+            $('[id^="cancel_"]').click(function(){
+              $cancel_id = $(this).attr('id');
+              $cancel_num = $cancel_id.substring(7,8);
+              $form_num=$cancel_num;
+              $('button[id^=save_'+$cancel_num+']').css({"display": "none"});
+              $('button[id^=cancel_'+$cancel_num+']').css({"display": "none"});
+
+              $('input[name^=form-'+$form_num+']').prop('disabled', true);
+              $('select[id^=id_form-'+$form_num+']').prop('disabled', true);
               
+              //Cancel ajax beginning
+                  $.ajax({
+                          
+                          type: "GET",
+                          dataType: "json",
+                          contentType: "application/x-www-form-urlencoded",
+                          url : '/cancel_default/',
+                          data : {cancel_number: $cancel_num},
+                          success:function(response){             
 
+                                  console.log(response);
+                              $('#id_form-'+$cancel_num+'-name').val(response.name);
+                              $('#id_form-'+$cancel_num+'-pwr_on_delay').val(response.pwr_on_delay);
+                              $('#id_form-'+$cancel_num+'-pwr_off_delay').val(response.pwr_off_delay);
+                              $('#id_form-'+$cancel_num+'-reboot_duration').val(response.reboot_duration);
+                                          
 
-          });
+                          },
+                          timeout:10000
+                          
+                   }); // cancel ajax end
+                       
+            }); //Cancel button end
+          
+          //Submit button beginning with ajax
+          $('[id^="save_"]').click(function(){
+
+            $save_id = $(this).attr('id');
+            $out_id = $save_id.substring(5,6);
+            $out_name = $('#id_form-'+$out_id+'-name').val(); 
+            $out_pwr_on_delay = $('#id_form-'+$out_id+'-pwr_on_delay').val();
+            $out_pwr_off_delay = $('#id_form-'+$out_id+'-pwr_off_delay').val();
+            $out_reboot_duration = $('#id_form-'+$out_id+'-reboot_duration').val();
+
+            //ajax beginning
+              $.ajax({
+                      
+                      type: "GET",
+                      dataType: "json",
+                      contentType: "application/x-www-form-urlencoded",
+                      url : '/config_save/',
+                      data : {out_number: $out_id, name: $out_name, pwr_on_delay: $out_pwr_on_delay, pwr_off_delay: $out_pwr_off_delay, reboot_duration: $out_reboot_duration},
+                      success:function(response){             
+
+                              console.log(response);
+                                  //    alert(response);
+                              /*$('button[id^=save_'+$out_id+']').addClass('btn btn-sm btn-success').removeClass('btn btn-sm btn-primary');
+                               $('button[id^=save_'+$out_id+']').delay("5000");*/
+                              
+                              $('button[id^=cancel_'+$out_id+']').css({"display": "none"}); 
+                              
+                              $('button[id^=save_'+$out_id+']').text('Success');
+                              $('button[id^=save_'+$out_id+']').addClass('btn btn-sm btn-success').removeClass('btn btn-sm btn-primary').delay(500).fadeOut();  
+                              setTimeout(function() {
+                              $('button[id^=save_'+$out_id+']').addClass('btn btn-sm btn-primary').removeClass('btn btn-sm btn-success');
+                                $('button[id^=save_'+$out_id+']').text('Save');
+                                // Do something after 2 seconds
+                                }, 1000);
+                                                                    
+
+                              $('input[name^=form-'+$out_id+']').prop('disabled', true);
+                              $('select[id^=id_form-'+$out_id+']').prop('disabled', true);
+
+                      },
+                      timeout:10000
+                      
+              }); //ajax end  
+
+          });  
+          //Submit button end          
+            
+            /*//cancel button beginning
+
             $('[id^="cancel_"]').click(function(){
               $cancel_id = $(this).attr('id');
               $cancel_num = $cancel_id.substring(7,8);
               //alert($cancel_id);
-              $form_num=(parseInt($cancel_num))-1 +'';
-                            
+              //$form_num=(parseInt($cancel_num))-1 +'';
+              $form_num=$cancel_num             
               $('button[id^=save_'+$cancel_num+']').css({"display": "none"});
               $('button[id^=cancel_'+$cancel_num+']').css({"display": "none"});
               $('input[name^=form-'+$form_num+']').prop('disabled', true);
               $('select[id^=id_form-'+$form_num+']').prop('disabled', true);
               
+              //ajax beginning
               $.ajax({
-                      //async:false,
+                      
                       type: "GET",
                       dataType: "json",
                       contentType: "application/x-www-form-urlencoded",
@@ -104,32 +181,11 @@
                       },
                       timeout:10000
                       
-              });
-              /*$.getJSON('/cancel_default/', {cancel_number: $cancel_num}, function(result){
-               var data=$.parseJSON(result);
-               alert(data.name);
-               
-                });
-              */
-                /*$.ajax({
-
-                    type: "GET",
-                    url: "/cancel_default/",
-                    dataType: "json",
-                    data: {cancel_number: $cancel_num},  
-                    success: function(result) {
-                      var data=$.parseJSON(result);
-
-                        alert(data.name);
-
-                    },
-
-                });*/
-
-               
+              }); //ajax end
+                   
 
 
-          });
+            }); //cancel button end*/
 
 
         });
