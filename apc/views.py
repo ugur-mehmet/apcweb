@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from apc.models import Config, Log, Parameter
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from apc.forms import ConfigForm
 #from django.forms.models import modelformset_factory
 import json
@@ -141,7 +141,7 @@ def control(request,**kwargs):
 			# 	'''
 			# 	pass
 
-		return HttpResponse(cache.get('outlet_state_dict'))
+		return StreamingHttpResponse(cache.get('outlet_state_dict'))
 		
 		# for id in outlet_ids:
 		# 	if action_list == '1':
