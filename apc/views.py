@@ -106,12 +106,16 @@ def control(request,**kwargs):
 			if action_name == '3':  #Delayed on ise Tum outletler icin pwr_on_delay degerlerini al
 				'''Oncelikle pwr_on_delay parametresine gore her bir outlet icin dictionary olustur.
 				Ornek: {'Immmediate':[1,2], '15 Seconds':[0],}
+				Bi dictionary olusurken sadece off durumda olan outletler secilecek. On durumda olanlari
+				pwr_on_delay yapmaya gerek yok.
 
 				'''
 				delay_on_dict = defaultdict(list)
 				for id in outlet_ids:
 					pwr_on_delay = Config.objects.get(pk=id).pwr_on_delay
-					delay_on_dict[pwr_on_delay].append(id)
+					state = Config.objects.get(pk=id).state
+					if state==0:
+						delay_on_dict[pwr_on_delay].append(id)
 				cache.set('delay_on_dict',delay_on_dict)
 
 			if action_name == '5':  #Delayed off ise Tum outletler icin pwr_off_delay degerlerini al
@@ -136,12 +140,8 @@ def control(request,**kwargs):
 					delay_reboot_dict[reboot_duration].append(id)	
 				cache.set('delay_reboot_dict',delay_reboot_dict)
 			
-			# if action_name == '2':  #Immediate On ise Tum outletler icin Immediate degerlerini al
-			# 	'''
-			# 	'''
-			# 	pass
-
-		return HttpResponse(cache.get('outlet_state_dict'))
+		return redirect('/control/')
+		#return HttpResponse(cache.get('outlet_state_dict'))
 		
 		# for id in outlet_ids:
 		# 	if action_list == '1':
