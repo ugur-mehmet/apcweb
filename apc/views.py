@@ -10,7 +10,7 @@ from apc.forms import ConfigForm
 import json
 from collections import defaultdict
 from django.core.cache import cache
-from django.core.urlresolvers import reverse
+#from django.core.urlresolvers import reverse
 
 HIGH = 0
 LOW = 1
@@ -131,15 +131,8 @@ def control(request,**kwargs):
 					reboot_duration = Config.objects.get(pk=id).reboot_duration
 					delay_reboot_dict[reboot_duration].append(id)	
 				cache.set('delay_reboot_dict',delay_reboot_dict)
-		c={}
-		outlet_list = Config.objects.all()
-		c['outlets'] = outlet_list
-		if 'outlet_id' in kwargs.keys():
-		c['outlet_id'] = int(kwargs['outlet_id'])
-
-		return render_to_response('control.html',c)		
 			
-		#return HttpResponseRedirect(reverse("apc.views.control"))
+		return redirect("/"))
 		#return HttpResponse(cache.get('outlet_state_dict'))
 	c={}
 	c.update(csrf(request))	
@@ -162,11 +155,6 @@ def control(request,**kwargs):
   #       "8" 'Cancel Pending Commands'
 		# '''	
 		
-
-		
-
-	
-
 @login_required
 def config(request):
 	#config_lists = Config.objects.all()
