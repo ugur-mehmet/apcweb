@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from apc.models import Config, Log, Parameter
-from django.http import HttpResponse, StreamingHttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from apc.forms import ConfigForm
 #from django.forms.models import modelformset_factory
 import json
@@ -140,7 +140,7 @@ def control(request,**kwargs):
 					delay_reboot_dict[reboot_duration].append(id)	
 				cache.set('delay_reboot_dict',delay_reboot_dict)
 			
-		return redirect('/control/')
+		return HttpResponseRedirect('/control/')
 		#return HttpResponse(cache.get('outlet_state_dict'))
 		
 		# for id in outlet_ids:
