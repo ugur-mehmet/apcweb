@@ -74,15 +74,13 @@ def control(request,**kwargs):
 	
 	c={}
 	c.update(csrf(request))
-	if request.method != 'POST':
-
-		outlet_list = Config.objects.all()
-		c['outlets'] = outlet_list
-		if 'outlet_id' in kwargs.keys():
+	outlet_list = Config.objects.all()
+	c['outlets'] = outlet_list
+	if 'outlet_id' in kwargs.keys():
 			c['outlet_id'] = int(kwargs['outlet_id'])
 
-		return render_to_response('control.html',c)
-	else:
+	if request.method == 'POST':
+
 		check_list=['checkbox_1', 'checkbox_2','checkbox_3','checkbox_4',
 					'checkbox_5','checkbox_6','checkbox_7','checkbox_8']
 		#checked_list = []
@@ -139,9 +137,14 @@ def control(request,**kwargs):
 					reboot_duration = Config.objects.get(pk=id).reboot_duration
 					delay_reboot_dict[reboot_duration].append(id)	
 				cache.set('delay_reboot_dict',delay_reboot_dict)
+
+
+
+	return render_to_response('control.html',c)
+	# else:
 			
-		return HttpResponseRedirect('/control/',permanent=True)
-		#return HttpResponse(cache.get('outlet_state_dict'))
+	# 	return HttpResponseRedirect('/control/',permanent=True)
+	# 	#return HttpResponse(cache.get('outlet_state_dict'))
 		
 		# for id in outlet_ids:
 		# 	if action_list == '1':
