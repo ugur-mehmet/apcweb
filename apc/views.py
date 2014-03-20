@@ -139,8 +139,13 @@ def control(request,**kwargs):
 					reboot_duration = Config.objects.get(pk=id).reboot_duration
 					delay_reboot_dict[reboot_duration].append(id)	
 				cache.set('delay_reboot_dict',delay_reboot_dict)
+
+		outlet_list = Config.objects.all()
+		c['outlets'] = outlet_list
+		if 'outlet_id' in kwargs.keys():
+			c['outlet_id'] = int(kwargs['outlet_id'])
 			
-		return HttpResponseRedirect(reverse("apc.views.control"))
+		return render_to_response('control.html',c)
 		#return HttpResponse(cache.get('outlet_state_dict'))
 		
 		# for id in outlet_ids:
