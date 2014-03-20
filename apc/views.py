@@ -132,7 +132,7 @@ def control(request,**kwargs):
 					delay_reboot_dict[reboot_duration].append(id)	
 				cache.set('delay_reboot_dict',delay_reboot_dict)
 			
-		return redirect("/"))
+		return redirect("/")
 		#return HttpResponse(cache.get('outlet_state_dict'))
 	c={}
 	c.update(csrf(request))	
