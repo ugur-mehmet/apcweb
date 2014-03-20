@@ -10,6 +10,7 @@ from apc.forms import ConfigForm
 import json
 from collections import defaultdict
 from django.core.cache import cache
+from django.core.urlresolvers import reverse
 
 HIGH = 0
 LOW = 1
