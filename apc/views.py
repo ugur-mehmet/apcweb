@@ -132,8 +132,8 @@ def control(request,**kwargs):
 					reboot_duration = Config.objects.get(pk=id).reboot_duration
 					delay_reboot_dict[reboot_duration].append(id)	
 				cache.set('delay_reboot_dict',delay_reboot_dict)
-		time.sleep(1)	
-		return redirect("/")
+		time.sleep(1.2)	
+		return redirect("/control/")
 		#return HttpResponse(cache.get('outlet_state_dict'))
 	c={}
 	c.update(csrf(request))	
