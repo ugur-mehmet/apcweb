@@ -10,6 +10,7 @@ from apc.forms import ConfigForm
 import json
 from collections import defaultdict
 from django.core.cache import cache
+import time
 #from django.core.urlresolvers import reverse
 
 HIGH = 0
@@ -131,7 +132,7 @@ def control(request,**kwargs):
 					reboot_duration = Config.objects.get(pk=id).reboot_duration
 					delay_reboot_dict[reboot_duration].append(id)	
 				cache.set('delay_reboot_dict',delay_reboot_dict)
-			
+		time.sleep(1)	
 		return redirect("/")
 		#return HttpResponse(cache.get('outlet_state_dict'))
 	c={}

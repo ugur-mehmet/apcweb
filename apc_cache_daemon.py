@@ -191,7 +191,7 @@ class GPIO_Daemon():
 			#action_name='3' (Delayed On) End 					
 													
 				
-			time.sleep(1)
+			time.sleep(0.2)
 
 
 
