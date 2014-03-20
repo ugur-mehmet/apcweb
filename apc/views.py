@@ -140,7 +140,7 @@ def control(request,**kwargs):
 					delay_reboot_dict[reboot_duration].append(id)	
 				cache.set('delay_reboot_dict',delay_reboot_dict)
 			
-		return HttpResponseRedirect('/control/')
+		return HttpResponseRedirect('/control/',permanent=True)
 		#return HttpResponse(cache.get('outlet_state_dict'))
 		
 		# for id in outlet_ids:
