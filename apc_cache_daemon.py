@@ -37,10 +37,16 @@ class GPIO_Daemon():
 			for key, value in outlet_dict.iteritems():
 				outlet_dict[key]=HIGH
 			return outlet_dict
-		else:
+		elif on_off == LOW:
 			for key, value in outlet_dict.iteritems():
 				outlet_dict[key]=LOW
 			return outlet_dict
+		elif on_off == '*OFF':
+			for key, value in outlet_dict.iteritems():
+				outlet_dict[key]='*OFF'
+		else:
+			for key, value in outlet_dict.iteritems():
+				outlet_dict[key]='*ON'
 	
 	def save_db(self,outlet_state_dict):
 		con = lite.connect('/home/pi/projects/apcweb/db.sqlite3')
@@ -78,11 +84,12 @@ class GPIO_Daemon():
 				startupMode(cache_all_cur, True)
 				self.save_db(cache_all_cur)
 				cache.set('outlet_state_dict',self.set_outlet(cache_checked_cur,HIGH)) #Donecek deger {1:HIGH, 3:HIGH} gibi
+			
+			#action_name='3' (Delayed On) Beginning 
 			'''Oncelikle pwr_on_delay parametresine gore her bir outlet icin dictionary olustur.
 				Ornek: {'Immmediate':[1,2], '15 Seconds':[0],}
 					
 				cache.set('delay_on_dict',delay_on_dict) '''
-
 			if cache.get('action_name') == '3': # State i ON olanlar gelmeyecek sadece OFF olanlari delay on a gore ON yap
 				cache_all_cur = cache.get('all_pins_state')  #{0:LOW, 1: HIGH, 7:LOW} gibi
 				delay_on_dict_cur=cache.get('delay_on_dict') #Formati {'IMMEDIATE':[0,1].'SECONDS15':[4,7]} gibi 0,1,4,7 OFF durumda geliyor.
@@ -96,58 +103,94 @@ class GPIO_Daemon():
 						self.save_db(cache_all_cur)
 						cache.set('outlet_state_dict',immediate_pins_state)
 					if delay_key=='NEVERON':
-						neveron_pins_state=self.set_outlet(cache_checked_cur,LOW) #Never on pinlarin hepsini LOW yap
+						neveron_pins_state=self.set_outlet(delay_on_dict_cur['NEVERON'],LOW) #Never on pinlarin hepsini LOW yap
 						cache_all_cur.update(neveron_pins_state) #Iki dictionary update ediliyor.
 						startupMode(cache_all_cur, True)
 						self.save_db(cache_all_cur)
-						cache.set('outlet_state_dict',self.set_outlet(cache_checked_cur,LOW))
+						cache.set('outlet_state_dict',neveron_pins_state)
 					if delay_key=='SECONDS15' or delay_key=='SECONDS30' or delay_key=='SECONDS45' or \
 						delay_key=='MINUTE1' or delay_key=='MINUTES2' or delay_key=='MINUTES5':
 						start_time=time.time()
 						elapsed_time=0
+						max_time=0
+						delay_all_pins=[]
+						if 	delay_key=='SECONDS15':
+							delay_all_pins=delay_on_dict_cur['SECONDS15']+delay_all_pins
+							max_time=15
+						if 	delay_key=='SECONDS30':
+							delay_all_pins=delay_on_dict_cur['SECONDS30']+delay_all_pins
+							max_time=30
+						if 	delay_key=='SECONDS45':
+							delay_all_pins=delay_on_dict_cur['SECONDS45']+delay_all_pins
+							max_time=45
+						if 	delay_key=='MINUTE1':
+							delay_all_pins=delay_on_dict_cur['MINUTE1']+delay_all_pins	
+							max_time=60
+						if 	delay_key=='MINUTES2':
+							delay_all_pins=delay_on_dict_cur['MINUTES2']+delay_all_pins	
+							max_time=120
+						if 	delay_key=='MINUTES5':
+							delay_all_pins=delay_on_dict_cur['MINUTES5']+delay_all_pins	
+						delay_all_pins_state=self.set_outlet(delay_all_pins,'*OFF')
+						cache.set('outlet_state_dict',delay_all_pins)
+						devam15=devam30=devam45=devam1=devam2=devam5=True
+
 						while True:
 							now=time.time()
 							elapsed_time=now-start_time
-							if elapsed_time>=15:
+							if elapsed_time>=15 and devam15==True:
 								seconds15_pins_state=self.set_outlet(delay_on_dict_cur['SECONDS15'],HIGH) #Seconds15 pinlarin hepsini HIGH yap
 								cache_all_cur.update(seconds15_pins_state) #Iki dictionary update ediliyor.
 								startupMode(cache_all_cur, True)
 								self.save_db(cache_all_cur)
-								cache.set('outlet_state_dict',self.set_outlet(,HIGH))
-							if elapsed_time>=30:
-								seconds30_pins_state=self.set_outlet(delay_on_dict_cur['SECONDS30'],HIGH) #Seconds30 pinlarin hepsini HIGH yap
+								delay_all_pins_state.update(seconds15_pins_state)
+								cache.set('outlet_state_dict',delay_all_pins_state)
+								devam15=False
+							if elapsed_time>=30 and devam30==True:
+								seconds30_pins_state=self.set_outlet(delay_on_dict_cur['SECONDS30'],HIGH) #Seconds15 pinlarin hepsini HIGH yap
 								cache_all_cur.update(seconds30_pins_state) #Iki dictionary update ediliyor.
 								startupMode(cache_all_cur, True)
 								self.save_db(cache_all_cur)
-								cache.set('outlet_state_dict',self.set_outlet(cache_checked_cur,HIGH))
-								
-								
-								
-								
-								
-							
-							
-							
-						
-						
-						
-		startupMode1(all_pins_init, True)
-	elif delay_key=='Never On':
-		never_pins=state(delay_pins_dict['Never On'])
-		'''for pin in delay_pins_dict['Never On']: #Bu pinleri OFF a cek
-			digitalWrite(pin,LOW)'''
-		all_pins_init.update(never_pins)
-		startupMode1(all_pins_init, True)
+								delay_all_pins_state.update(seconds30_pins_state)
+								cache.set('outlet_state_dict',delay_all_pins_state)
+								devam30=False
+							if elapsed_time>=45 and devam45==True:
+								seconds45_pins_state=self.set_outlet(delay_on_dict_cur['SECONDS45'],HIGH) #Seconds15 pinlarin hepsini HIGH yap
+								cache_all_cur.update(seconds45_pins_state) #Iki dictionary update ediliyor.
+								startupMode(cache_all_cur, True)
+								self.save_db(cache_all_cur)
+								delay_all_pins_state.update(seconds45_pins_state)
+								cache.set('outlet_state_dict',delay_all_pins_state)
+								devam45=False
+							if elapsed_time>=60 and devam1==True:
+								minute1_pins_state=self.set_outlet(delay_on_dict_cur['MINUTE1'],HIGH) #Seconds15 pinlarin hepsini HIGH yap
+								cache_all_cur.update(seconds30_pins_state) #Iki dictionary update ediliyor.
+								startupMode(cache_all_cur, True)
+								self.save_db(cache_all_cur)
+								delay_all_pins_state.update(minute1_pins_state)
+								cache.set('outlet_state_dict',delay_all_pins_state)
+								devam1=False
+							if elapsed_time>=120 and devam2==True:
+								minutes2_pins_state=self.set_outlet(delay_on_dict_cur['MINUTES2'],HIGH) #Seconds15 pinlarin hepsini HIGH yap
+								cache_all_cur.update(minutes2_pins_state) #Iki dictionary update ediliyor.
+								startupMode(cache_all_cur, True)
+								self.save_db(cache_all_cur)
+								delay_all_pins_state.update(minutes2_pins_state)
+								cache.set('outlet_state_dict',delay_all_pins_state)
+								devam2=False	
+							if elapsed_time>=300 and devam5==True:
+								minutes5_pins_state=self.set_outlet(delay_on_dict_cur['MINUTES5'],HIGH) #Seconds15 pinlarin hepsini HIGH yap
+								cache_all_cur.update(minutes5_pins_state) #Iki dictionary update ediliyor.
+								startupMode(cache_all_cur, True)
+								self.save_db(cache_all_cur)
+								delay_all_pins_state.update(minutes5_pins_state)
+								cache.set('outlet_state_dict',delay_all_pins_state)
+								devam5=False
+							if 	elapsed_time>=max_time:
+								break
+			#action_name='3' (Delayed On) End 					
+													
 				
-
-
-
-				
-
-
-				
-				
-			
 			time.sleep(1)
 
 
