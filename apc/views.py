@@ -72,17 +72,8 @@ def all_pins_state(*pin_list):
 @login_required
 def control(request,**kwargs):
 	
-	c={}
-	c.update(csrf(request))
-	if request.method != 'POST':
-
-		outlet_list = Config.objects.all()
-		c['outlets'] = outlet_list
-		if 'outlet_id' in kwargs.keys():
-			c['outlet_id'] = int(kwargs['outlet_id'])
-
-		return render_to_response('control.html',c)
-	else:
+	if request.method == 'POST':
+	
 		check_list=['checkbox_1', 'checkbox_2','checkbox_3','checkbox_4',
 					'checkbox_5','checkbox_6','checkbox_7','checkbox_8']
 		#checked_list = []
@@ -140,16 +131,17 @@ def control(request,**kwargs):
 					delay_reboot_dict[reboot_duration].append(id)	
 				cache.set('delay_reboot_dict',delay_reboot_dict)
 			
-		return HttpResponseRedirect(reverse("apc.views.index"))
+		return HttpResponseRedirect(reverse("apc.views.control"))
 		#return HttpResponse(cache.get('outlet_state_dict'))
-		
-		# for id in outlet_ids:
-		# 	if action_list == '1':
-		# 		pass
-		# 	elif action_list == '2':
-		# 		Digital
-		
+	c={}
+	c.update(csrf(request))	
+	outlet_list = Config.objects.all()
+	c['outlets'] = outlet_list
+	if 'outlet_id' in kwargs.keys():
+		c['outlet_id'] = int(kwargs['outlet_id'])
 
+	return render_to_response('control.html',c)
+		
 		# #if action_list == 
 		# '''
 		# "1" 'No Action'
