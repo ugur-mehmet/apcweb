@@ -8,6 +8,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'apcweb.settings'
 from django.core.cache import cache
 from apc_5821A import *
 import sqlite3 as lite
+from collections import defaultdict
 
 	
 	# 		"1" 'No Action'
@@ -37,16 +38,16 @@ class GPIO_Daemon():
 			for key, value in outlet_dict.iteritems():
 				outlet_dict[key]=HIGH
 			return outlet_dict
-		elif on_off == LOW:
+		if on_off == LOW:
 			for key, value in outlet_dict.iteritems():
 				outlet_dict[key]=LOW
 			return outlet_dict
-		elif on_off == '*OFF':
-			for key, value in outlet_dict.iteritems():
-				outlet_dict[key]='*OFF'
-		else:
-			for key, value in outlet_dict.iteritems():
-				outlet_dict[key]='*ON'
+		# elif on_off == '*OFF':
+		# 	for key, value in outlet_dict.iteritems():
+		# 		outlet_dict[key]='*OFF'
+		# else:
+		# 	for key, value in outlet_dict.iteritems():
+		# 		outlet_dict[key]='*ON'
 	
 	def save_db(self,outlet_state_dict):
 		con = lite.connect('/home/pi/projects/apcweb/db.sqlite3')
@@ -107,7 +108,7 @@ class GPIO_Daemon():
 						cache_all_cur.update(neveron_pins_state) #Iki dictionary update ediliyor.
 						startupMode(cache_all_cur, True)
 						self.save_db(cache_all_cur)
-						cache.set('outlet_state_dict',neveron_pins_state)
+						cache.set('outlet_state_dict',neveron_pins_state.update(immediate_pins_state))
 					if delay_key=='SECONDS15' or delay_key=='SECONDS30' or delay_key=='SECONDS45' or \
 						delay_key=='MINUTE1' or delay_key=='MINUTES2' or delay_key=='MINUTES5':
 						start_time=time.time()
@@ -131,8 +132,11 @@ class GPIO_Daemon():
 							max_time=120
 						if 	delay_key=='MINUTES5':
 							delay_all_pins=delay_on_dict_cur['MINUTES5']+delay_all_pins	
-						delay_all_pins_state=self.set_outlet(delay_all_pins,'*OFF')
-						cache.set('outlet_state_dict',delay_all_pins)
+						delay_all_pins_dict=defaultdict(list)
+						for pin in delay_all_pins:
+							delay_all_pins_dict[pin]='*OFF'
+						#delay_all_pins_state=self.set_outlet(delay_all_pins,'*OFF')
+						cache.set('outlet_state_dict',delay_all_pins_dict.update(neveron_pins_state))
 						devam15=devam30=devam45=devam1=devam2=devam5=True
 
 						while True:
@@ -143,8 +147,8 @@ class GPIO_Daemon():
 								cache_all_cur.update(seconds15_pins_state) #Iki dictionary update ediliyor.
 								startupMode(cache_all_cur, True)
 								self.save_db(cache_all_cur)
-								delay_all_pins_state.update(seconds15_pins_state)
-								cache.set('outlet_state_dict',delay_all_pins_state)
+								delay_all_pins_dict.update(seconds15_pins_state)
+								cache.set('outlet_state_dict',delay_all_pins_dict)
 								devam15=False
 							if elapsed_time>=30 and devam30==True:
 								seconds30_pins_state=self.set_outlet(delay_on_dict_cur['SECONDS30'],HIGH) #Seconds15 pinlarin hepsini HIGH yap
@@ -152,7 +156,7 @@ class GPIO_Daemon():
 								startupMode(cache_all_cur, True)
 								self.save_db(cache_all_cur)
 								delay_all_pins_state.update(seconds30_pins_state)
-								cache.set('outlet_state_dict',delay_all_pins_state)
+								cache.set('outlet_state_dict',delay_all_pins_dict)
 								devam30=False
 							if elapsed_time>=45 and devam45==True:
 								seconds45_pins_state=self.set_outlet(delay_on_dict_cur['SECONDS45'],HIGH) #Seconds15 pinlarin hepsini HIGH yap
@@ -160,7 +164,7 @@ class GPIO_Daemon():
 								startupMode(cache_all_cur, True)
 								self.save_db(cache_all_cur)
 								delay_all_pins_state.update(seconds45_pins_state)
-								cache.set('outlet_state_dict',delay_all_pins_state)
+								cache.set('outlet_state_dict',delay_all_pins_dict)
 								devam45=False
 							if elapsed_time>=60 and devam1==True:
 								minute1_pins_state=self.set_outlet(delay_on_dict_cur['MINUTE1'],HIGH) #Seconds15 pinlarin hepsini HIGH yap
@@ -168,7 +172,7 @@ class GPIO_Daemon():
 								startupMode(cache_all_cur, True)
 								self.save_db(cache_all_cur)
 								delay_all_pins_state.update(minute1_pins_state)
-								cache.set('outlet_state_dict',delay_all_pins_state)
+								cache.set('outlet_state_dict',delay_all_pins_dict)
 								devam1=False
 							if elapsed_time>=120 and devam2==True:
 								minutes2_pins_state=self.set_outlet(delay_on_dict_cur['MINUTES2'],HIGH) #Seconds15 pinlarin hepsini HIGH yap
@@ -176,7 +180,7 @@ class GPIO_Daemon():
 								startupMode(cache_all_cur, True)
 								self.save_db(cache_all_cur)
 								delay_all_pins_state.update(minutes2_pins_state)
-								cache.set('outlet_state_dict',delay_all_pins_state)
+								cache.set('outlet_state_dict',delay_all_pins_dict)
 								devam2=False	
 							if elapsed_time>=300 and devam5==True:
 								minutes5_pins_state=self.set_outlet(delay_on_dict_cur['MINUTES5'],HIGH) #Seconds15 pinlarin hepsini HIGH yap
@@ -184,9 +188,9 @@ class GPIO_Daemon():
 								startupMode(cache_all_cur, True)
 								self.save_db(cache_all_cur)
 								delay_all_pins_state.update(minutes5_pins_state)
-								cache.set('outlet_state_dict',delay_all_pins_state)
+								cache.set('outlet_state_dict',delay_all_pins_dict)
 								devam5=False
-							if 	elapsed_time>=max_time:
+							if 	elapsed_time>=max_time+2:
 								break
 			#action_name='3' (Delayed On) End 					
 													
