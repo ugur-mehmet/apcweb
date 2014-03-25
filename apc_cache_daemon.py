@@ -97,6 +97,7 @@ class GPIO_Daemon():
 				delay_on_dict_cur=cache.get('delay_on_dict') #Formati {'IMMEDIATE':[0,1].'SECONDS15':[4,7]} gibi 0,1,4,7 OFF durumda geliyor.
 				cache_checked_cur = cache.get('checked_outlets_state')  # Secilen outletlerin o anki durumu {1:HIGH, 3:LOW} gibi
 				delay_on_pins_updated={}
+				time.sleep(2)
 				for delay_key in delay_on_dict_cur.keys():
 					if delay_key=='IMMEDIATE':
 						immediate_pins_state=defaultdict(list)
