@@ -98,7 +98,7 @@ class GPIO_Daemon():
 				delay_on_pins_updated={}
 				for delay_key in delay_on_dict_cur.keys():
 					if delay_key=='IMMEDIATE':
-						Immmediate_pins_state=defaultdict(list)
+						immediate_pins_state=defaultdict(list)
 						for i in delay_on_dict_cur['IMMEDIATE']:
 							immediate_pins_state[i]=HIGH
 						#immediate_pins_state=self.set_outlet(delay_on_dict_cur['IMMEDIATE'],HIGH) #Immediate pinlarin hepsini HIGH yap
@@ -111,7 +111,7 @@ class GPIO_Daemon():
 					if delay_key=='NEVERON':
 						neveron_pins_state=defaultdict(list)
 						for i in delay_on_dict_cur['NEVERON']:
-							immediate_pins_state[i]=LOW
+							neveron_pins_state[i]=LOW
 						#neveron_pins_state=self.set_outlet(delay_on_dict_cur['NEVERON'],LOW) #Never on pinlarin hepsini LOW yap
 						cache_all_cur.update(neveron_pins_state) #Iki dictionary update ediliyor.
 						startupMode(cache_all_cur, True)
@@ -170,7 +170,7 @@ class GPIO_Daemon():
 								#seconds30_pins_state=self.set_outlet(delay_on_dict_cur['SECONDS30'],HIGH) #Seconds15 pinlarin hepsini HIGH yap
 								seconds30_pins_state=defaultdict(list)
 								for i in delay_on_dict_cur['SECONDS30']:
-									seconds15_pins_state[i]=HIGH
+									seconds30_pins_state[i]=HIGH
 								cache_all_cur.update(seconds30_pins_state) #Iki dictionary update ediliyor.
 								startupMode(cache_all_cur, True)
 								self.save_db(cache_all_cur)
@@ -182,7 +182,7 @@ class GPIO_Daemon():
 								#seconds45_pins_state=self.set_outlet(delay_on_dict_cur['SECONDS45'],HIGH) #Seconds15 pinlarin hepsini HIGH yap
 								seconds45_pins_state=defaultdict(list)
 								for i in delay_on_dict_cur['SECONDS45']:
-									seconds15_pins_state[i]=HIGH
+									seconds45_pins_state[i]=HIGH
 								cache_all_cur.update(seconds45_pins_state) #Iki dictionary update ediliyor.
 								startupMode(cache_all_cur, True)
 								self.save_db(cache_all_cur)
@@ -195,7 +195,7 @@ class GPIO_Daemon():
 								minute1_pins_state=defaultdict(list)
 								for i in delay_on_dict_cur['MINUTE1']:
 									minute1_pins_state[i]=HIGH
-								cache_all_cur.update(seconds60_pins_state) #Iki dictionary update ediliyor.
+								cache_all_cur.update(minute1_pins_state) #Iki dictionary update ediliyor.
 								startupMode(cache_all_cur, True)
 								self.save_db(cache_all_cur)
 								delay_on_pins_updated.update(minute1_pins_state)
