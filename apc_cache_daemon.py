@@ -107,7 +107,7 @@ class GPIO_Daemon():
 						startupMode(cache_all_cur, True)
 						self.save_db(cache_all_cur)
 						delay_on_pins_updated.update(immediate_pins_state)
-						cache.clear()	
+							
 						cache.set('outlet_state_dict',delay_on_pins_updated)
 					
 					if delay_key=='NEVERON':
@@ -150,7 +150,7 @@ class GPIO_Daemon():
 							delay_all_pins_dict[pin]='*OFF'
 						delay_on_pins_updated.update(delay_all_pins_dict)
 						#delay_all_pins_state=self.set_outlet(delay_all_pins,'*OFF')
-						cache.clear()
+						
 						cache.set('outlet_state_dict',delay_on_pins_updated)
 						devam15=devam30=devam45=devam1=devam2=devam5=True
 
