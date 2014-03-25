@@ -143,7 +143,8 @@ class GPIO_Daemon():
 							delay_all_pins=delay_on_dict_cur['MINUTES2']+delay_all_pins	
 							max_time=120
 						if 	delay_key=='MINUTES5':
-							delay_all_pins=delay_on_dict_cur['MINUTES5']+delay_all_pins	
+							delay_all_pins=delay_on_dict_cur['MINUTES5']+delay_all_pins
+							max_time=300	
 						delay_all_pins_dict=defaultdict(list)
 						for pin in delay_all_pins:
 							delay_all_pins_dict[pin]='*OFF'
