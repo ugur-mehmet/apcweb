@@ -84,6 +84,7 @@ class GPIO_Daemon():
 				cache_all_cur.update(update_checked_out)
 				startupMode(cache_all_cur, True)
 				self.save_db(cache_all_cur)
+				cache.clear()
 				cache.set('outlet_state_dict',self.set_outlet(cache_checked_cur,HIGH)) #Donecek deger {1:HIGH, 3:HIGH} gibi
 			
 			#action_name='3' (Delayed On) Beginning 
@@ -105,7 +106,8 @@ class GPIO_Daemon():
 						cache_all_cur.update(immediate_pins_state) #Iki dictionary update ediliyor.
 						startupMode(cache_all_cur, True)
 						self.save_db(cache_all_cur)
-						delay_on_pins_updated.update(immediate_pins_state)	
+						delay_on_pins_updated.update(immediate_pins_state)
+						cache.clear()	
 						cache.set('outlet_state_dict',delay_on_pins_updated)
 					
 					if delay_key=='NEVERON':
@@ -147,6 +149,7 @@ class GPIO_Daemon():
 							delay_all_pins_dict[pin]='*OFF'
 						delay_on_pins_updated.update(delay_all_pins_dict)
 						#delay_all_pins_state=self.set_outlet(delay_all_pins,'*OFF')
+						cache.clear()
 						cache.set('outlet_state_dict',delay_on_pins_updated)
 						devam15=devam30=devam45=devam1=devam2=devam5=True
 
