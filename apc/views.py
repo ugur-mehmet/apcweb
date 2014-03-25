@@ -89,52 +89,53 @@ def control(request,**kwargs):
 				outlet_ids.append(int(check[-1])) 
 				outlet_pins.append(int(check[-1])-1) #Convert checked_list from outlet id to pins [0,1,2 ..]
 		
-		if action_name != '1' and len(outlet_ids)>0:
+		if action_name != '1':
 
 			cache.set('checked_outlet_pins', outlet_pins)
 			cache.set('all_pins_state', all_pins_state())
 			cache.set('checked_outlets_state',all_pins_state(*outlet_pins))
 			cache.set('action_name', action_name)
-					
-			if action_name == '3':  #Delayed on ise Tum outletler icin pwr_on_delay degerlerini al
-				'''Oncelikle pwr_on_delay parametresine gore her bir outlet icin dictionary olustur.
-				Ornek: {'Immmediate':[1,2], '15 Seconds':[0],}
-				Bi dictionary olusurken sadece off durumda olan outletler secilecek. On durumda olanlari
-				pwr_on_delay yapmaya gerek yok.
+			#delay_on_dict = defaultdict(list)		
+			# if action_name == '3':  #Delayed on ise Tum outletler icin pwr_on_delay degerlerini al
+			# 	'''Oncelikle pwr_on_delay parametresine gore her bir outlet icin dictionary olustur.
+			# 	Ornek: {'Immmediate':[1,2], '15 Seconds':[0],}
+			# 	Bi dictionary olusurken sadece off durumda olan outletler secilecek. On durumda olanlari
+			# 	pwr_on_delay yapmaya gerek yok.
 
-				'''
-				delay_on_dict = defaultdict(list)
-				for id in outlet_ids:
-					pwr_on_delay = Config.objects.get(pk=id).pwr_on_delay
-					state = Config.objects.get(pk=id).state
-					if state==0:
-						delay_on_dict[pwr_on_delay].append(id)
-				cache.set('delay_on_dict',delay_on_dict)
+			# 	'''
+				
+			# 	for id in outlet_ids:
+			# 		pwr_on_delay = Config.objects.get(pk=id).pwr_on_delay
+			# 		state = Config.objects.get(pk=id).state
+			# 		if state==0:
+			# 			delay_on_dict[pwr_on_delay].append(id)
+			# 	cache.set('delay_on_dict',delay_on_dict)
 
-			if action_name == '5':  #Delayed off ise Tum outletler icin pwr_off_delay degerlerini al
-				'''Oncelikle pwr_off_delay parametresine gore her bir outlet icin dictionary olustur.
-				Ornek: {'Immmediate':[1,2], '15 Seconds':[0],}
+			# if action_name == '5':  #Delayed off ise Tum outletler icin pwr_off_delay degerlerini al
+			# 	'''Oncelikle pwr_off_delay parametresine gore her bir outlet icin dictionary olustur.
+			# 	Ornek: {'Immmediate':[1,2], '15 Seconds':[0],}
 
-				'''
-				delay_off_dict = defaultdict(list)
-				for id in outlet_ids:
-					pwr_off_delay = Config.objects.get(pk=id).pwr_off_delay
-					delay_off_dict[pwr_off_delay].append(id)
-				cache.set('delay_off_dict',delay_off_dict)	
+			# 	'''
+			# 	delay_off_dict = defaultdict(list)
+			# 	for id in outlet_ids:
+			# 		pwr_off_delay = Config.objects.get(pk=id).pwr_off_delay
+			# 		delay_off_dict[pwr_off_delay].append(id)
+			# 	cache.set('delay_off_dict',delay_off_dict)	
 
-			if action_name == '7':  #Delayed reboot ise Tum outletler icin reboot_duration degerlerini al
-				'''Oncelikle reboot_duration parametresine gore her bir outlet icin dictionary olustur.
-				Ornek: {'05 Seconds':[1,2], '15 Seconds':[0],}
+			# if action_name == '7':  #Delayed reboot ise Tum outletler icin reboot_duration degerlerini al
+			# 	'''Oncelikle reboot_duration parametresine gore her bir outlet icin dictionary olustur.
+			# 	Ornek: {'05 Seconds':[1,2], '15 Seconds':[0],}
 
-				'''
-				delay_reboot_dict = defaultdict(list)
-				for id in outlet_ids:
-					reboot_duration = Config.objects.get(pk=id).reboot_duration
-					delay_reboot_dict[reboot_duration].append(id)	
-				cache.set('delay_reboot_dict',delay_reboot_dict)
+			# 	'''
+			# 	delay_reboot_dict = defaultdict(list)
+			# 	for id in outlet_ids:
+			# 		reboot_duration = Config.objects.get(pk=id).reboot_duration
+			# 		delay_reboot_dict[reboot_duration].append(id)	
+			# 	cache.set('delay_reboot_dict',delay_reboot_dict)
 		time.sleep(1.2)	
 		return redirect("/control/")
 		#return HttpResponse(cache.get('outlet_state_dict'))
+	cache.set('action_name', 0)
 	c={}
 	c.update(csrf(request))	
 	outlet_list = Config.objects.all()
