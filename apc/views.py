@@ -70,6 +70,20 @@ def all_pins_state(*pin_list):
 				all_pins_dict[each] = '*'
 		return(all_pins_dict)
 			
+def get_max_delay_time(delay_dict):
+	global max_delay_time
+	for delay_key in delay_dict.keys():
+		
+		if delay_key[0:6]=='MINUTE':
+			duration=int(delay_key[:1])*60
+			if duration>=max_delay_time:
+				max_delay_time=duration
+		
+		if delay_key[:-2]=='SECONDS':
+			duration=int(delay_key[:2])
+			if duration>=max_delay_time:
+				max_delay_time=duration
+	return max_delay_time
 
 @login_required
 def control(request,**kwargs):
@@ -95,21 +109,91 @@ def control(request,**kwargs):
 			cache.set('all_pins_state', all_pins_state())
 			cache.set('checked_outlets_state',all_pins_state(*outlet_pins))
 			cache.set('action_name', action_name)
-			#delay_on_dict = defaultdict(list)		
-			# if action_name == '3':  #Delayed on ise Tum outletler icin pwr_on_delay degerlerini al
-			# 	'''Oncelikle pwr_on_delay parametresine gore her bir outlet icin dictionary olustur.
-			# 	Ornek: {'Immmediate':[1,2], '15 Seconds':[0],}
-			# 	Bi dictionary olusurken sadece off durumda olan outletler secilecek. On durumda olanlari
-			# 	pwr_on_delay yapmaya gerek yok.
+			delay_on_dict = defaultdict(list)		
+		if action_name == '3':  #Delayed on ise Tum outletler icin pwr_on_delay degerlerini al
+			'''Oncelikle pwr_on_delay parametresine gore her bir outlet icin dictionary olustur.
+		# 	Ornek: {'Immmediate':[1,2], '15 Seconds':[0],}
+		# 	Bi dictionary olusurken sadece off durumda olan outletler secilecek. On durumda olanlari
+		# 	pwr_on_delay yapmaya gerek yok.
 
-			# 	'''
-				
-			# 	for id in outlet_ids:
-			# 		pwr_on_delay = Config.objects.get(pk=id).pwr_on_delay
-			# 		state = Config.objects.get(pk=id).state
-			# 		if state==0:
-			# 			delay_on_dict[pwr_on_delay].append(id)
-			# 	cache.set('delay_on_dict',delay_on_dict)
+		 	'''
+		 	
+			for id in outlet_ids:
+				pwr_on_delay = Config.objects.get(pk=id).pwr_on_delay
+				state = Config.objects.get(pk=id).state
+				if state==0:
+					delay_on_dict[pwr_on_delay].append(id)
+			#cache.set('delay_on_dict',delay_on_dict)
+			
+			for delay_key in delay_on_dict.keys():
+				if delay_key=='IMMEDIATE':
+					immediate_pins_state=defaultdict(list)
+					for i in delay_on_dict['IMMEDIATE']:
+						immediate_pins_state[i]=HIGH
+					#immediate_pins_state=self.set_outlet(delay_on_dict_cur['IMMEDIATE'],HIGH) #Immediate pinlarin hepsini HIGH yap
+					
+										
+				if delay_key=='SECONDS15' or delay_key=='SECONDS30' or delay_key=='SECONDS45' or \
+					delay_key=='MINUTE1' or delay_key=='MINUTES2' or delay_key=='MINUTES5':
+					start_time=time.time()
+					elapsed_time=0
+					max_delay_time=0
+					max_time=get_max_delay_time(delay_on_dict)
+					delay_all_pins=[]
+
+					if 	delay_key=='SECONDS15':
+						delay_all_pins=delay_on_dict['SECONDS15']+delay_all_pins
+						seconds15_pins_state=defaultdict(list)
+						for i in delay_on_dict['SECONDS15']:
+							seconds15_pins_state[i]=HIGH
+						
+					if 	delay_key=='SECONDS30':
+							delay_all_pins=delay_on_dict['SECONDS30']+delay_all_pins
+							seconds30_pins_state=defaultdict(list)
+							for i in delay_on_dict['SECONDS30']:
+								seconds30_pins_state[i]=HIGH
+							
+					if 	delay_key=='SECONDS45':
+						delay_all_pins=delay_on_dict['SECONDS45']+delay_all_pins
+						seconds45_pins_state=defaultdict(list)
+						for i in delay_on_dict['SECONDS45']:
+							seconds45_pins_state[i]=HIGH
+						
+					if 	delay_key=='MINUTE1':
+						delay_all_pins=delay_on_dict['MINUTE1']+delay_all_pins	
+						minute1_pins_state=defaultdict(list)
+						for i in delay_on_dict['MINUTE1']:
+							minute1_pins_state[i]=HIGH
+						
+					if 	delay_key=='MINUTES2':
+						delay_all_pins=delay_on_dict['MINUTES2']+delay_all_pins	
+						minute2_pins_state=defaultdict(list)
+						for i in delay_on_dict['MINUTES2']:
+							minute2_pins_state[i]=HIGH
+						
+					if 	delay_key=='MINUTES5':
+						delay_all_pins=delay_on_dict['MINUTES5']+delay_all_pins
+						minutes5_pins_state=defaultdict(list)
+						for i in delay_on_dict['MINUTES5']:
+							minutes5_pins_state[i]=HIGH
+									
+					delay_all_pins_dict=defaultdict(list)
+					for pin in delay_all_pins:
+						delay_all_pins_dict[pin]='*OFF'
+					
+
+			cache.set('immediate_pins_state',immediate_pins_state) #Iki dictionary update ediliyor.	
+			cache.set('start_time',start_time)
+			cache.set('max_time',max_time)		
+			cache.set('delay_all_pins_dict',delay_all_pins_dict)
+			cache.set('seconds15_pins_state',seconds15_pins_state)
+			# cache.set('seconds30_pins_state',seconds30_pins_state)
+			# cache.set('seconds45_pins_state',seconds45_pins_state)
+			# cache.set('minute1_pins_state',minute1_pins_state)
+			# cache.set('minutes2_pins_state',minutes2_pins_state)
+			# cache.set('minutes5_pins_state',minutes5_pins_state)
+
+
 
 			# if action_name == '5':  #Delayed off ise Tum outletler icin pwr_off_delay degerlerini al
 			# 	'''Oncelikle pwr_off_delay parametresine gore her bir outlet icin dictionary olustur.

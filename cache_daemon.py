@@ -92,6 +92,31 @@ class GPIO_Daemon():
 				Ornek: {'Immmediate':[1,2], '15 Seconds':[0],}
 					
 				cache.set('delay_on_dict',delay_on_dict) '''
+			if cache.get('action_name') == '3':
+				devam15=devam30=devam45=devam1=devam2=devam5=True
+				delay_on_pins_updated=cache.get('delay_all_pins_dict')
+				
+				cache_all_cur = cache.get('all_pins_state')
+				start_time=cache.get('start_time')
+				#seconds15_pins_state=cache.get(seconds15_pins_state)
+
+				if cache.get(immediate_pins_state): #IMMEDIATE pinler var ise hemen ON yap 
+					cache_all_cur.update(cache.get('immediate_pins_state'))
+					startupMode(cache_all_cur, True)
+					self.save_db(cache_all_cur)
+					delay_on_pins_updated.update(immediate_pins_state)
+					cache.set('outlet_state_dict',delay_on_pins_updated) #IMMEDIATE pin ler ON yapildi bilgisini ver
+
+				while True:
+					if devam15==True and cache.get(seconds15_pins_state) and elapsed_time>=15:
+						cache_all_cur.update(cache.get('seconds15_pins_state'))
+						startupMode(cache_all_cur, True)
+						self.save_db(cache_all_cur)
+						delay_on_pins_updated.update(cache.get(seconds15_pins_state))
+						cache.set('outlet_state_dict',delay_on_pins_updated)
+						devam15=False
+						break
+						
 
 
 			time.sleep(0.2)
