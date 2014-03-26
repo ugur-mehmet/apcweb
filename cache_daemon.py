@@ -98,7 +98,7 @@ class GPIO_Daemon():
 				delay_on_pins_updated=cache.get('delay_all_pins_dict')
 				
 				cache_all_cur = cache.get('all_pins_state')
-				start_time=int(cache.get('start_time'))
+				start_time=cache.get('start_time',0)
 				#seconds15_pins_state=cache.get(seconds15_pins_state)
 
 				if cache.get('immediate_pins_state'): #IMMEDIATE pinler var ise hemen ON yap 
