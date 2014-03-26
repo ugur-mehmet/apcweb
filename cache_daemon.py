@@ -9,6 +9,7 @@ from django.core.cache import cache
 from apc_5821A import *
 import sqlite3 as lite
 from collections import defaultdict
+import time
 
 	
 	# 		"1" 'No Action'
@@ -108,6 +109,7 @@ class GPIO_Daemon():
 					cache.set('outlet_state_dict',delay_on_pins_updated) #IMMEDIATE pin ler ON yapildi bilgisini ver
 
 				while True:
+					
 					elapsed_time=time.time()-start_time
 
 					if devam15==True and cache.get('seconds15_pins_state') and elapsed_time>=15:
