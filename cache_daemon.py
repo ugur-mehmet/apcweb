@@ -69,7 +69,7 @@ class GPIO_Daemon():
 		cache_all_cur = {}
 		cache_checked_cur = {}
 		outlet_state_dict={}
-		cache.clear()
+		#cache.clear()
 		while True:
 			update_checked_out = {}
 			if cache.get('action_name') == '2' or cache.get('action_name') == '4': # Selected outlets will be on immediately
