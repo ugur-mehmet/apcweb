@@ -105,7 +105,7 @@ class GPIO_Daemon():
 					cache_all_cur.update(cache.get('immediate_pins_state'))
 					startupMode(cache_all_cur, True)
 					self.save_db(cache_all_cur)
-					delay_on_pins_updated.update(immediate_pins_state)
+					delay_on_pins_updated.update(cache.get('immediate_pins_state'))
 					cache.set('outlet_state_dict',delay_on_pins_updated) #IMMEDIATE pin ler ON yapildi bilgisini ver
 
 				while True:
