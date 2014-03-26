@@ -123,7 +123,7 @@ def control(request,**kwargs):
 				pwr_on_delay = Config.objects.get(pk=id).pwr_on_delay
 				state = Config.objects.get(pk=id).state
 				if state==0:
-					delay_on_dict[pwr_on_delay].append(id)
+					delay_on_dict[pwr_on_delay].append(id-1)
 			#cache.set('delay_on_dict',delay_on_dict)
 			
 			for delay_key in delay_on_dict.keys():
