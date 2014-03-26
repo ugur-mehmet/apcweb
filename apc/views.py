@@ -137,7 +137,6 @@ def control(request,**kwargs):
 				if delay_key=='SECONDS15' or delay_key=='SECONDS30' or delay_key=='SECONDS45' or \
 					delay_key=='MINUTE1' or delay_key=='MINUTES2' or delay_key=='MINUTES5':
 					start_time=time.time()
-					elapsed_time=0
 					max_time=get_max_delay_time(delay_on_dict)
 					delay_all_pins=[]
 

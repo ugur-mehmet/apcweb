@@ -98,7 +98,7 @@ class GPIO_Daemon():
 				delay_on_pins_updated=cache.get('delay_all_pins_dict')
 				
 				cache_all_cur = cache.get('all_pins_state')
-				start_time=cache.get('start_time')
+				start_time=int(cache.get('start_time'))
 				#seconds15_pins_state=cache.get(seconds15_pins_state)
 
 				if cache.get('immediate_pins_state'): #IMMEDIATE pinler var ise hemen ON yap 
@@ -109,8 +109,9 @@ class GPIO_Daemon():
 					cache.set('outlet_state_dict',delay_on_pins_updated) #IMMEDIATE pin ler ON yapildi bilgisini ver
 
 				while True:
+					now=time.time()
+					elapsed_time=now-start_time
 					
-					elapsed_time=time.time()-start_time
 
 					if devam15==True and cache.get('seconds15_pins_state') and elapsed_time>=15:
 						cache_all_cur.update(cache.get('seconds15_pins_state'))
