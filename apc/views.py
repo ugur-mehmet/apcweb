@@ -75,12 +75,12 @@ def get_max_delay_time(delay_dict):
 	for delay_key in delay_dict.keys():
 		
 		if delay_key[0:6]=='MINUTE':
-			duration=int(delay_key[:-1])*60
+			duration=int(delay_key[-1])*60
 			if duration>=max_delay_time:
 				max_delay_time=duration
 		
-		if delay_key[:-2]=='SECONDS':
-			duration=int(delay_key[:-2])
+		if delay_key[0:7]=='SECONDS':
+			duration=int(delay_key[-2])
 			if duration>=max_delay_time:
 				max_delay_time=duration
 	return max_delay_time
