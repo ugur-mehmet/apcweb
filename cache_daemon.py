@@ -100,7 +100,7 @@ class GPIO_Daemon():
 				start_time=cache.get('start_time')
 				#seconds15_pins_state=cache.get(seconds15_pins_state)
 
-				if cache.get(immediate_pins_state): #IMMEDIATE pinler var ise hemen ON yap 
+				if cache.get('immediate_pins_state'): #IMMEDIATE pinler var ise hemen ON yap 
 					cache_all_cur.update(cache.get('immediate_pins_state'))
 					startupMode(cache_all_cur, True)
 					self.save_db(cache_all_cur)
