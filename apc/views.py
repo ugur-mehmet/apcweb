@@ -15,6 +15,7 @@ import time
 
 HIGH = 0
 LOW = 1
+max_delay_time=0
 # Create your views here.
 @login_required
 def index(request):
@@ -137,7 +138,6 @@ def control(request,**kwargs):
 					delay_key=='MINUTE1' or delay_key=='MINUTES2' or delay_key=='MINUTES5':
 					start_time=time.time()
 					elapsed_time=0
-					max_delay_time=0
 					max_time=get_max_delay_time(delay_on_dict)
 					delay_all_pins=[]
 
