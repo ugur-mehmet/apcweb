@@ -103,89 +103,148 @@ def control(request,**kwargs):
 				#checked_list.append(check)
 				outlet_ids.append(int(check[-1])) 
 				outlet_pins.append(int(check[-1])-1) #Convert checked_list from outlet id to pins [0,1,2 ..]
+	
+		if outlet_pins:
+			checked_pins=all_pins_state(*outlet_pins))
+			all_pins=all_pins_state()
+			on_pins={}
+			off_pins={}
+			on_to_off_pins={}
+			off_to_on_pins={}
 		
-		if action_name != '1':
+			for pin,value in checked_pins.iteritems():
+				if checked_pins[pin]==1:
+					on_pins[pin]=value
+					on_to_off_pins[pin]=LOW
+				else:
+					off_pins[pin]=value
+					off_to_on_pins[pin]=HIGH
 
-			cache.set('checked_outlet_pins', outlet_pins)
-			cache.set('all_pins_state', all_pins_state())
-			cache.set('checked_outlets_state',all_pins_state(*outlet_pins))
-			cache.set('action_name', action_name)
-			delay_on_dict = defaultdict(list)		
+
+		if action_name=='2' and off_pins: #Action=immediate on (OFF konumunda olan outletler ON yapilacak)
+			all_pins.update(off_to_on_pins)
+			cache.set('all_pins_state',all_pins)
+			cache.set('action_name',action_name)
+		if action_name=='4' and on_pins: #Action=immediate on (OFF konumunda olan outletler ON yapilacak)
+			all_pins.update(on_to_off_pins)
+			cache.set('all_pins_state',all_pins)
+			cache.set('action_name',action_name)
+
+			
+					
 		if action_name == '3':  #Delayed on ise Tum outletler icin pwr_on_delay degerlerini al
 			'''Oncelikle pwr_on_delay parametresine gore her bir outlet icin dictionary olustur.
-		# 	Ornek: {'Immmediate':[1,2], '15 Seconds':[0],}
-		# 	Bi dictionary olusurken sadece off durumda olan outletler secilecek. On durumda olanlari
-		# 	pwr_on_delay yapmaya gerek yok.
+		 	Ornek: {'Immmediate':[1,2], '15 Seconds':[0],}
+		 	Bu dictionary olusurken sadece off durumda olan outletler secilecek. On durumda olanlari
+		 	pwr_on_delay yapmaya gerek yok.
 
 		 	'''
-		 	
+		 	delay_on_dict = defaultdict(list)
+			
 			for id in outlet_ids:
 				pwr_on_delay = Config.objects.get(pk=id).pwr_on_delay
 				state = Config.objects.get(pk=id).state
 				if state==0:
 					delay_on_dict[pwr_on_delay].append(id-1)
-			#cache.set('delay_on_dict',delay_on_dict)
-			
+						
+			cache.set('delay_on_dict',delay_on_dict)
 			for delay_key in delay_on_dict.keys():
 				if delay_key=='IMMEDIATE':
 					immediate_pins_state=defaultdict(list)
 					for i in delay_on_dict['IMMEDIATE']:
 						immediate_pins_state[i]=HIGH
 					#immediate_pins_state=self.set_outlet(delay_on_dict_cur['IMMEDIATE'],HIGH) #Immediate pinlarin hepsini HIGH yap
-					
-										
-				if delay_key=='SECONDS15' or delay_key=='SECONDS30' or delay_key=='SECONDS45' or \
-					delay_key=='MINUTE1' or delay_key=='MINUTES2' or delay_key=='MINUTES5':
+					all_pins.update(immediate_pins_state)
+					cache.set('all_pins_state',all_pins) #Iki dictionary update ediliyor.
+					cache.set('don_immediate',True)	
+				elif delay_key=='NEVERON':
+					pass
+
+				else:
 					start_time=time.time()
 					max_time=get_max_delay_time(delay_on_dict)
-					delay_all_pins=[]
+					temp_pins_state=defaultdict(list)
+					temp_all_pins_state=all_pins
+					cache.set('max_time',max_time)
+					cache.set('start_time',start_time)
 
 					if 	delay_key=='SECONDS15':
-						delay_all_pins=delay_on_dict['SECONDS15']+delay_all_pins
 						seconds15_pins_state=defaultdict(list)
 						for i in delay_on_dict['SECONDS15']:
 							seconds15_pins_state[i]=HIGH
+							temp_pins_state[i]='*LOW'
 						
+						temp_all_pins_state.update(temp_pins_state)
+						cache.set('temp_all_pins_state',temp_all_pins_state)
+						#cache.set('temp_pins_state',temp_pins_state)
+						cache.set('don_seconds15',True)
+						cache.set('seconds15_pins_state',seconds15_pins_state)
+						cache.set('all_pins_state',all_pins)
+
 					if 	delay_key=='SECONDS30':
-							delay_all_pins=delay_on_dict['SECONDS30']+delay_all_pins
-							seconds30_pins_state=defaultdict(list)
-							for i in delay_on_dict['SECONDS30']:
-								seconds30_pins_state[i]=HIGH
+						seconds30_pins_state=defaultdict(list)
+						for i in delay_on_dict['SECONDS30']:
+							seconds30_pins_state[i]=HIGH
+							temp_pins_state[i]='*LOW'
+						
+						temp_all_pins_state.update(temp_pins_state)
+						cache.set('temp_all_pins_state',temp_all_pins_state)
+						cache.set('don_seconds30',True)
+						cache.set('seconds30_pins_state',seconds30_pins_state)
+						cache.set('all_pins_state',all_pins)
 							
 					if 	delay_key=='SECONDS45':
-						delay_all_pins=delay_on_dict['SECONDS45']+delay_all_pins
 						seconds45_pins_state=defaultdict(list)
 						for i in delay_on_dict['SECONDS45']:
 							seconds45_pins_state[i]=HIGH
+							temp_pins_state[i]='*LOW'
+						
+						temp_all_pins_state.update(temp_pins_state)
+						cache.set('temp_all_pins_state',temp_all_pins_state)
+						cache.set('don_seconds45',True)
+						cache.set('seconds45_pins_state',seconds45_pins_state)
+						cache.set('all_pins_state',all_pins)
 						
 					if 	delay_key=='MINUTE1':
-						delay_all_pins=delay_on_dict['MINUTE1']+delay_all_pins	
 						minute1_pins_state=defaultdict(list)
 						for i in delay_on_dict['MINUTE1']:
 							minute1_pins_state[i]=HIGH
+							temp_pins_state[i]='*LOW'
+						
+						temp_all_pins_state.update(temp_pins_state)
+						cache.set('temp_all_pins_state',temp_all_pins_state)
+						cache.set('don_minute1',True)
+						cache.set('minute1_pins_state',minute1_pins_state)
+						cache.set('all_pins_state',all_pins)
 						
 					if 	delay_key=='MINUTES2':
-						delay_all_pins=delay_on_dict['MINUTES2']+delay_all_pins	
-						minute2_pins_state=defaultdict(list)
+						minutes2_pins_state=defaultdict(list)
 						for i in delay_on_dict['MINUTES2']:
-							minute2_pins_state[i]=HIGH
+							minutes2_pins_state[i]=HIGH
+							temp_pins_state[i]='*LOW'
+						
+						temp_all_pins_state.update(temp_pins_state)
+						cache.set('temp_all_pins_state',temp_all_pins_state)
+						cache.set('don_minutes2',True)
+						cache.set('minutes2_pins_state',minutes2_pins_state)
+						cache.set('all_pins_state',all_pins)
 						
 					if 	delay_key=='MINUTES5':
-						delay_all_pins=delay_on_dict['MINUTES5']+delay_all_pins
 						minutes5_pins_state=defaultdict(list)
 						for i in delay_on_dict['MINUTES5']:
 							minutes5_pins_state[i]=HIGH
+							temp_pins_state[i]='*LOW'
+						
+						temp_all_pins_state.update(temp_pins_state)
+						cache.set('temp_all_pins_state',temp_all_pins_state)
+						cache.set('don_minutes5',True)
+						cache.set('minutes5_pins_state',minutes5_pins_state)
+						cache.set('all_pins_state',all_pins)
 									
-					delay_all_pins_dict=defaultdict(list)
-					for pin in delay_all_pins:
-						delay_all_pins_dict[pin]='*OFF'
 					
-
-			cache.set('immediate_pins_state',immediate_pins_state) #Iki dictionary update ediliyor.	
-			cache.set('start_time',start_time)
-			cache.set('max_time',max_time)		
-			cache.set('delay_all_pins_dict',delay_all_pins_dict)
-			cache.set('seconds15_pins_state',seconds15_pins_state)
+			
+				
+			
 			# cache.set('seconds30_pins_state',seconds30_pins_state)
 			# cache.set('seconds45_pins_state',seconds45_pins_state)
 			# cache.set('minute1_pins_state',minute1_pins_state)
@@ -218,12 +277,12 @@ def control(request,**kwargs):
 		time.sleep(1.2)	
 		return redirect("/control/")
 		#return HttpResponse(cache.get('outlet_state_dict'))
-	cache.set('action_name', 0)
-	cache.set('immediate_pins_state',{}) #Iki dictionary update ediliyor.	
-	cache.set('start_time',0)
+	cache.set('action_name', 1)
+	#cache.set('immediate_pins_state',{}) #Iki dictionary update ediliyor.	
+	#cache.set('start_time',0)
 	cache.set('max_time',0)		
-	cache.set('delay_all_pins_dict',{})
-	cache.set('seconds15_pins_state',{})
+	#cache.set('delay_all_pins_dict',{})
+	#cache.set('seconds15_pins_state',{})
 	c={}
 	c.update(csrf(request))	
 	outlet_list = Config.objects.all()
