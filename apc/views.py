@@ -164,7 +164,7 @@ def control(request,**kwargs):
 					start_time=time.time()
 					max_time=get_max_delay_time(delay_on_dict)
 					temp_pins_state=defaultdict(list)
-					temp_all_pins_state=all_pins
+					temp_all_pins_state=dict(all_pins) #all_pins dicti copyala all_pins.copy() de calisiyor
 					cache.set('max_time',max_time)
 					cache.set('start_time',start_time)
 
