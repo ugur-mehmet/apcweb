@@ -157,8 +157,10 @@ def control(request,**kwargs):
 					all_pins.update(immediate_pins_state)
 					cache.set('all_pins_state',all_pins) #Iki dictionary update ediliyor.
 					cache.set('don_immediate',True)	
+					cache.set('action_name',action_name)
 				elif delay_key=='NEVERON':
 					pass
+					cache.set('action_name',action_name)
 
 				else:
 					start_time=time.time()
@@ -167,6 +169,7 @@ def control(request,**kwargs):
 					temp_all_pins_state=dict(all_pins) #all_pins dicti copyala all_pins.copy() de calisiyor
 					cache.set('max_time',max_time)
 					cache.set('start_time',start_time)
+					cache.set('action_name',action_name)
 
 					if 	delay_key=='SECONDS15':
 						seconds15_pins_state=defaultdict(list)
