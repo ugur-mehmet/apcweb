@@ -277,7 +277,7 @@ def control(request,**kwargs):
 		time.sleep(1.2)	
 		return redirect("/control/")
 		#return HttpResponse(cache.get('outlet_state_dict'))
-	cache.set('action_name', 1)
+	#cache.set('action_name', 1)
 	#cache.set('immediate_pins_state',{}) #Iki dictionary update ediliyor.	
 	#cache.set('start_time',0)
 	cache.set('max_time',0)		
