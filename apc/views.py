@@ -113,7 +113,7 @@ def control(request,**kwargs):
 			off_to_on_pins={}
 		
 			for pin,value in checked_pins.iteritems():
-				if checked_pins[pin]==1:
+				if checked_pins[pin]==HIGH:
 					on_pins[pin]=value
 					on_to_off_pins[pin]=LOW
 				else:
