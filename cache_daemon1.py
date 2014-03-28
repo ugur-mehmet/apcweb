@@ -70,7 +70,7 @@ class GPIO_Daemon():
 				startupMode(cache_tmp_all_pins, True)
 				self.save_db(cache_tmp_all_pins)
 				#cache.set('action_name','1')
-				cache.set('don_immediate',False)
+				#cache.set('don_immediate',False)
 
 			if cache_tmp_action_name=='3' and cache.get('max_time'):
 				max_delay=cache.get('max_time')
