@@ -105,7 +105,7 @@ def control(request,**kwargs):
 				outlet_pins.append(int(check[-1])-1) #Convert checked_list from outlet id to pins [0,1,2 ..]
 	
 		if outlet_pins:
-			checked_pins=all_pins_state(*outlet_pins))
+			checked_pins=all_pins_state(*outlet_pins)
 			all_pins=all_pins_state()
 			on_pins={}
 			off_pins={}

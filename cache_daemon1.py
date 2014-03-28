@@ -1,4 +1,4 @@
-import os
+﻿import os
 import time
 from daemon import runner
 import RPi.GPIO as GPIO
@@ -54,22 +54,22 @@ class GPIO_Daemon():
 	def run(self):
 		cache_tmp_action_name = ''
 		cache_tmp_all_pins = {}
-    	cache_tmp_delay_on_dict = {}
-    	max_time=0
+		cache_tmp_delay_on_dict = {}
+		max_time=0
 
-    	while True:
+		while True:
 			cache_tmp_action_name=cache.get('action_name')
 			if cache_tmp_action_name=='2' or cache_tmp_action_name=='4':
 				cache_tmp_all_pins=cache.get('all_pins_state')
 				startupMode(cache_tmp_all_pins, True)
 				self.save_db(cache_tmp_all_pins)
-				cache.set('action_name','1')
+				#cache.set('action_name','1')
 
 			if cache_tmp_action_name=='3' and cache.get('don_immediate',0):
 				cache_tmp_all_pins=cache.get('all_pins_state')
 				startupMode(cache_tmp_all_pins, True)
 				self.save_db(cache_tmp_all_pins)
-				cache.set('action_name','1')
+				#cache.set('action_name','1')
 				cache.set('don_immediate',False)
 
 			if cache_tmp_action_name=='3' and cache.get('max_time'):
@@ -89,7 +89,7 @@ class GPIO_Daemon():
 								startupMode(cache_tmp_all_pins, True)
 								self.save_db(cache_tmp_all_pins)
 								cache.set('temp_all_pins_state',cache.get('seconds15_pins_state'))
-								cache.set('action_name','1')
+								#cache.set('action_name','1')
 								cache.set('don_seconds15',False)
 
 							if cache.get('don_seconds30') and elapsed_time>=30:
@@ -98,7 +98,7 @@ class GPIO_Daemon():
 								startupMode(cache_tmp_all_pins, True)
 								self.save_db(cache_tmp_all_pins)
 								cache.set('temp_all_pins_state',cache.get('seconds30_pins_state'))
-								cache.set('action_name','1')
+								#cache.set('action_name','1')
 								cache.set('don_seconds30',False) 
 
 
@@ -108,17 +108,7 @@ class GPIO_Daemon():
 						break
 
 			time.sleep(0.2)
-
-
-
 app = GPIO_Daemon()
 daemon_runner = runner.DaemonRunner(app)
 daemon_runner.do_action()
-
-
-				
-
-
-
-			
 

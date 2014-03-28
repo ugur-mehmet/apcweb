@@ -52,12 +52,23 @@ class GPIO_Daemon():
 					con.commit()
 	
 	def run(self):
-		cache_tmp_action_name = ''
-		cache_tmp_all_pins = {}
-    	cache_tmp_delay_on_dict = {}
-    	max_time=0
+		# cache_cur_immediate = {'immediate_on': {}, 'immediate_off': {}}
+		# cache_cur_delay_on = {'immediate':{},'seconds15':{},'seconds30':{},
+		# 					  'seconds45':{},'minute1':{}, 'minutes2':{}, 'minutes5':{}}
 
-    	while True:
+  #       cache_tmp_immediate = {}
+    	cache_tmp_action_name=''
+		cache_tmp_all_pins={}
+    	cache_tmp_delay_on_dict = {}
+        
+    	#cache_tmp_checked_pins={}
+
+    	#cache_cur_action_name=''
+        
+    	#set_pins_to_high={}
+
+		#cache.clear()
+		while True:
 			cache_tmp_action_name=cache.get('action_name')
 			if cache_tmp_action_name=='2' or cache_tmp_action_name=='4':
 				cache_tmp_all_pins=cache.get('all_pins_state')
@@ -73,7 +84,6 @@ class GPIO_Daemon():
 				cache.set('don_immediate',False)
 
 			if cache_tmp_action_name=='3' and cache.get('max_time'):
-				max_delay=cache.get('max_time')
 				cache_tmp_delay_on_dict=cache.get('delay_on_dict')
 				start_time=cache.get('start_time',0)
 				#delay_15=delay_30=delay_45=delay_1=delay_2=delay_5=True
@@ -104,8 +114,8 @@ class GPIO_Daemon():
 
 						except ValueError:
 							continue
-					if elapsed_time>=max_delay+3:
-						break
+				if elapsed_time>=max_delay+3:
+					break
 
 			time.sleep(0.2)
 

@@ -1,15 +1,13 @@
 import os
 import time
-
 from daemon import runner
 import RPi.GPIO as GPIO
-
 os.environ['DJANGO_SETTINGS_MODULE'] = 'apcweb.settings'
 from django.core.cache import cache
 from apc_5821A import *
 import sqlite3 as lite
 from collections import defaultdict
-import time
+
 
 	
 	# 		"1" 'No Action'
@@ -69,6 +67,7 @@ class GPIO_Daemon():
 		cache_all_cur = {}
 		cache_checked_cur = {}
 		outlet_state_dict={}
+		action_name=''
 		#cache.clear()
 		while True:
 			update_checked_out = {}
