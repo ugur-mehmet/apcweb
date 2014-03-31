@@ -283,7 +283,7 @@ def control(request,**kwargs):
 	#cache.set('action_name', 1)
 	#cache.set('immediate_pins_state',{}) #Iki dictionary update ediliyor.	
 	#cache.set('start_time',0)
-	cache.set('max_time',0)		
+	#cache.set('max_time',0)		
 	#cache.set('delay_all_pins_dict',{})
 	#cache.set('seconds15_pins_state',{})
 	c={}
