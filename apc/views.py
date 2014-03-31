@@ -140,7 +140,7 @@ def control(request,**kwargs):
 
 		 	'''
 		 	delay_on_dict = defaultdict(list)
-			#all_pins=all_pins_state()
+			all_pins=all_pins_state()
 
 			for id in outlet_ids:
 				pwr_on_delay = Config.objects.get(pk=id).pwr_on_delay
