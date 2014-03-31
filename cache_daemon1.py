@@ -73,7 +73,7 @@ class GPIO_Daemon():
 				#cache.set('action_name','1')
 				cache.set('don_immediate',False)
 
-			if cache_tmp_action_name=='3' and cache.get('max_time') and cache.get('don_immediate',0)==False:
+			if cache_tmp_action_name=='3' and cache.get('max_time') and cache.get('don_immediate')==False:
 				max_delay=cache.get('max_time')
 				cache_tmp_delay_on_dict=cache.get('delay_on_dict')
 				start_time=cache.get('start_time',0)
