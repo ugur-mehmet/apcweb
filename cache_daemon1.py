@@ -65,7 +65,7 @@ class GPIO_Daemon():
 				self.save_db(cache_tmp_all_pins)
 				cache.set('action_name','1')
 
-			if cache_tmp_action_name=='3' and cache.get('don_immediate',0):
+			if cache_tmp_action_name=='3' and cache.get('don_immediate'):
 				cache_tmp_all_pins=cache.get('all_pins_state')
 				startupMode(cache_tmp_all_pins, True)
 				self.save_db(cache_tmp_all_pins)
