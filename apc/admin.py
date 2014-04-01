@@ -3,7 +3,7 @@ from apc.models import Config, Log, Parameter, Action
 
 # Register your models here.
 class ConfigAdmin(admin.ModelAdmin):
-	list_display = ('outlet', 'name', 'state', 'pwr_on_delay', 'pwr_off_delay', 'reboot_duration')
+	list_display = ('id','outlet', 'name', 'state', 'pwr_on_delay', 'pwr_off_delay', 'reboot_duration')
 
 class LogAdmin(admin.ModelAdmin):
 	list_display = ('created_at', 'mod_by', 'log_type', 'event_text' )
