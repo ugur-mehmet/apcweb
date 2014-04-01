@@ -288,7 +288,7 @@ def control(request,**kwargs):
 	#cache.set('delay_all_pins_dict',{})
 	#cache.set('seconds15_pins_state',{})
 	cache.set('all_pins_state',{})
-	cache.set('delay_on_dict',{})
+	#cache.set('delay_on_dict',{})
 	c={}
 	c.update(csrf(request))	
 	outlet_list = Config.objects.all()
