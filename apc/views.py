@@ -333,7 +333,7 @@ def config_save(request):
 		pwr_on_delay = request.GET['pwr_on_delay']
 		pwr_off_delay = request.GET['pwr_off_delay']
 		reboot_duration = request.GET['reboot_duration']
-		state=Config.objects.get(id=int(out_id))
+		state=Config.objects.get(id=int(out_id)).state
 	#if out_id:
 		outlet=Config(id=int(out_id), name=name, pwr_on_delay=pwr_on_delay,
 		 			pwr_off_delay=pwr_off_delay, reboot_duration=reboot_duration,state=state)
