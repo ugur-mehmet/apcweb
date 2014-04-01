@@ -20,14 +20,14 @@ class Config(models.Model):
 	state = models.NullBooleanField()
 	#state = models.BooleanField(default=True)
 	pwr_on_choices = (
-		('IMMEDIATE', 'Immediate'),
-		('SECONDS15', '15 Seconds'),
-		('SECONDS30', '30 Seconds'),
-		('SECONDS45', '45 Seconds'),
-		('MINUTE1', '1 Minute'),
-		('MINUTES2', '2 Minutes'),
-		('MINUTES5', '5 Minutes'),
-		('NEVERON', 'Never On'),	
+		('1IMMEDIATE', 'Immediate'),
+		('2SECONDS15', '15 Seconds'),
+		('3SECONDS30', '30 Seconds'),
+		('4SECONDS45', '45 Seconds'),
+		('5MINUTE1', '1 Minute'),
+		('6MINUTES2', '2 Minutes'),
+		('7MINUTES5', '5 Minutes'),
+		('8NEVERON', 'Never On'),	
 		)
 	pwr_on_delay = models.CharField(max_length=10,
 									choices=pwr_on_choices,
