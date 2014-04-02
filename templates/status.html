@@ -18,9 +18,9 @@
                             <td>{{outlet.id}}</td>
                             
                             {% if outlet.state %}
-                                <td><a href="control/{{outlet.id}}/"><font color="green">On</font></a></td>
+                                <td><a href="control/{{outlet.id}}/"><font color="#08BF1A">ON</font></a></td>
                             {% elif not outlet.state %}
-                                 <td><a href="control/{{outlet.id}}/"><font color="#636b63">Off</font></a></td>
+                                 <td><a href="control/{{outlet.id}}/"><font color="#636b63">OFF</font></a></td>
                             {% endif %}   
 
                             <td>{{outlet.name}}</td>
