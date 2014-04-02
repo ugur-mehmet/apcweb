@@ -117,7 +117,7 @@ class GPIO_Daemon():
 								#cache.set('action_name','1')
 								cache.set('don_seconds45',False)
 							
-							if cache.get('don_minute1') and elapsed_time>=30:
+							if cache.get('don_minute1') and elapsed_time>=60:
 								cache_tmp_all_pins=cache.get('all_pins_state')
 								cache_tmp_all_pins.update(cache.get('minute1_pins_state'))
 								startupMode(cache_tmp_all_pins, True)
@@ -128,7 +128,7 @@ class GPIO_Daemon():
 								#cache.set('action_name','1')
 								cache.set('don_minute1',False)
 							
-							if cache.get('don_minutes2') and elapsed_time>=30:
+							if cache.get('don_minutes2') and elapsed_time>=120:
 								cache_tmp_all_pins=cache.get('all_pins_state')
 								cache_tmp_all_pins.update(cache.get('minutes2_pins_state'))
 								startupMode(cache_tmp_all_pins, True)
@@ -139,7 +139,7 @@ class GPIO_Daemon():
 								#cache.set('action_name','1')
 								cache.set('don_minutes2',False)
 
-							if cache.get('don_minutes5') and elapsed_time>=30:
+							if cache.get('don_minutes5') and elapsed_time>=300:
 								cache_tmp_all_pins=cache.get('all_pins_state')
 								cache_tmp_all_pins.update(cache.get('minutes5_pins_state'))
 								startupMode(cache_tmp_all_pins, True)
