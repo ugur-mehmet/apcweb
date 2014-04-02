@@ -150,7 +150,9 @@ def control(request,**kwargs):
 						
 			cache.set('delay_on_dict',delay_on_dict)
 			for delay_key in sorted(delay_on_dict.keys()):
-				if delay_key=='2IMMEDIATE':
+				if delay_key=='1NEVERON':
+					pass
+				elif delay_key=='2IMMEDIATE':
 					immediate_pins_state=defaultdict(list)
 					for i in delay_on_dict['2IMMEDIATE']:
 						immediate_pins_state[i]=HIGH
@@ -159,10 +161,7 @@ def control(request,**kwargs):
 					cache.set('all_pins_state',all_pins) #Iki dictionary update ediliyor.
 					cache.set('don_immediate',True)	
 					cache.set('action_name',action_name)
-				elif delay_key=='1NEVERON':
-					pass
-					cache.set('action_name',action_name)
-
+				
 				else:
 					start_time=time.time()
 					max_time=get_max_delay_time(delay_on_dict)
@@ -281,13 +280,13 @@ def control(request,**kwargs):
 		time.sleep(1.2)	
 		return redirect("/control/")
 		#return HttpResponse(cache.get('outlet_state_dict'))
-	cache.set('action_name', '1')
+	#cache.set('action_name', '1')
 	#cache.set('immediate_pins_state',{}) #Iki dictionary update ediliyor.	
 	#cache.set('start_time',0)
 	#cache.set('max_time',0)		
 	#cache.set('delay_all_pins_dict',{})
 	#cache.set('seconds15_pins_state',{})
-	cache.set('all_pins_state',{})
+	#cache.set('all_pins_state',{})
 	#cache.set('delay_on_dict',{})
 	c={}
 	c.update(csrf(request))	

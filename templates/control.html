@@ -55,11 +55,10 @@
                       <td>{{outlet.id}}</td>
                       
                       {% if outlet.state == 1 %}
-                          <td><font color="green">On</font></td>
-                      {% elif outlet.state == 0%}
+                          <td><font color="#05FC1E">On</font></td>
+                      {% else %}
                            <td><font color="#636b63">Off</font></td>
-                      {% else %}     
-                            <td><font color="red">Off*</font></td>
+                      
                       {% endif %}   
 
                       <td>{{outlet.name}}</td>

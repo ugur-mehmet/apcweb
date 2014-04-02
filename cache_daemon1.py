@@ -80,7 +80,7 @@ class GPIO_Daemon():
 				#delay_15=delay_30=delay_45=delay_1=delay_2=delay_5=True
 				elapsed_time=0
 				while True:
-					for delay_key in cache_tmp_delay_on_dict:
+					for delay_key in sorted(cache_tmp_delay_on_dict.keys()):
 						now=time.time()
 						elapsed_time=now-start_time
 						try:
@@ -89,7 +89,9 @@ class GPIO_Daemon():
 								cache_tmp_all_pins.update(cache.get('seconds15_pins_state'))
 								startupMode(cache_tmp_all_pins, True)
 								self.save_db(cache_tmp_all_pins)
-								cache.set('temp_all_pins_state',cache.get('seconds15_pins_state'))
+								cache_tmp_all_pins=cache.get('temp_all_pins_state')
+								cache_tmp_all_pins.update(cache.get('seconds15_pins_state'))
+								#cache.set('temp_all_pins_state',cache.get('seconds15_pins_state'))
 								#cache.set('action_name','1')
 								cache.set('don_seconds15',False)
 
@@ -98,15 +100,64 @@ class GPIO_Daemon():
 								cache_tmp_all_pins.update(cache.get('seconds30_pins_state'))
 								startupMode(cache_tmp_all_pins, True)
 								self.save_db(cache_tmp_all_pins)
-								cache.set('temp_all_pins_state',cache.get('seconds30_pins_state'))
+								cache_tmp_all_pins=cache.get('temp_all_pins_state')
+								cache_tmp_all_pins.update(cache.get('seconds30_pins_state'))
+								#cache.set('temp_all_pins_state',cache.get('seconds30_pins_state'))
 								#cache.set('action_name','1')
-								cache.set('don_seconds30',False) 
+								cache.set('don_seconds30',False)
+
+							if cache.get('don_seconds45') and elapsed_time>=45:
+								cache_tmp_all_pins=cache.get('all_pins_state')
+								cache_tmp_all_pins.update(cache.get('seconds45_pins_state'))
+								startupMode(cache_tmp_all_pins, True)
+								self.save_db(cache_tmp_all_pins)
+								cache_tmp_all_pins=cache.get('temp_all_pins_state')
+								cache_tmp_all_pins.update(cache.get('seconds45_pins_state'))
+								#cache.set('temp_all_pins_state',cache.get('seconds45_pins_state'))
+								#cache.set('action_name','1')
+								cache.set('don_seconds45',False)
+							
+							if cache.get('don_minute1') and elapsed_time>=30:
+								cache_tmp_all_pins=cache.get('all_pins_state')
+								cache_tmp_all_pins.update(cache.get('minute1_pins_state'))
+								startupMode(cache_tmp_all_pins, True)
+								self.save_db(cache_tmp_all_pins)
+								cache_tmp_all_pins=cache.get('temp_all_pins_state')
+								cache_tmp_all_pins.update(cache.get('minute1_pins_state'))
+								#cache.set('temp_all_pins_state',cache.get('minute1_pins_state'))
+								#cache.set('action_name','1')
+								cache.set('don_minute1',False)
+							
+							if cache.get('don_minutes2') and elapsed_time>=30:
+								cache_tmp_all_pins=cache.get('all_pins_state')
+								cache_tmp_all_pins.update(cache.get('minutes2_pins_state'))
+								startupMode(cache_tmp_all_pins, True)
+								self.save_db(cache_tmp_all_pins)
+								cache_tmp_all_pins=cache.get('temp_all_pins_state')
+								cache_tmp_all_pins.update(cache.get('minutes2_pins_state'))
+								#cache.set('temp_all_pins_state',cache.get('minutes2_pins_state'))
+								#cache.set('action_name','1')
+								cache.set('don_minutes2',False)
+
+							if cache.get('don_minutes5') and elapsed_time>=30:
+								cache_tmp_all_pins=cache.get('all_pins_state')
+								cache_tmp_all_pins.update(cache.get('minutes5_pins_state'))
+								startupMode(cache_tmp_all_pins, True)
+								self.save_db(cache_tmp_all_pins)
+								cache_tmp_all_pins=cache.get('temp_all_pins_state')
+								cache_tmp_all_pins.update(cache.get('minutes5_pins_state'))
+								#cache.set('temp_all_pins_state',cache.get('minutes5_pins_state'))
+								#cache.set('action_name','1')
+								cache.set('don_minutes5',False)
+
 
 
 						except ValueError:
 							continue
 					if elapsed_time>=max_delay+3:
 						break
+				cache.set('max_time',0)			
+				cache.set('action_name','1')
 
 			time.sleep(0.2)
 app = GPIO_Daemon()
