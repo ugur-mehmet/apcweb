@@ -149,7 +149,7 @@ class GPIO_Daemon():
 				cache.set('action_name','1')
 
 			if cache_tmp_action_name == '7': #Delayed Reboot 
-				tmp_checked_pins=cache.get('checked_pins_off') #hemen off konumuna cekilecek outletler ve digerleri
+				tmp_checked_pins=cache.get('checked_pins_off',{}) #hemen off konumuna cekilecek outletler ve digerleri
 				cache_tmp_all_pins=cache.get('all_pins_state')
 				cache_tmp_all_pins.update(tmp_checked_pins)
 				startupMode(cache_tmp_all_pins, True) #Secilen outletler OFF yapildi.
@@ -175,7 +175,8 @@ class GPIO_Daemon():
 								self.save_db(cache_tmp_all_pins) #Database e yaz
 								cache.set('all_pins_state',cache_tmp_all_pins)
 								cache_tmp_all_pins=cache.get('temp_all_pins_state') #Pinlerin son durumunu gosteriyor
-								cache.set('temp_all_pins_state',cache_tmp_all_pins.update(cache.get('seconds05_pins_state'))) #*OFF olanlar ON yapildi.
+								cache_tmp_all_pins.update(cache.get('seconds05_pins_state'))
+								cache.set('temp_all_pins_state',cache_tmp_all_pins) #*OFF olanlar ON yapildi.
 								cache.set('dor_seconds05',False)
 
 							if cache.get('dor_seconds10') and elapsed_time>=10:
@@ -185,7 +186,8 @@ class GPIO_Daemon():
 								self.save_db(cache_tmp_all_pins) #Database e yaz
 								cache.set('all_pins_state',cache_tmp_all_pins)
 								cache_tmp_all_pins=cache.get('temp_all_pins_state') #Pinlerin son durumunu gosteriyor
-								cache.set('temp_all_pins_state',cache_tmp_all_pins.update(cache.get('seconds10_pins_state'))) #*OFF olanlar ON yapildi.
+								cache_tmp_all_pins.update(cache.get('seconds10_pins_state'))
+								cache.set('temp_all_pins_state',cache_tmp_all_pins) #*
 								cache.set('dor_seconds10',False)
 
 							if cache.get('dor_seconds15') and elapsed_time>=15:
@@ -195,7 +197,8 @@ class GPIO_Daemon():
 								self.save_db(cache_tmp_all_pins) #Database e yaz
 								cache.set('all_pins_state',cache_tmp_all_pins)
 								cache_tmp_all_pins=cache.get('temp_all_pins_state') #Pinlerin son durumunu gosteriyor
-								cache.set('temp_all_pins_state',cache_tmp_all_pins.update(cache.get('seconds15_pins_state'))) #*OFF olanlar ON yapildi.
+								cache_tmp_all_pins.update(cache.get('seconds15_pins_state'))
+								cache.set('temp_all_pins_state',cache_tmp_all_pins) #*
 								cache.set('dor_seconds15',False)
 
 							if cache.get('dor_seconds20') and elapsed_time>=20:
@@ -205,7 +208,8 @@ class GPIO_Daemon():
 								self.save_db(cache_tmp_all_pins) #Database e yaz
 								cache.set('all_pins_state',cache_tmp_all_pins)
 								cache_tmp_all_pins=cache.get('temp_all_pins_state') #Pinlerin son durumunu gosteriyor
-								cache.set('temp_all_pins_state',cache_tmp_all_pins.update(cache.get('seconds20_pins_state')))
+								cache_tmp_all_pins.update(cache.get('seconds20_pins_state'))
+								cache.set('temp_all_pins_state',cache_tmp_all_pins) #*
 								cache.set('dor_seconds20',False)
 
 							if cache.get('dor_seconds30') and elapsed_time>=30:
@@ -215,7 +219,8 @@ class GPIO_Daemon():
 								self.save_db(cache_tmp_all_pins) #Database e yaz
 								cache.set('all_pins_state',cache_tmp_all_pins)
 								cache_tmp_all_pins=cache.get('temp_all_pins_state') #Pinlerin son durumunu gosteriyor
-								cache.set('temp_all_pins_state',cache_tmp_all_pins.update(cache.get('seconds30_pins_state')))
+								cache_tmp_all_pins.update(cache.get('seconds30_pins_state'))
+								cache.set('temp_all_pins_state',cache_tmp_all_pins) #*
 								cache.set('dor_seconds30',False)
 
 							if cache.get('dor_seconds45') and elapsed_time>=45:
@@ -225,7 +230,8 @@ class GPIO_Daemon():
 								self.save_db(cache_tmp_all_pins) #Database e yaz
 								cache.set('all_pins_state',cache_tmp_all_pins)
 								cache_tmp_all_pins=cache.get('temp_all_pins_state') #Pinlerin son durumunu gosteriyor
-								cache.set('temp_all_pins_state',cache_tmp_all_pins.update(cache.get('seconds45_pins_state')))
+								cache_tmp_all_pins.update(cache.get('seconds45_pins_state'))
+								cache.set('temp_all_pins_state',cache_tmp_all_pins) #*
 								cache.set('dor_seconds45',False)
 
 							if cache.get('dor_minute1') and elapsed_time>=60:
@@ -235,7 +241,8 @@ class GPIO_Daemon():
 								self.save_db(cache_tmp_all_pins) #Database e yaz
 								cache.set('all_pins_state',cache_tmp_all_pins)
 								cache_tmp_all_pins=cache.get('temp_all_pins_state') #Pinlerin son durumunu gosteriyor
-								cache.set('temp_all_pins_state',cache_tmp_all_pins.update(cache.get('minute1_pins_state')))
+								cache_tmp_all_pins.update(cache.get('minute1_pins_state'))
+								cache.set('temp_all_pins_state',cache_tmp_all_pins) #*
 								#cache_tmp_all_pins.update(cache.get('minute1_pins_state')) #*OFF olanlar ON yapildi.
 								cache.set('dor_minute1',False)
 
