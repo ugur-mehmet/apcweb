@@ -190,6 +190,7 @@ def control(request,**kwargs):
 							temp_pins_state[i]='*OFF'
 						
 						tmp_all_pins_state.update(temp_pins_state)
+						cache.set('15_pins',temp_pins_state)
 						cache.set('temp_all_pins_state',tmp_all_pins_state)
 						cache.set('don_seconds15',True)
 						cache.set('seconds15_pins_state',seconds15_pins_state)
