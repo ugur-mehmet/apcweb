@@ -41,6 +41,16 @@ def logout(request):
 	auth.logout(request)
 	return redirect('login')
 
+def set_outlet(self,outlet_dict, on_off):
+		if on_off == HIGH:
+			for key, value in outlet_dict.iteritems():
+				outlet_dict[key]=HIGH
+			return outlet_dict
+		if on_off == LOW:
+			for key, value in outlet_dict.iteritems():
+				outlet_dict[key]=LOW
+			return outlet_dict
+	
 def all_pins_state(*pin_list):
 	all_pins_dict = defaultdict(list) #{0:LOW, :1:HIGH, 2:HIGH gibi}
 	if not pin_list:
@@ -250,10 +260,13 @@ def control(request,**kwargs):
 			tmp_all_pins=dict(all_pins)
 			#tmp_all_pins_state=dict(all_pins)
 			tmp_all_pins_state={}
-			cache.set('checked_pins',checked_pins)
-			tmp_all_pins.update(on_to_off_pins) #Secilen outletlerden on durumunda olanlari tum outletlerin o anki durumu ile birlestir. 
+			
+			checked_pins_state=dict(checked_pins)
+			checked_pins_off=self.set_outlet(checked_pins_state,LOW)
+			cache.set('checked_pins_off',checked_pins_off)
+			#tmp_all_pins.update(on_to_off_pins) #Secilen outletlerden on durumunda olanlari tum outletlerin o anki durumu ile birlestir. 
 			temp_pins_state=defaultdict(list) #Gecici pin durumu *OFF veya *ON olacak
-			cache.set('tmp_all_pins',tmp_all_pins)
+			#cache.set('tmp_all_pins',tmp_all_pins)
 			cache.set('all_pins_state',all_pins)
 			cache.set('action_name',action_name)
 			

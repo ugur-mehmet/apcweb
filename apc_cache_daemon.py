@@ -27,15 +27,6 @@ class GPIO_Daemon():
 		self.pidfile_timeout = 5
 	
 	# Donus tipi dictionary {0:HIGH, 1:HIGH ,,,} gibi
-	def set_outlet(self,outlet_dict, on_off):
-		if on_off == HIGH:
-			for key, value in outlet_dict.iteritems():
-				outlet_dict[key]=HIGH
-			return outlet_dict
-		if on_off == LOW:
-			for key, value in outlet_dict.iteritems():
-				outlet_dict[key]=LOW
-			return outlet_dict
 	
 	def save_db(self,outlet_state_dict):
 		con = lite.connect('/home/pi/projects/apcweb/db.sqlite3')
@@ -158,10 +149,9 @@ class GPIO_Daemon():
 				cache.set('action_name','1')
 
 			if cache_tmp_action_name == '7': #Delayed Reboot 
-				tmp_checked_pins=cache.get('checked_pins') #hemen off konumuna cekilecek outletler ve digerleri
-				checked_pins_off=self.set_outlet(tmp_checked_pins,LOW)
+				tmp_checked_pins=cache.get('checked_pins_off') #hemen off konumuna cekilecek outletler ve digerleri
 				cache_tmp_all_pins=cache.get('all_pins_state')
-				cache_tmp_all_pins.update(checked_pins_off)
+				cache_tmp_all_pins.update(tmp_checked_pins)
 				startupMode(cache_tmp_all_pins, True) #Secilen outletler OFF yapildi.
 				self.save_db(cache_tmp_all_pins)
 				cache.set('all_pins_state',cache_tmp_all_pins)
