@@ -97,6 +97,7 @@ def control(request,**kwargs):
 
 		outlet_ids = []
 		outlet_pins = []
+		checked_pins={}
 		action_name=request.POST['action_list']
 		
 		for check in check_list:
