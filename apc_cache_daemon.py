@@ -157,10 +157,14 @@ class GPIO_Daemon():
 				cache.set('max_time',0)			
 				cache.set('action_name','1')
 
-			if action_name == '7': #Delayed Reboot 
-				tmp_all_pins=cache.get('tmp_all_pins') #hemen off konumuna cekilecek outletler ve digerleri
+			if cache_tmp_action_name == '7': #Delayed Reboot 
+				tmp_checked_pins=cache.get('checked_pins') #hemen off konumuna cekilecek outletler ve digerleri
+				checked_pins_off=self.set_outlet(tmp_checked_pins,LOW)
+				cache_tmp_all_pins=cache.get('all_pins_state')
+				cache_tmp_all_pins.update(checked_pins_off)
 				startupMode(cache_tmp_all_pins, True) #Secilen outletler OFF yapildi.
-				self.save_db(tmp_all_pins)
+				self.save_db(cache_tmp_all_pins)
+				cache.set('all_pins_state',cache_tmp_all_pins)
 				#baslangic_all_pins=cache.get('all_pins_state') #Off sonrasi eski haline donecegi durum yani baslangic durumu
 
 

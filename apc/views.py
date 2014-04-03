@@ -247,7 +247,9 @@ def control(request,**kwargs):
 			# Secilen outletleri hemen off durumuna getirmek icin gerekli degiskenleri set et.
 			all_pins=all_pins_state()
 			tmp_all_pins=dict(all_pins)
-			tmp_all_pins_state=dict(all_pins)
+			#tmp_all_pins_state=dict(all_pins)
+			tmp_all_pins_state={}
+			cache.set('checked_pins',checked_pins)
 			tmp_all_pins.update(on_to_off_pins) #Secilen outletlerden on durumunda olanlari tum outletlerin o anki durumu ile birlestir. 
 			temp_pins_state=defaultdict(list) #Gecici pin durumu *OFF veya *ON olacak
 			cache.set('tmp_all_pins',tmp_all_pins)
