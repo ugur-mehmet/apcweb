@@ -174,10 +174,11 @@ def control(request,**kwargs):
 					cache.set('action_name',action_name)
 				
 				else:
+					tmp_all_pins_state={}
 					start_time=time.time()
 					max_time=get_max_delay_time(delay_on_dict)
 					temp_pins_state=defaultdict(list)
-					temp_all_pins_state=dict(all_pins) #all_pins dicti copyala all_pins.copy() de calisiyor
+					#temp_all_pins_state=dict(all_pins) #all_pins dicti copyala all_pins.copy() de calisiyor
 					cache.set('max_time',max_time)
 					cache.set('start_time',start_time)
 					cache.set('action_name',action_name)
@@ -188,8 +189,8 @@ def control(request,**kwargs):
 							seconds15_pins_state[i]=HIGH
 							temp_pins_state[i]='*OFF'
 						
-						temp_all_pins_state.update(temp_pins_state)
-						cache.set('temp_all_pins_state',temp_all_pins_state)
+						tmp_all_pins_state.update(temp_pins_state)
+						cache.set('temp_all_pins_state',tmp_all_pins_state)
 						cache.set('don_seconds15',True)
 						cache.set('seconds15_pins_state',seconds15_pins_state)
 						cache.set('all_pins_state',all_pins)
@@ -200,8 +201,8 @@ def control(request,**kwargs):
 							seconds30_pins_state[i]=HIGH
 							temp_pins_state[i]='*OFF'
 						
-						temp_all_pins_state.update(temp_pins_state)
-						cache.set('temp_all_pins_state',temp_all_pins_state)
+						tmp_all_pins_state.update(temp_pins_state)
+						cache.set('temp_all_pins_state',tmp_all_pins_state)
 						cache.set('don_seconds30',True)
 						cache.set('seconds30_pins_state',seconds30_pins_state)
 						cache.set('all_pins_state',all_pins)
@@ -212,8 +213,8 @@ def control(request,**kwargs):
 							seconds45_pins_state[i]=HIGH
 							temp_pins_state[i]='*OFF'
 						
-						temp_all_pins_state.update(temp_pins_state)
-						cache.set('temp_all_pins_state',temp_all_pins_state)
+						tmp_all_pins_state.update(temp_pins_state)
+						cache.set('temp_all_pins_state',tmp_all_pins_state)
 						cache.set('don_seconds45',True)
 						cache.set('seconds45_pins_state',seconds45_pins_state)
 						cache.set('all_pins_state',all_pins)
@@ -224,8 +225,8 @@ def control(request,**kwargs):
 							minute1_pins_state[i]=HIGH
 							temp_pins_state[i]='*OFF'
 						
-						temp_all_pins_state.update(temp_pins_state)
-						cache.set('temp_all_pins_state',temp_all_pins_state)
+						tmp_all_pins_state.update(temp_pins_state)
+						cache.set('temp_all_pins_state',tmp_all_pins_state)
 						cache.set('don_minute1',True)
 						cache.set('minute1_pins_state',minute1_pins_state)
 						cache.set('all_pins_state',all_pins)
@@ -236,8 +237,8 @@ def control(request,**kwargs):
 							minutes2_pins_state[i]=HIGH
 							temp_pins_state[i]='*OFF'
 						
-						temp_all_pins_state.update(temp_pins_state)
-						cache.set('temp_all_pins_state',temp_all_pins_state)
+						tmp_all_pins_state.update(temp_pins_state)
+						cache.set('temp_all_pins_state',tmp_all_pins_state)
 						cache.set('don_minutes2',True)
 						cache.set('minutes2_pins_state',minutes2_pins_state)
 						cache.set('all_pins_state',all_pins)
@@ -248,8 +249,8 @@ def control(request,**kwargs):
 							minutes5_pins_state[i]=HIGH
 							temp_pins_state[i]='*OFF'
 						
-						temp_all_pins_state.update(temp_pins_state)
-						cache.set('temp_all_pins_state',temp_all_pins_state)
+						tmp_all_pins_state.update(temp_pins_state)
+						cache.set('temp_all_pins_state',tmp_all_pins_state)
 						cache.set('don_minutes5',True)
 						cache.set('minutes5_pins_state',minutes5_pins_state)
 						cache.set('all_pins_state',all_pins)
