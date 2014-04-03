@@ -6,25 +6,21 @@ from django.contrib.auth.decorators import login_required
 from apc.models import Config, Log, Parameter
 from django.http import HttpResponse, HttpResponseRedirect
 from apc.forms import ConfigForm
-#from django.forms.models import modelformset_factory
 import json
 from collections import defaultdict
 from django.core.cache import cache
 import time
-#from django.core.urlresolvers import reverse
 
 HIGH = 0
 LOW = 1
 max_delay_time=0
-# Create your views here.
+
 @login_required
 def index(request):
 
 	outlet_list=Config.objects.all()
 	c={'outlets':outlet_list}
 	return render_to_response("status.html",c)
-	#return render_to_response("config.html")
-
 
 def login(request):
 	if request.method=='POST':
@@ -34,10 +30,8 @@ def login(request):
 				auth.login(request,user)
 				request.session['kullanici_id']=user.id 
 				response = redirect('status')
-				#response.set_cookie('remind_me', True)
 				return response
-	'''elif 'cancel' in request.POST:
-		return redirect('login')'''
+
 	c = {}
 	c.update(csrf(request))
 	return render_to_response("login.html",c)
@@ -45,7 +39,6 @@ def login(request):
 @login_required
 def logout(request):
 	auth.logout(request)
-	#return redirect('/')
 	return redirect('login')
 
 def all_pins_state(*pin_list):
@@ -86,6 +79,14 @@ def get_max_delay_time(delay_dict):
 				max_delay_time=duration
 	return max_delay_time
 
+	# 		"1" 'No Action'
+	#       "2" 'Immediate On'		DONE
+	#       "3" 'Delayed On'
+	#       "4" 'Immediate Off'		DONE
+	#       "5" 'Delayed Off'
+	#       "6" 'Immediate Reboot'
+	#       "7" 'Delayed Reboot'
+	#       "8" 'Cancel Pending Commands'
 @login_required
 def control(request,**kwargs):
 	
@@ -93,14 +94,13 @@ def control(request,**kwargs):
 	
 		check_list=['checkbox_1', 'checkbox_2','checkbox_3','checkbox_4',
 					'checkbox_5','checkbox_6','checkbox_7','checkbox_8']
-		#checked_list = []
+
 		outlet_ids = []
 		outlet_pins = []
 		action_name=request.POST['action_list']
 		
 		for check in check_list:
 			if check in request.POST:
-				#checked_list.append(check)
 				outlet_ids.append(int(check[-1])) 
 				outlet_pins.append(int(check[-1])-1) #Convert checked_list from outlet id to pins [0,1,2 ..]
 	
@@ -125,7 +125,7 @@ def control(request,**kwargs):
 			all_pins.update(off_to_on_pins)
 			cache.set('all_pins_state',all_pins)
 			cache.set('action_name',action_name)
-		if action_name=='4' and on_pins: #Action=immediate on (OFF konumunda olan outletler ON yapilacak)
+		if action_name=='4' and on_pins: #Action=immediate off (ON konumunda olan outletler OFF yapilacak)
 			all_pins.update(on_to_off_pins)
 			cache.set('all_pins_state',all_pins)
 			cache.set('action_name',action_name)
@@ -175,11 +175,10 @@ def control(request,**kwargs):
 						seconds15_pins_state=defaultdict(list)
 						for i in delay_on_dict['3SECONDS15']:
 							seconds15_pins_state[i]=HIGH
-							temp_pins_state[i]='*LOW'
+							temp_pins_state[i]='*OFF'
 						
 						temp_all_pins_state.update(temp_pins_state)
 						cache.set('temp_all_pins_state',temp_all_pins_state)
-						#cache.set('temp_pins_state',temp_pins_state)
 						cache.set('don_seconds15',True)
 						cache.set('seconds15_pins_state',seconds15_pins_state)
 						cache.set('all_pins_state',all_pins)
@@ -188,7 +187,7 @@ def control(request,**kwargs):
 						seconds30_pins_state=defaultdict(list)
 						for i in delay_on_dict['4SECONDS30']:
 							seconds30_pins_state[i]=HIGH
-							temp_pins_state[i]='*LOW'
+							temp_pins_state[i]='*OFF'
 						
 						temp_all_pins_state.update(temp_pins_state)
 						cache.set('temp_all_pins_state',temp_all_pins_state)
@@ -200,7 +199,7 @@ def control(request,**kwargs):
 						seconds45_pins_state=defaultdict(list)
 						for i in delay_on_dict['5SECONDS45']:
 							seconds45_pins_state[i]=HIGH
-							temp_pins_state[i]='*LOW'
+							temp_pins_state[i]='*OFF'
 						
 						temp_all_pins_state.update(temp_pins_state)
 						cache.set('temp_all_pins_state',temp_all_pins_state)
@@ -212,7 +211,7 @@ def control(request,**kwargs):
 						minute1_pins_state=defaultdict(list)
 						for i in delay_on_dict['6MINUTE1']:
 							minute1_pins_state[i]=HIGH
-							temp_pins_state[i]='*LOW'
+							temp_pins_state[i]='*OFF'
 						
 						temp_all_pins_state.update(temp_pins_state)
 						cache.set('temp_all_pins_state',temp_all_pins_state)
@@ -224,7 +223,7 @@ def control(request,**kwargs):
 						minutes2_pins_state=defaultdict(list)
 						for i in delay_on_dict['7MINUTES2']:
 							minutes2_pins_state[i]=HIGH
-							temp_pins_state[i]='*LOW'
+							temp_pins_state[i]='*OFF'
 						
 						temp_all_pins_state.update(temp_pins_state)
 						cache.set('temp_all_pins_state',temp_all_pins_state)
@@ -236,7 +235,7 @@ def control(request,**kwargs):
 						minutes5_pins_state=defaultdict(list)
 						for i in delay_on_dict['8MINUTES5']:
 							minutes5_pins_state[i]=HIGH
-							temp_pins_state[i]='*LOW'
+							temp_pins_state[i]='*OFF'
 						
 						temp_all_pins_state.update(temp_pins_state)
 						cache.set('temp_all_pins_state',temp_all_pins_state)
@@ -244,50 +243,105 @@ def control(request,**kwargs):
 						cache.set('minutes5_pins_state',minutes5_pins_state)
 						cache.set('all_pins_state',all_pins)
 									
-					
+		if action_name == '7' and outlet_ids:
+			# Secilen outletleri hemen off durumuna getirmek icin gerekli degiskenleri set et.
+			all_pins=all_pins_state()
+			tmp_all_pins=dict(all_pins)
+			tmp_all_pins_state=dict(all_pins)
+			tmp_all_pins.update(on_to_off_pins) #Secilen outletlerden on durumunda olanlari tum outletlerin o anki durumu ile birlestir. 
+			temp_pins_state=defaultdict(list) #Gecici pin durumu *OFF veya *ON olacak
+			cache.set('tmp_all_pins',tmp_all_pins)
+			cache.set('all_pins_state',all_pins)
+			cache.set('action_name',action_name)
 			
-				
+
+			delay_on_reboot_dict=defaultdict(list)
+			'''Bu dictionary formati {'1SECONDS05':[1,2], '2SECONDS10':[0],} gibi olacak'''
+			for id in outlet_ids:
+				reboot_duration = Config.objects.get(pk=id).reboot_duration
+				#state = Config.objects.get(pk=id).state
+				delay_on_reboot_dict[reboot_duration].append(id-1) #(id-1) id den pin numarasina ceviriyor
 			
-			# cache.set('seconds30_pins_state',seconds30_pins_state)
-			# cache.set('seconds45_pins_state',seconds45_pins_state)
-			# cache.set('minute1_pins_state',minute1_pins_state)
-			# cache.set('minutes2_pins_state',minutes2_pins_state)
-			# cache.set('minutes5_pins_state',minutes5_pins_state)
+			start_time=time.time()
+			max_time=get_max_delay_time(delay_on_reboot_dict)
+			
+			cache.set('max_time',max_time)
+			cache.set('start_time',start_time)
+			cache.set('delay_on_reboot_dict',delay_on_reboot_dict)
+			
+			for delay_reboot in sorted(delay_on_reboot_dict.keys()):
+				if 	delay_reboot=='1SECONDS05':
+					seconds05_pins_state=defaultdict(list)
+					for i in delay_on_reboot_dict['1SECONDS05']:
+						seconds05_pins_state[i]=HIGH #5 saniye sonra HIGH olacak pinler
+						temp_pins_state[i]='*OFF' #5 saniye dolana kadar bu pinler *OFF gozukecek
+					tmp_all_pins_state.update(temp_pins_state)
+					cache.set('temp_all_pins_state',tmp_all_pins_state) #Pinlerin son durumunu gosteriyor
+					cache.set('seconds05_pins_state',seconds05_pins_state)
+					cache.set('dor_seconds05',True)
 
+				if 	delay_reboot=='2SECONDS10':
+					seconds10_pins_state=defaultdict(list)
+					for i in delay_on_reboot_dict['2SECONDS10']:
+						seconds10_pins_state[i]=HIGH #10 saniye sonra HIGH olacak pinler
+						temp_pins_state[i]='*OFF' #10 saniye dolana kadar bu pinler *OFF gozukecek
+					tmp_all_pins_state.update(temp_pins_state)
+					cache.set('temp_all_pins_state',tmp_all_pins_state) #Pinlerin son durumunu gosteriyor
+					cache.set('seconds10_pins_state',seconds10_pins_state)
+					cache.set('dor_seconds10',True)
 
+				if 	delay_reboot=='3SECONDS15':
+					seconds15_pins_state=defaultdict(list)
+					for i in delay_on_reboot_dict['3SECONDS15']:
+						seconds15_pins_state[i]=HIGH #15 saniye sonra HIGH olacak pinler
+						temp_pins_state[i]='*OFF' #15 saniye dolana kadar bu pinler *OFF gozukecek
+					tmp_all_pins_state.update(temp_pins_state)
+					cache.set('temp_all_pins_state',tmp_all_pins_state) #Pinlerin son durumunu gosteriyor
+					cache.set('seconds15_pins_state',seconds15_pins_state)
+					cache.set('dor_seconds15',True)
 
-			# if action_name == '5':  #Delayed off ise Tum outletler icin pwr_off_delay degerlerini al
-			# 	'''Oncelikle pwr_off_delay parametresine gore her bir outlet icin dictionary olustur.
-			# 	Ornek: {'Immmediate':[1,2], '15 Seconds':[0],}
+				if 	delay_reboot=='4SECONDS20':
+					seconds20_pins_state=defaultdict(list)
+					for i in delay_on_reboot_dict['4SECONDS20']:
+						seconds20_pins_state[i]=HIGH #20 saniye sonra HIGH olacak pinler
+						temp_pins_state[i]='*OFF' #20 saniye dolana kadar bu pinler *OFF gozukecek
+					tmp_all_pins_state.update(temp_pins_state)
+					cache.set('temp_all_pins_state',tmp_all_pins_state) #Pinlerin son durumunu gosteriyor
+					cache.set('seconds20_pins_state',seconds20_pins_state)
+					cache.set('dor_seconds20',True)
 
-			# 	'''
-			# 	delay_off_dict = defaultdict(list)
-			# 	for id in outlet_ids:
-			# 		pwr_off_delay = Config.objects.get(pk=id).pwr_off_delay
-			# 		delay_off_dict[pwr_off_delay].append(id)
-			# 	cache.set('delay_off_dict',delay_off_dict)	
+				if 	delay_reboot=='5SECONDS30':
+					seconds30_pins_state=defaultdict(list)
+					for i in delay_on_reboot_dict['5SECONDS30']:
+						seconds30_pins_state[i]=HIGH #30 saniye sonra HIGH olacak pinler
+						temp_pins_state[i]='*OFF' #30 saniye dolana kadar bu pinler *OFF gozukecek
+					tmp_all_pins_state.update(temp_pins_state)
+					cache.set('temp_all_pins_state',tmp_all_pins_state) #Pinlerin son durumunu gosteriyor
+					cache.set('seconds30_pins_state',seconds30_pins_state)
+					cache.set('dor_seconds30',True)
 
-			# if action_name == '7':  #Delayed reboot ise Tum outletler icin reboot_duration degerlerini al
-			# 	'''Oncelikle reboot_duration parametresine gore her bir outlet icin dictionary olustur.
-			# 	Ornek: {'05 Seconds':[1,2], '15 Seconds':[0],}
+				if 	delay_reboot=='6SECONDS45':
+					seconds45_pins_state=defaultdict(list)
+					for i in delay_on_reboot_dict['6SECONDS45']:
+						seconds45_pins_state[i]=HIGH #45 saniye sonra HIGH olacak pinler
+						temp_pins_state[i]='*OFF' #45 saniye dolana kadar bu pinler *OFF gozukecek
+					tmp_all_pins_state.update(temp_pins_state)
+					cache.set('temp_all_pins_state',tmp_all_pins_state) #Pinlerin son durumunu gosteriyor
+					cache.set('seconds45_pins_state',seconds45_pins_state)
+					cache.set('dor_seconds45',True)
 
-			# 	'''
-			# 	delay_reboot_dict = defaultdict(list)
-			# 	for id in outlet_ids:
-			# 		reboot_duration = Config.objects.get(pk=id).reboot_duration
-			# 		delay_reboot_dict[reboot_duration].append(id)	
-			# 	cache.set('delay_reboot_dict',delay_reboot_dict)
+				if 	delay_reboot=='7MINUTE1':
+					minute1_pins_state=defaultdict(list)
+					for i in delay_on_reboot_dict['7MINUTE1']:
+						minute1_pins_state[i]=HIGH #60 saniye sonra HIGH olacak pinler
+						temp_pins_state[i]='*OFF' #60 saniye dolana kadar bu pinler *OFF gozukecek
+					tmp_all_pins_state.update(temp_pins_state)
+					cache.set('temp_all_pins_state',tmp_all_pins_state) #Pinlerin son durumunu gosteriyor
+					cache.set('minute1_pins_state',minute1_pins_state)
+					cache.set('dor_minute1',True)
+
 		time.sleep(1.2)	
 		return redirect("/control/")
-		#return HttpResponse(cache.get('outlet_state_dict'))
-	#cache.set('action_name', '1')
-	#cache.set('immediate_pins_state',{}) #Iki dictionary update ediliyor.	
-	#cache.set('start_time',0)
-	#cache.set('max_time',0)		
-	#cache.set('delay_all_pins_dict',{})
-	#cache.set('seconds15_pins_state',{})
-	#cache.set('all_pins_state',{})
-	#cache.set('delay_on_dict',{})
 	c={}
 	c.update(csrf(request))	
 	outlet_list = Config.objects.all()
@@ -297,21 +351,8 @@ def control(request,**kwargs):
 
 	return render_to_response('control.html',c)
 		
-		# #if action_list == 
-		# '''
-		# "1" 'No Action'
-  #       "2" 'Immediate On'
-  #       "3" 'Delayed On'
-  #       "4" 'Immediate Off'
-  #       "5" 'Delayed Off'
-  #       "6" 'Immediate Reboot'
-  #       "7" 'Delayed Reboot'
-  #       "8" 'Cancel Pending Commands'
-		# '''	
-		
 @login_required
 def config(request):
-	#config_lists = Config.objects.all()
 	forms={}
 	total_outlet=Config.objects.count()
 	for i in range(1,total_outlet+1):
@@ -333,14 +374,13 @@ def config_save(request):
 		pwr_off_delay = request.GET['pwr_off_delay']
 		reboot_duration = request.GET['reboot_duration']
 		state=Config.objects.get(id=int(out_id)).state
-	#if out_id:
+	
 		outlet=Config(id=int(out_id), name=name, pwr_on_delay=pwr_on_delay,
 		 			pwr_off_delay=pwr_off_delay, reboot_duration=reboot_duration,state=state)
 		outlet.save()
 		result="success"
 	
 	return HttpResponse(json.dumps(result),mimetype='application/json')	
-
 
 #@login_required
 def cancel_default(request):
@@ -354,13 +394,8 @@ def cancel_default(request):
 			result={}
 			result['id'] = outlet.id
 			result['name'] = outlet.name
-			# result['pwr_on_delay'] = outlet.get_pwr_on_delay_display()
-			# result['pwr_off_delay'] = outlet.get_pwr_off_delay_display()
-			# result['reboot_duration'] = outlet.get_reboot_duration_display()
 			result['pwr_on_delay'] = outlet.pwr_on_delay
 			result['pwr_off_delay'] = outlet.pwr_off_delay
 			result['reboot_duration'] = outlet.reboot_duration
 
 	return HttpResponse(json.dumps(result),mimetype='application/json')
-	#return HttpResponse(id_num)
-
