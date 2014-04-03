@@ -152,7 +152,7 @@ def control(request,**kwargs):
 		 	'''
 		 	delay_on_dict = defaultdict(list)
 			all_pins=all_pins_state()
-
+			tmp_all_pins_state={}	
 			for id in outlet_ids:
 				pwr_on_delay = Config.objects.get(pk=id).pwr_on_delay
 				state = Config.objects.get(pk=id).state
@@ -174,7 +174,7 @@ def control(request,**kwargs):
 					cache.set('action_name',action_name)
 				
 				else:
-					tmp_all_pins_state={}
+					
 					start_time=time.time()
 					max_time=get_max_delay_time(delay_on_dict)
 					temp_pins_state=defaultdict(list)
@@ -190,7 +190,7 @@ def control(request,**kwargs):
 							temp_pins_state[i]='*OFF'
 						
 						tmp_all_pins_state.update(temp_pins_state)
-						cache.set('15_pins',temp_pins_state)
+						
 						cache.set('temp_all_pins_state',tmp_all_pins_state)
 						cache.set('don_seconds15',True)
 						cache.set('seconds15_pins_state',seconds15_pins_state)
