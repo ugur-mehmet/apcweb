@@ -57,7 +57,7 @@
                       {% if outlet.state == 1 %}
                           <td id="on_off_{{outlet.id}}" class="on_off"><font color="#058812"><b>ON</b></font></td>
                       {% else %}
-                           <tdid="on_off_{{outlet.id}}" class="on_off"><font color="#636b63"><b>OFF</b></font></td>
+                           <td id="on_off_{{outlet.id}}" class="on_off"><font color="#636b63"><b>OFF</b></font></td>
                       
                       {% endif %}   
 
@@ -101,7 +101,7 @@
 
                               console.log(response);
                               //alert(response.1);
-                              $('.on_off').each(function(){
+                              $(".on_off").each(function(){
                                 $on_off_id=$(this).attr('id');
                                 $pin_num=parseInt($on_off_id.substring(7,8))-1;
                                 if (response.$pin_num=='*OFF'){
