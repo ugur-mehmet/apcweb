@@ -251,6 +251,7 @@ class GPIO_Daemon():
 							continue
 					if elapsed_time>=max_delay+3:
 						break
+				cache.set('elapsed_time',elapsed_time)
 				cache.set('max_time',0)			
 				cache.set('action_name','1')
 				cache.set('temp_all_pins_state',{})
