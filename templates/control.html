@@ -106,13 +106,17 @@
                                 $pin_num=parseInt($on_off_id.substring(7,8))-1;
                                 if (response[$pin_num] == "*OFF")
                                     {
-                                    $(this).text("*OFF");
+                                    $(this)
+                                    .text("*OFF")
+                                    .css("color","#DC8528");
                                   
                                      }
                                 if (response[$pin_num] == 0)
                                     {
                                       $pin_num=$pin_num+1
-                                      $(this).text('ON');
+                                      $(this)
+                                      .text('ON')
+                                      .css("color","#058812");
                                   
                                     }
 
