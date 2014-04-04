@@ -147,6 +147,7 @@ class GPIO_Daemon():
 						break
 				cache.set('max_time',0)			
 				cache.set('action_name','1')
+				cache.set('temp_all_pins_state',{})
 
 			if cache_tmp_action_name == '7': #Delayed Reboot 
 				tmp_checked_pins=cache.get('checked_pins_off',{}) #hemen off konumuna cekilecek outletler ve digerleri
@@ -252,6 +253,7 @@ class GPIO_Daemon():
 						break
 				cache.set('max_time',0)			
 				cache.set('action_name','1')
+				cache.set('temp_all_pins_state',{})
 
 			time.sleep(0.2)
 app = GPIO_Daemon()
