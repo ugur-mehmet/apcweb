@@ -136,10 +136,12 @@ def control(request,**kwargs):
 			all_pins.update(off_to_on_pins)
 			cache.set('all_pins_state',all_pins)
 			cache.set('action_name',action_name)
+			cache.set('temp_all_pins_state',{})
 		if action_name=='4' and on_pins: #Action=immediate off (ON konumunda olan outletler OFF yapilacak)
 			all_pins.update(on_to_off_pins)
 			cache.set('all_pins_state',all_pins)
 			cache.set('action_name',action_name)
+			cache.set('temp_all_pins_state',{})
 
 			
 					
