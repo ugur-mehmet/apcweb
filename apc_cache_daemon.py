@@ -67,6 +67,7 @@ class GPIO_Daemon():
 				cache_tmp_delay_on_dict=cache.get('delay_on_dict')
 				start_time=cache.get('start_time',0)
 				cache.set('temp_all_pins_state',{})
+				cache_tmp_all_pins={}
 
 				elapsed_time=0
 				while True:
@@ -164,6 +165,7 @@ class GPIO_Daemon():
 				cache_tmp_delay_on_reboot_dict=cache.get('delay_on_reboot_dict')
 				start_time=cache.get('start_time',0)
 				cache.set('temp_all_pins_state',{})
+				cache_tmp_all_pins={}
 
 				elapsed_time=0
 				while True:
