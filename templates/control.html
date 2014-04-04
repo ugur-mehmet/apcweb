@@ -55,9 +55,9 @@
                       <td>{{outlet.id}}</td>
                       
                       {% if outlet.state == 1 %}
-                          <td id="on_off_{{outlet.id}}"><font color="#058812"><b>ON</b></font></td>
+                          <td id="on_off_{{outlet.id}}" class="on_off"><font color="#058812"><b>ON</b></font></td>
                       {% else %}
-                           <tdid="on_off_{{outlet.id}}"><font color="#636b63"><b>OFF</b></font></td>
+                           <tdid="on_off_{{outlet.id}}" class="on_off"><font color="#636b63"><b>OFF</b></font></td>
                       
                       {% endif %}   
 
@@ -87,7 +87,53 @@
           this.checked = checkedStatus;
           });
           });
-           
+          
+          /*Secilen action'in gereceklesmesi sureye bagli ise kontrol edilecek outletlerin  ON olmasi da o sure ile orantili olacaktir. Bu ara donem de ilgili outletler turuncu renkte *OFF olarak gozukecektir.*/
+          function refresh(){
+          $.ajax({
+                      
+                      type: "GET",
+                      dataType: "json",
+                      contentType: "application/x-www-form-urlencoded",
+                      url : '/check_last_state/',
+                      data : {out_number: $out_id},
+                      success:function(response){             
+
+                              console.log(response);
+                              alert(response.1);
+                              $('.on_off').each(function(){
+                                $on_off_id=$(this).attr('id');
+                                $pin_num=parseInt($on_off_id.substring(7,8))-1;
+                                if (response.$pin_num=='*OFF'){
+                                  $(this).text('*OFF');
+                                  
+                              }
+                              else {
+                                $(this).text('ON');
+                                  
+                              }
+
+
+                              });
+
+
+                              setTimeout(refresh,3000);
+
+
+
+
+                              
+                             
+                                                                    
+
+
+                      },
+                      timeout:10000
+                      
+              }); //ajax end 
+              } //Function refresh() end. 
+              setTimeout(refresh,3000);
+
           });
   </script>
   {% endblock %}

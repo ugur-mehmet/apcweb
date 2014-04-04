@@ -17,4 +17,5 @@ urlpatterns = patterns('',
     url(r'^config/$', 'apc.views.config', name='config'),
     url(r'^cancel_default/$', 'apc.views.cancel_default', name='cancel_def'),
     url(r'^config_save/$', 'apc.views.config_save', name='config_save'),
+    url(r'^check_last_state/$','apc.views.check_last_state', name='last_state'),
     )

@@ -417,3 +417,9 @@ def cancel_default(request):
 			result['reboot_duration'] = outlet.reboot_duration
 
 	return HttpResponse(json.dumps(result),mimetype='application/json')
+
+def check_last_state(request):
+	
+	last_state=cache.get('temp_all_pins_state')
+
+	return HttpResponse(json.dumps(last_state),mimetype='application/json')
