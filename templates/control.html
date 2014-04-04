@@ -104,14 +104,14 @@
                               $(".on_off").each(function(){
                                 $on_off_id=$(this).attr('id');
                                 $pin_num=parseInt($on_off_id.substring(7,8))-1;
-                                if (response.$pin_num=='*OFF'){
-                                  $(this).text('*OFF');
+                                if (response.$pin_num == "*OFF"){
+                                  $(this).text("*OFF");
                                   
                               }
-                              else {
-                                $(this).text('ON');
+                              //else {
+                                //$(this).text('ON');
                                   
-                              }
+                              //}
 
 
                               });
