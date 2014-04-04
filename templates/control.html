@@ -109,7 +109,9 @@
                                     $(this).text("*OFF");
                                   
                                      }
-                                else {
+                                if (response[$pin_num] == 0)
+                                    {
+                                      $pin_num=$pin_num+1
                                       $(this).text('ON');
                                   
                                     }
