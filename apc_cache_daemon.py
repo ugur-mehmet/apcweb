@@ -66,6 +66,7 @@ class GPIO_Daemon():
 				max_delay=cache.get('max_time')
 				cache_tmp_delay_on_dict=cache.get('delay_on_dict')
 				start_time=cache.get('start_time',0)
+				cache.set('temp_all_pins_state',{})
 
 				elapsed_time=0
 				while True:
@@ -147,7 +148,7 @@ class GPIO_Daemon():
 						break
 				cache.set('max_time',0)			
 				cache.set('action_name','1')
-				cache.set('temp_all_pins_state',{})
+				
 
 			if cache_tmp_action_name == '7': #Delayed Reboot 
 				tmp_checked_pins=cache.get('checked_pins_off',{}) #hemen off konumuna cekilecek outletler ve digerleri
@@ -162,6 +163,7 @@ class GPIO_Daemon():
 				max_delay=cache.get('max_time')
 				cache_tmp_delay_on_reboot_dict=cache.get('delay_on_reboot_dict')
 				start_time=cache.get('start_time',0)
+				cache.set('temp_all_pins_state',{})
 
 				elapsed_time=0
 				while True:
@@ -254,7 +256,7 @@ class GPIO_Daemon():
 				cache.set('elapsed_time',elapsed_time)
 				cache.set('max_time',0)			
 				cache.set('action_name','1')
-				cache.set('temp_all_pins_state',{})
+				
 
 			time.sleep(0.2)
 app = GPIO_Daemon()
