@@ -178,7 +178,8 @@ def control(request,**kwargs):
 				else:
 					
 					start_time=time.time()
-					global max_delay_time=0
+					global max_delay_time
+					max_delay_time=0
 					max_time=get_max_delay_time(delay_on_dict)
 					temp_pins_state=defaultdict(list)
 					#temp_all_pins_state=dict(all_pins) #all_pins dicti copyala all_pins.copy() de calisiyor
@@ -284,7 +285,8 @@ def control(request,**kwargs):
 				delay_on_reboot_dict[reboot_duration].append(id-1) #(id-1) id den pin numarasina ceviriyor
 			
 			start_time=time.time()
-			global max_delay_time=0
+			global max_delay_time
+			max_delay_time=0
 			max_time=get_max_delay_time(delay_on_reboot_dict)
 			
 			cache.set('max_time',max_time)
