@@ -164,7 +164,7 @@ class GPIO_Daemon():
 				max_delay=cache.get('max_time')
 				cache_tmp_delay_on_reboot_dict=cache.get('delay_on_reboot_dict')
 				start_time=cache.get('start_time',0)
-				cache.set('temp_all_pins_state',{})
+				#cache.set('temp_all_pins_state',{})
 				cache_tmp_all_pins={}
 
 				elapsed_time=0
@@ -255,7 +255,7 @@ class GPIO_Daemon():
 							continue
 					if elapsed_time>=max_delay+3:
 						break
-				cache.set('elapsed_time',elapsed_time)
+				#cache.set('elapsed_time',elapsed_time)
 				cache.set('max_time',0)			
 				cache.set('action_name','1')
 				
