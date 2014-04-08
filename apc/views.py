@@ -455,5 +455,4 @@ def check_last_state(request):
 		on_off=1
 	last_state['on_off']=on_off
 
-
-	return HttpResponse(json.dumps(last_state,mimetype='application/json')
+	return HttpResponse(json.dumps(last_state,mimetype='application/json'))
