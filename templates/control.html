@@ -74,7 +74,7 @@
         </form>
         </br>
         </br>
-        <div id="blink"><font color="#DC8528">* Indicates a pending state change</font></div>
+        <div id="blink"><font color="#DC8528"><b>* Indicates a pending state change</b></font></div>
         </br>
   </div>
   {%endblock%}
@@ -138,7 +138,7 @@
                                     }
                                 if (response['on_off'] == 1)
                                     {
-                                      $("#blink").fadeTo(300, 0.5).fadeTo(600, 1.0);
+                                      $("#blink").fadeTo(500, 0.5).fadeTo(600, 1.0);
                                     } 
                                 if (response['on_off'] == 0)
                                     {
