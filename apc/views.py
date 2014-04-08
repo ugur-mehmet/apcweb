@@ -159,7 +159,7 @@ def control(request,**kwargs):
 		 	delay_on_off_dict = defaultdict(list)
 			all_pins=all_pins_state()
 			tmp_all_pins_state={}
-			action_name='35'
+			
 			if action_name=='3':
 				column='pwr_on_delay'
 				HIGH=0
@@ -179,6 +179,7 @@ def control(request,**kwargs):
 				if state==HIGH: 
 					delay_on_off_dict[column].append(id-1)
 						
+			action_name='35'
 			cache.set('delay_on_dict',delay_on_off_dict)
 			for delay_key in sorted(delay_on_off_dict.keys()):
 				if delay_key=='1NEVERON' or delay_key=='1NEVEROFF':
