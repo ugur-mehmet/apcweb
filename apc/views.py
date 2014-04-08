@@ -100,7 +100,10 @@ def get_max_delay_time(delay_dict):
 	#       "8" 'Cancel Pending Commands'
 @login_required
 def control(request,**kwargs):
-	
+	global HIGH
+	global LOW
+	HIGH=0
+	LOW=1
 	if request.method == 'POST':
 	
 		check_list=['checkbox_1', 'checkbox_2','checkbox_3','checkbox_4',
