@@ -447,5 +447,12 @@ def cancel_default(request):
 def check_last_state(request):
 	
 	last_state=cache.get('temp_all_pins_state')
+	state=['*OFF','*ON']
+	on_off=False
+	if '*OFF' in last_state.values():
+		on_off=True
+	if '*ON' in last_state.values():
+		on_off=True
 
-	return HttpResponse(json.dumps(last_state),mimetype='application/json')
+
+	return HttpResponse(json.dumps(last_state,on_off),mimetype='application/json')

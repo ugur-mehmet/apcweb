@@ -74,7 +74,7 @@
         </form>
         </br>
         </br>
-        <font color="red">* Indicates a pending state change</font>
+        <div id="blink"><font color="#636b63">* Indicates a pending state change</font></div>
         </br>
   </div>
   {%endblock%}
@@ -97,7 +97,7 @@
                       contentType: "application/x-www-form-urlencoded",
                       url : '/check_last_state/',
                       //data : {out_number: $out_id},
-                      success:function(response){             
+                      success:function(response,on_off){             
 
                               console.log(response);
                               //alert(response.1);
@@ -136,6 +136,13 @@
                                       .css("font-weight", "bold");
                                   
                                     }
+                                if (on_off==True)
+                                    {
+                                      $("#blink").append('<blink>')
+
+
+                                    } 
+                                
 
 
                               });
