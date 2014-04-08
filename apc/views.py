@@ -177,7 +177,7 @@ def control(request,**kwargs):
 				#HIGH=0 ise OFF konumunda olan pinler hesaba katilacak ve delay on parametresine gore ON olacak
 				# HIGH=1 ise ON konumunda olan pinler hesaba katilacak ve delay off parametresine gore OFF olacak
 				if state==HIGH: 
-					delay_on_off_dict[column].append(id-1)
+					delay_on_off_dict[pwr_on_off_delay].append(id-1)
 						
 			action_name='35'
 			cache.set('delay_on_dict',delay_on_off_dict)
