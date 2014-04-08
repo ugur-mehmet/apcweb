@@ -156,6 +156,7 @@ def control(request,**kwargs):
 		 	pwr_on_delay yapmaya gerek yok.
 
 		 	'''
+		 	cache.set('temp_all_pins_state',{})
 		 	delay_on_off_dict = defaultdict(list)
 			all_pins=all_pins_state()
 			tmp_all_pins_state={}

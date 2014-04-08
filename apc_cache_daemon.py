@@ -66,7 +66,7 @@ class GPIO_Daemon():
 				max_delay=cache.get('max_time')
 				cache_tmp_delay_on_dict=cache.get('delay_on_dict')
 				start_time=cache.get('start_time',0)
-				cache.set('temp_all_pins_state',{})
+				#cache.set('temp_all_pins_state',{})
 				cache_tmp_all_pins={}
 
 				elapsed_time=0
