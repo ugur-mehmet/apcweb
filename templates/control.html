@@ -139,8 +139,10 @@
                                 if (response['on_off'] == 1)
                                     {
                                       $("#blink").fadeTo(300, 0.5).fadeTo(600, 1.0);
-
-
+                                    } 
+                                if (response['on_off'] == 0)
+                                    {
+                                      $("#blink").stop(true,true);
                                     } 
 
 
