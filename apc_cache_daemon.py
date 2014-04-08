@@ -56,13 +56,13 @@ class GPIO_Daemon():
 				self.save_db(cache_tmp_all_pins)
 				cache.set('action_name','1')
 
-			if cache_tmp_action_name=='3' and cache.get('don_immediate'):
+			if cache_tmp_action_name=='35' and cache.get('don_immediate'):
 				cache_tmp_all_pins=cache.get('all_pins_state')
 				startupMode(cache_tmp_all_pins, True)
 				self.save_db(cache_tmp_all_pins)
 				cache.set('don_immediate',False)
 
-			if cache_tmp_action_name=='3' and cache.get('max_time') and cache.get('don_immediate')==False:
+			if cache_tmp_action_name=='35' and cache.get('max_time') and cache.get('don_immediate')==False:
 				max_delay=cache.get('max_time')
 				cache_tmp_delay_on_dict=cache.get('delay_on_dict')
 				start_time=cache.get('start_time',0)

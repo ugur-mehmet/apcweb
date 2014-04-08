@@ -120,6 +120,22 @@
                                       .css("font-weight", "bold");
                                   
                                     }
+                                if (response[$pin_num] == "*ON")
+                                    {
+                                    $(this)
+                                    .text("*ON")
+                                    .css("color","#DC8528")
+                                    .css("font-weight", "bold");
+                                     }
+                                if (response[$pin_num] == 1)
+                                    {
+                                      $pin_num=$pin_num+1
+                                      $(this)
+                                      .text('OFF')
+                                      .css("color","#636b63")
+                                      .css("font-weight", "bold");
+                                  
+                                    }
 
 
                               });

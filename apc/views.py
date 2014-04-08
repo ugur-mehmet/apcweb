@@ -146,25 +146,39 @@ def control(request,**kwargs):
 
 			
 					
-		if action_name == '3':  #Delayed on ise Tum outletler icin pwr_on_delay degerlerini al
+		if action_name == '3' or action_name=='5':  #Delayed on ise Tum outletler icin pwr_on_delay degerlerini al
 			'''Oncelikle pwr_on_delay parametresine gore her bir outlet icin dictionary olustur.
 		 	Ornek: {'Immmediate':[1,2], '15 Seconds':[0],}
 		 	Bu dictionary olusurken sadece off durumda olan outletler secilecek. On durumda olanlari
 		 	pwr_on_delay yapmaya gerek yok.
 
 		 	'''
-		 	delay_on_dict = defaultdict(list)
+		 	delay_on_off_dict = defaultdict(list)
 			all_pins=all_pins_state()
-			tmp_all_pins_state={}	
+			tmp_all_pins_state={}
+			action_name='35'
+			if action_name=='3':
+				column='pwr_on_delay'
+				HIGH=0
+				LOW=1
+				tmp_state='*OFF'
+			if action_name=='5':
+				column='pwr_off_delay'
+				HIGH=1
+				LOW=0
+				tmp_state='*ON'
+
 			for id in outlet_ids:
-				pwr_on_delay = Config.objects.get(pk=id).pwr_on_delay
+				pwr_on_off_delay = getattr(Config.objects.get(pk=id),column)
 				state = Config.objects.get(pk=id).state
-				if state==0:
-					delay_on_dict[pwr_on_delay].append(id-1)
+				#HIGH=0 ise OFF konumunda olan pinler hesaba katilacak ve delay on parametresine gore ON olacak
+				# HIGH=1 ise ON konumunda olan pinler hesaba katilacak ve delay off parametresine gore OFF olacak
+				if state==HIGH: 
+					delay_on_off_dict[column].append(id-1)
 						
-			cache.set('delay_on_dict',delay_on_dict)
-			for delay_key in sorted(delay_on_dict.keys()):
-				if delay_key=='1NEVERON':
+			cache.set('delay_on_dict',delay_on_off_dict)
+			for delay_key in sorted(delay_on_off_dict.keys()):
+				if delay_key=='1NEVERON' or delay_key=='1NEVEROFF':
 					pass
 				elif delay_key=='2IMMEDIATE':
 					immediate_pins_state=defaultdict(list)
@@ -192,7 +206,7 @@ def control(request,**kwargs):
 						seconds15_pins_state=defaultdict(list)
 						for i in delay_on_dict['3SECONDS15']:
 							seconds15_pins_state[i]=HIGH
-							temp_pins_state[i]='*OFF'
+							temp_pins_state[i]=tmp_state
 						
 						tmp_all_pins_state.update(temp_pins_state)
 						
@@ -205,7 +219,7 @@ def control(request,**kwargs):
 						seconds30_pins_state=defaultdict(list)
 						for i in delay_on_dict['4SECONDS30']:
 							seconds30_pins_state[i]=HIGH
-							temp_pins_state[i]='*OFF'
+							temp_pins_state[i]=tmp_state
 						
 						tmp_all_pins_state.update(temp_pins_state)
 						cache.set('temp_all_pins_state',tmp_all_pins_state)
@@ -217,7 +231,7 @@ def control(request,**kwargs):
 						seconds45_pins_state=defaultdict(list)
 						for i in delay_on_dict['5SECONDS45']:
 							seconds45_pins_state[i]=HIGH
-							temp_pins_state[i]='*OFF'
+							temp_pins_state[i]=tmp_state
 						
 						tmp_all_pins_state.update(temp_pins_state)
 						cache.set('temp_all_pins_state',tmp_all_pins_state)
@@ -229,7 +243,7 @@ def control(request,**kwargs):
 						minute1_pins_state=defaultdict(list)
 						for i in delay_on_dict['6MINUTE1']:
 							minute1_pins_state[i]=HIGH
-							temp_pins_state[i]='*OFF'
+							temp_pins_state[i]=tmp_state
 						
 						tmp_all_pins_state.update(temp_pins_state)
 						cache.set('temp_all_pins_state',tmp_all_pins_state)
@@ -241,7 +255,7 @@ def control(request,**kwargs):
 						minutes2_pins_state=defaultdict(list)
 						for i in delay_on_dict['7MINUTES2']:
 							minutes2_pins_state[i]=HIGH
-							temp_pins_state[i]='*OFF'
+							temp_pins_state[i]=tmp_state
 						
 						tmp_all_pins_state.update(temp_pins_state)
 						cache.set('temp_all_pins_state',tmp_all_pins_state)
@@ -253,7 +267,7 @@ def control(request,**kwargs):
 						minutes5_pins_state=defaultdict(list)
 						for i in delay_on_dict['8MINUTES5']:
 							minutes5_pins_state[i]=HIGH
-							temp_pins_state[i]='*OFF'
+							temp_pins_state[i]=tmp_state
 						
 						tmp_all_pins_state.update(temp_pins_state)
 						cache.set('temp_all_pins_state',tmp_all_pins_state)
@@ -261,7 +275,7 @@ def control(request,**kwargs):
 						cache.set('minutes5_pins_state',minutes5_pins_state)
 						cache.set('all_pins_state',all_pins)
 									
-		if action_name == '7' and outlet_ids:
+		if action_name == '7' and outlet_ids: #'Delayed Reboot' reboot duration parametresine gore OFF ve ON yap
 			# Secilen outletleri hemen off durumuna getirmek icin gerekli degiskenleri set et.
 			all_pins=all_pins_state()
 			tmp_all_pins=dict(all_pins)
