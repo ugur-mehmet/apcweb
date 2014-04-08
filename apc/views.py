@@ -186,7 +186,7 @@ def control(request,**kwargs):
 					pass
 				elif delay_key=='2IMMEDIATE':
 					immediate_pins_state=defaultdict(list)
-					for i in delay_on_dict['2IMMEDIATE']:
+					for i in delay_on_off_dict['2IMMEDIATE']:
 						immediate_pins_state[i]=HIGH
 					#immediate_pins_state=self.set_outlet(delay_on_dict_cur['IMMEDIATE'],HIGH) #Immediate pinlarin hepsini HIGH yap
 					all_pins.update(immediate_pins_state)
@@ -199,7 +199,7 @@ def control(request,**kwargs):
 					start_time=time.time()
 					global max_delay_time
 					max_delay_time=0
-					max_time=get_max_delay_time(delay_on_dict)
+					max_time=get_max_delay_time(delay_on_off_dict)
 					temp_pins_state=defaultdict(list)
 					#temp_all_pins_state=dict(all_pins) #all_pins dicti copyala all_pins.copy() de calisiyor
 					cache.set('max_time',max_time)
@@ -208,7 +208,7 @@ def control(request,**kwargs):
 
 					if 	delay_key=='3SECONDS15':
 						seconds15_pins_state=defaultdict(list)
-						for i in delay_on_dict['3SECONDS15']:
+						for i in delay_on_off_dict['3SECONDS15']:
 							seconds15_pins_state[i]=HIGH
 							temp_pins_state[i]=tmp_state
 						
@@ -221,7 +221,7 @@ def control(request,**kwargs):
 
 					if 	delay_key=='4SECONDS30':
 						seconds30_pins_state=defaultdict(list)
-						for i in delay_on_dict['4SECONDS30']:
+						for i in delay_on_off_dict['4SECONDS30']:
 							seconds30_pins_state[i]=HIGH
 							temp_pins_state[i]=tmp_state
 						
@@ -233,7 +233,7 @@ def control(request,**kwargs):
 							
 					if 	delay_key=='5SECONDS45':
 						seconds45_pins_state=defaultdict(list)
-						for i in delay_on_dict['5SECONDS45']:
+						for i in delay_on_off_dict['5SECONDS45']:
 							seconds45_pins_state[i]=HIGH
 							temp_pins_state[i]=tmp_state
 						
@@ -245,7 +245,7 @@ def control(request,**kwargs):
 						
 					if 	delay_key=='6MINUTE1':
 						minute1_pins_state=defaultdict(list)
-						for i in delay_on_dict['6MINUTE1']:
+						for i in delay_on_off_dict['6MINUTE1']:
 							minute1_pins_state[i]=HIGH
 							temp_pins_state[i]=tmp_state
 						
@@ -257,7 +257,7 @@ def control(request,**kwargs):
 						
 					if 	delay_key=='7MINUTES2':
 						minutes2_pins_state=defaultdict(list)
-						for i in delay_on_dict['7MINUTES2']:
+						for i in delay_on_off_dict['7MINUTES2']:
 							minutes2_pins_state[i]=HIGH
 							temp_pins_state[i]=tmp_state
 						
@@ -269,7 +269,7 @@ def control(request,**kwargs):
 						
 					if 	delay_key=='8MINUTES5':
 						minutes5_pins_state=defaultdict(list)
-						for i in delay_on_dict['8MINUTES5']:
+						for i in delay_on_off_dict['8MINUTES5']:
 							minutes5_pins_state[i]=HIGH
 							temp_pins_state[i]=tmp_state
 						
