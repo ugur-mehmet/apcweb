@@ -147,8 +147,6 @@ def control(request,**kwargs):
 			cache.set('action_name',action_name)
 			cache.set('temp_all_pins_state',{})
 
-			
-					
 		if action_name == '3' or action_name=='5':  #Delayed on ise Tum outletler icin pwr_on_delay degerlerini al
 			'''Oncelikle pwr_on_delay parametresine gore her bir outlet icin dictionary olustur.
 		 	Ornek: {'Immmediate':[1,2], '15 Seconds':[0],}
