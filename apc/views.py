@@ -157,6 +157,7 @@ def control(request,**kwargs):
 		 	#delay_on_off_dict = defaultdict(list)
 			#all_pins=all_pins_state()
 			tmp_all_pins_state={}
+			cache.set('checked_pins',checked_pins)
 			checked_pins_state=dict(checked_pins)
 			checked_pins_off=set_outlet(checked_pins_state,LOW)
 			checked_pins_on=set_outlet(checked_pins_state,HIGH)
