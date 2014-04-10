@@ -47,10 +47,15 @@ def set_outlet(outlet_dict, on_off):
 			for key, value in outlet_dict.iteritems():
 				outlet_dict[key]=HIGH
 			return outlet_dict
-		if on_off == LOW:
+		elif on_off == LOW:
 			for key, value in outlet_dict.iteritems():
 				outlet_dict[key]=LOW
 			return outlet_dict
+		else:
+			for key, value in outlet_dict.iteritems():
+				outlet_dict[key]=on_off
+			return outlet_dict
+				
 	
 def all_pins_state(*pin_list):
 	all_pins_dict = defaultdict(list) #{0:LOW, :1:HIGH, 2:HIGH gibi}
@@ -146,6 +151,23 @@ def control(request,**kwargs):
 			cache.set('all_pins_state',all_pins)
 			cache.set('action_name',action_name)
 			cache.set('temp_all_pins_state',{})
+
+		if action_name=='6' and outlet_pins: #Immediate Reboot 
+			cache.set('temp_all_pins_state',{})
+		 	#delay_on_off_dict = defaultdict(list)
+			#all_pins=all_pins_state()
+			tmp_all_pins_state={}
+			checked_pins_state=dict(checked_pins)
+			checked_pins_off=set_outlet(checked_pins_state,LOW)
+			checked_pins_on=set_outlet(checked_pins_state,HIGH)
+			tmp_all_pins_state=set_outlet(checked_pins_state,'*OFF')
+			start_time=time.time()
+			cache.set('start_time',start_time)
+			cache.set('action_name',action_name)
+			cache.set('checked_pins_off',checked_pins_off)
+			cache.set('checked_pins_on', checked_pins_on)
+			cache.set('temp_all_pins_state',tmp_all_pins_state)
+			cache.set('immediate_reboot',True)
 
 		if action_name == '3' or action_name=='5':  #Delayed on ise Tum outletler icin pwr_on_delay degerlerini al
 			'''Oncelikle pwr_on_delay parametresine gore her bir outlet icin dictionary olustur.

@@ -56,6 +56,24 @@ class GPIO_Daemon():
 				self.save_db(cache_tmp_all_pins)
 				cache.set('action_name','1')
 
+			if cache_tmp_action_name=='6' and cache.get('checked_pins_off'):
+				cache_tmp_all_pins=cache.get('checked_pins_off')
+				startupMode(cache_tmp_all_pins,True)
+				self.save_db(cache_tmp_all_pins)
+								
+				start_time=cache.get('start_time',0)
+				elapsed_time=0
+				while True:
+					elapsed_time=time.time()-start_time
+					if elapsed_time>=5 and cache.get('immediate_reboot'):
+						cache_tmp_all_pins=cache.get('checked_pins_on')
+						startupMode(cache_tmp_all_pins,True)
+						self.save_db(cache_tmp_all_pins)
+						cache.set('temp_all_pins_state',cache_tmp_all_pins)
+						cache.set('immediate_reboot',False)
+					if elapsed_time>=7:
+						break
+
 			if cache_tmp_action_name=='35' and cache.get('don_immediate'):
 				cache_tmp_all_pins=cache.get('all_pins_state')
 				startupMode(cache_tmp_all_pins, True)
