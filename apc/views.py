@@ -112,7 +112,7 @@ def control(request,**kwargs):
 	global LOW
 	HIGH=0
 	LOW=1
-		
+
 	if request.method == 'POST':
 	
 		check_list=['checkbox_1', 'checkbox_2','checkbox_3','checkbox_4',
@@ -154,6 +154,10 @@ def control(request,**kwargs):
 			all_pins.update(on_to_off_pins)
 			cache.set('all_pins_state',all_pins)
 			cache.set('action_name',action_name)
+			cache.set('temp_all_pins_state',{})
+
+		if action_name=='8':
+			cache.set('action_name',1)
 			cache.set('temp_all_pins_state',{})
 
 		if action_name=='6' and outlet_pins: #Immediate Reboot 
