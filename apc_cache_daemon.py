@@ -48,7 +48,7 @@ class GPIO_Daemon():
 		cache_tmp_delay_on_dict = {}
 		cache.set('action_name',1)
 		cache.set('temp_all_pins_state',{})
-		
+
 		while True:
 			cache_tmp_action_name=cache.get('action_name')
 			if cache_tmp_action_name=='2' or cache_tmp_action_name=='4':
@@ -74,7 +74,7 @@ class GPIO_Daemon():
 						cache.set('immediate_reboot',False)
 					if elapsed_time>=7:
 						break
-				cache.set('temp_all_pins_state',{})
+				#cache.set('temp_all_pins_state',{})
 
 			if cache_tmp_action_name=='35' and cache.get('don_immediate'):
 				cache_tmp_all_pins=cache.get('all_pins_state')
