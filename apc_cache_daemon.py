@@ -58,7 +58,7 @@ class GPIO_Daemon():
 				self.save_db(cache_tmp_all_pins)
 				cache.set('action_name','1')
 
-			if cache_tmp_action_name=='6' and cache.get('checked_pins_off'):
+			if cache_tmp_action_name=='6' and cache.get('immediate_reboot'):
 				cache_tmp_all_pins=cache.get('checked_pins_off')
 				startupMode(cache_tmp_all_pins,True)
 				self.save_db(cache_tmp_all_pins)
@@ -169,6 +169,7 @@ class GPIO_Daemon():
 						break
 				cache.set('max_time',0)			
 				cache.set('action_name','1')
+				cache.set('temp_all_pins_state',{})
 				
 
 			if cache_tmp_action_name == '7': #Delayed Reboot 
@@ -278,6 +279,7 @@ class GPIO_Daemon():
 				#cache.set('elapsed_time',elapsed_time)
 				cache.set('max_time',0)			
 				cache.set('action_name','1')
+				cache.set('temp_all_pins_state',{})
 				
 
 			time.sleep(0.2)
