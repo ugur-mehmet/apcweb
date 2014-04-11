@@ -75,6 +75,7 @@ class GPIO_Daemon():
 						cache.set('immediate_reboot',False)
 					if elapsed_time>=7:
 						break
+				cache.set('temp_all_pins_state',{})
 
 			if cache_tmp_action_name=='35' and cache.get('don_immediate'):
 				cache_tmp_all_pins=cache.get('all_pins_state')
