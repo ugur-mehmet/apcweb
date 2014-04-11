@@ -112,6 +112,7 @@ def control(request,**kwargs):
 	global LOW
 	HIGH=0
 	LOW=1
+	cache.set('go_on',True)
 
 	if request.method == 'POST':
 	
@@ -159,6 +160,7 @@ def control(request,**kwargs):
 		if action_name=='8':
 			cache.set('action_name',1)
 			cache.set('temp_all_pins_state',{})
+			cache.set('go_on',False)
 
 		if action_name=='6' and outlet_pins: #Immediate Reboot 
 			cache.set('temp_all_pins_state',{})

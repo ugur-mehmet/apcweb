@@ -49,7 +49,6 @@ class GPIO_Daemon():
 		cache.set('action_name',1)
 		cache.set('temp_all_pins_state',{})
 		
-
 		while True:
 			cache_tmp_action_name=cache.get('action_name')
 			if cache_tmp_action_name=='2' or cache_tmp_action_name=='4':
@@ -65,7 +64,7 @@ class GPIO_Daemon():
 								
 				start_time=cache.get('start_time',0)
 				elapsed_time=0
-				while True:
+				while True and cache.get('go_on'):
 					elapsed_time=time.time()-start_time
 					if elapsed_time>=5 and cache.get('immediate_reboot'):
 						cache_tmp_all_pins=cache.get('checked_pins_on')
@@ -91,7 +90,7 @@ class GPIO_Daemon():
 				cache_tmp_all_pins={}
 
 				elapsed_time=0
-				while True:
+				while True and cache.get('go_on'):
 					for delay_key in sorted(cache_tmp_delay_on_dict.keys()):
 						now=time.time()
 						elapsed_time=now-start_time
@@ -190,7 +189,7 @@ class GPIO_Daemon():
 				cache_tmp_all_pins={}
 
 				elapsed_time=0
-				while True:
+				while True and cache.get('go_on'):
 					for delay_reboot in sorted(cache_tmp_delay_on_reboot_dict.keys()):
 						now=time.time()
 						elapsed_time=now-start_time
