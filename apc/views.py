@@ -112,6 +112,8 @@ def control(request,**kwargs):
 	global LOW
 	HIGH=0
 	LOW=1
+	cache.set('temp_all_pins_state',{})
+	
 	if request.method == 'POST':
 	
 		check_list=['checkbox_1', 'checkbox_2','checkbox_3','checkbox_4',
