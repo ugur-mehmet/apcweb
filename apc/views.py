@@ -123,7 +123,7 @@ def control(request,**kwargs):
 		outlet_pins = []
 		checked_pins={}
 		action_name=request.POST['action_list']
-		
+		cache.set('post_data',request.POST)
 		for check in check_list:
 			if check in request.POST:
 				outlet_ids.append(int(check[-1])) 
