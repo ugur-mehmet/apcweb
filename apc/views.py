@@ -14,7 +14,10 @@ import time
 HIGH = 0
 LOW = 1
 max_delay_time=0
-cache.set('temp_all_pins_state',{})
+#cache.set('temp_all_pins_state',{})
+#cache.set('checked_pins_off',{})
+#cache.set('checked_pins_on', {})
+
 
 @login_required
 def index(request):

@@ -46,6 +46,7 @@ class GPIO_Daemon():
 		cache_tmp_action_name = ''
 		cache_tmp_all_pins = {}
 		cache_tmp_delay_on_dict = {}
+		cache.set('action_name',1)
 		
 
 		while True:
