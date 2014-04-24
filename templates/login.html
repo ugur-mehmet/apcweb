@@ -17,14 +17,6 @@
     <!-- Custom styles for this template -->
     <link href="/static/css/signin.css" rel="stylesheet">
 
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
   </head>
 
   <body>
@@ -35,21 +27,13 @@
         {% csrf_token %}
         
         <h2><span class="label label-info">   APC Administration   </span></h2><br>
-        <input type="texy" name="username" class="form-control" placeholder="Username" required autofocus>
+        <input type="text" name="username" class="form-control" placeholder="Username" required autofocus>
         <input type="password" name="password" class="form-control" placeholder="Password" required>
-        <!-- <label class="checkbox">
-          <input type="checkbox" value="remember-me"> Remember me
-        </label> -->
-        <!-- <input type="hidden" name="csrfmiddlewaretoken" value="{%csrf_token%}" /> -->
         <button class="btn btn-lg btn-primary" type="submit" name="submit">Log in</button>
         <button class="btn btn-lg btn-danger" type="reset" name="cancel">Cancel</button>
       </form>
       
     </div> <!-- /container -->
 
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
   </body>
 </html>
