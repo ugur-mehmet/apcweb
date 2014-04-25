@@ -18,6 +18,8 @@ Bu sekilde 8 bit data shift register a aktarildiktan sonra en son STROBE High ya
 import RPi.GPIO as GPIO
 from time import sleep
 import os
+import glob
+import subprocess
 
 GPIO.setmode(GPIO.BOARD)
 
