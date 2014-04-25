@@ -114,6 +114,7 @@ def get_max_delay_time(delay_dict):
 def control(request,**kwargs):
 	global HIGH
 	global LOW
+	global max_delay_time
 	HIGH=0
 	LOW=1
 	cache.set('go_on',True)
@@ -235,7 +236,6 @@ def control(request,**kwargs):
 				else:
 					
 					start_time=time.time()
-					global max_delay_time
 					max_delay_time=0
 					max_time=get_max_delay_time(delay_on_off_dict)
 					temp_pins_state=defaultdict(list)
@@ -319,7 +319,6 @@ def control(request,**kwargs):
 									
 		if action_name == '7' and outlet_ids: #'Delayed Reboot' reboot duration parametresine gore OFF ve ON yap
 			# Secilen outletleri hemen off durumuna getirmek icin gerekli degiskenleri set et.
-			global max_delay_time
 			all_pins=all_pins_state()
 			tmp_all_pins=dict(all_pins)
 			#tmp_all_pins_state=dict(all_pins)
@@ -343,7 +342,6 @@ def control(request,**kwargs):
 				delay_on_reboot_dict[reboot_duration].append(id-1) #(id-1) id den pin numarasina ceviriyor
 			
 			start_time=time.time()
-			#global max_delay_time
 			max_delay_time=0
 			max_time=get_max_delay_time(delay_on_reboot_dict)
 			
