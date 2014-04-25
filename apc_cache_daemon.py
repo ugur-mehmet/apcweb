@@ -1,7 +1,6 @@
 ﻿import os
 import time
 from daemon import runner
-import RPi.GPIO as GPIO
 os.environ['DJANGO_SETTINGS_MODULE'] = 'apcweb.settings'
 from django.core.cache import cache
 from apc_5821A import *
@@ -50,6 +49,13 @@ class GPIO_Daemon():
 		cache.set('temp_all_pins_state',{})
 
 		while True:
+		# Ortam sicakligini okumak icin
+			start_temp_time=time.time()
+			reading_time=time.strftime('%b-%d-%y %H:%M:%S',time.localtime(start_temp_time))
+			temperature=read_temp()
+			temp_with_date=reading_time + ' ' + str(temperature) + ' C'
+			cache.set('temperature',temp_with_date)
+		# APC control selection part	
 			cache_tmp_action_name=cache.get('action_name')
 			if cache_tmp_action_name=='2' or cache_tmp_action_name=='4':
 				cache_tmp_all_pins=cache.get('all_pins_state')

@@ -24,6 +24,8 @@ def index(request):
 
 	outlet_list=Config.objects.all()
 	c={'outlets':outlet_list}
+	temperature=cache.get('temperature')
+	c['temperature'] = temperature
 	return render_to_response("status.html",c)
 
 def login(request):

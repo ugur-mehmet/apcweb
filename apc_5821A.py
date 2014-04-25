@@ -17,6 +17,7 @@ Bu sekilde 8 bit data shift register a aktarildiktan sonra en son STROBE High ya
 '''
 import RPi.GPIO as GPIO
 from time import sleep
+import os
 
 GPIO.setmode(GPIO.BOARD)
 
@@ -29,6 +30,17 @@ LOW = 1
 _DATA_pin = 16		#pin 2 on the UCN5821A 	(16 - > P4 on RASPI)
 _CLOCK_pin = 18		#pin 1 on the UCN5821A	(18 - > P5 on RASPI)
 _STROBE_pin = 22	#pin 6 on the UCN5821A	(22 - > P6 on RASPI)
+
+# Temperature device settings: beginning added 24/04/2014
+
+# GPIO4			Pin 7 -> 	Sicaklik degeri:			P7
+_TEMP_pin = 7 		#pin 7 (7 - > P7 on RASPI)
+os.system('modprobe w1-gpio')
+os.system('modprobe w1-therm')
+temp_base='/sys/bus/w1/devices/'
+temp_device_folder=glob.glob(temp_base + '28*')[0]
+temp_file=temp_device_folder + '/w1_slave'
+# ending added 24/04/2014
 
 #is used to store states of all pins
 _registers = list()
@@ -64,6 +76,28 @@ def pinsSetup(**kwargs):
 	GPIO.setup(_DATA_pin, GPIO.OUT)
 	GPIO.setup(_CLOCK_pin, GPIO.OUT)
 	GPIO.setup(_STROBE_pin, GPIO.OUT)
+	#Sicaklik sensoru giris pin ayarla
+	GPIO.setup(_TEMP_pin, GPIO.IN)
+
+def read_temp_raw():
+	catdata = subprocess.Popen(['cat',temp_file], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	out,err = catdata.communicate()
+	out_decode = out.decode('utf-8')
+	lines = out_decode.split('\n')
+	return lines
+
+def read_temp():
+	lines=read_temp_raw()
+	while lines[0].strip()[-3:] != 'YES':
+		time.sleep(0.2)
+		lines=read_temp_raw()
+	temp_position=lines[1].find('t=')
+	if temp_position != -1:
+		temp_string=lines[1][temp_position+2:]
+		temp_c=float(temp_string) / 1000.0
+		#print(temp_c)
+		return temp_c
+
 	
 def startupMode(mode, execute = False):
 	'''
