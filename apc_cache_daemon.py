@@ -53,8 +53,9 @@ class GPIO_Daemon():
 			start_temp_time=time.time()
 			reading_time=time.strftime('%b-%d-%y %H:%M:%S',time.localtime(start_temp_time))
 			temperature=read_temp()
-			temp_with_date=reading_time + ' ' + str(temperature) + ' C'
-			cache.set('temperature',temp_with_date)
+			temp= str(temperature) + ' C'
+			cache.set('temperature',temp)
+			cache.set('reading_time',reading_time)
 		# APC control selection part	
 			cache_tmp_action_name=cache.get('action_name')
 			if cache_tmp_action_name=='2' or cache_tmp_action_name=='4':
