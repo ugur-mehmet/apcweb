@@ -85,14 +85,26 @@ TEMPLATE_DIRS=(
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
+STATIC_ROOT = "/home/pi/projects/apcweb/static/"
+#STATIC_ROOT = (
+#    os.path.join(PROJECT_PATH,'static'),
+#)
+STATICFILES_FINDERS = (
+'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+'django.contrib.staticfiles.finders.FileSystemFinder',
+)
+TEMPLATE_CONTEXT_PROCESSORS = TCP + (
+'django.core.context_processors.request',
+)
 
 STATIC_URL = '/static/'
 
 LOGIN_URL = '/login'
 
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_PATH,'static'),
-)
+#STATICFILES_DIRS = (
+#    os.path.join(PROJECT_PATH,'static'),
+#)
 
 CACHES = {
     'default': {

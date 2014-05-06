@@ -20,8 +20,9 @@ class GPIO_Daemon():
 	
 	def __init__(self):
 		self.stdin_path = '/dev/null'
-		self.stdout_path = '/dev/tty'
-		self.stderr_path = '/dev/tty'
+		self.stdout_path = '/dev/null'
+		#self.stderr_path = '/dev/tty'
+		self.stderr_path = '/dev/null'
 		self.pidfile_path = '/run/apc_gpio_daemon.pid'
 		self.pidfile_timeout = 5
 	
