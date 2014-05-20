@@ -1,0 +1,192 @@
+{%extends "base.html" %} 
+{%block panel%}
+
+<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0 WIDTH="100%"><TR><TD><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH="100%">
+<TR>
+<td noWrap bgcolor=#003366 WIDTH="98%"><FONT SIZE=2 color="#FFFFFF" face=Verdana,Arial,Helvetica,sans-serif><B>Network Settings for TCP/IP using  Manual Settings</B></FONT></TD>
+</TR>
+<TR><td WIDTH="2%">&nbsp;</TD>
+
+</TABLE>
+</TD>
+</TR>
+<TR><TD><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH="100%">
+<TR><td WIDTH="2%">&nbsp;</TD>
+<TD><table WIDTH="100%" BORDER=0 CELLSPACING=0 CELLPADDING=0>
+<TR><td ROWSPAN=2 WIDTH="1%"></TD>
+<td noWrap WIDTH="99%" HEIGHT=16 bgcolor=#336699><font color="#FFFFFF" face=Verdana,Arial,Helvetica,sans-serif size=2><B>Current TCP/IP Settings</B></FONT></TD>
+</TR>
+
+</TABLE>
+</TD>
+</TR>
+
+</TABLE>
+</TD>
+</TR>
+<TR><TD><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH="100%">
+<TR><td WIDTH="3%"></TD>
+<TD><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH="100%" bgcolor=#f4f4f4>
+
+<TR>
+<td WIDTH="25%" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;System IP:</B></FONT></TD>
+<td WIDTH="25%" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>{{ip}}</FONT></TD>
+
+</TR>
+<TR>
+<td WIDTH="25%" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;Subnet Mask:</B></FONT></TD>
+<td WIDTH="25%" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>{{mask}}</FONT></TD>
+</TR>
+<TR>
+<td WIDTH="25%" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;Default Gateway:</B></FONT></TD>
+<td WIDTH="25%" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>{{gateway}}</FONT></TD>
+<td WIDTH="25%" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;</B></FONT></TD>
+<td WIDTH="25%" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>&nbsp;</FONT></TD>
+</TR>
+<TR>
+<td WIDTH="25%" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;Ethernet Port Speed:</B></FONT></TD>
+<td WIDTH="25%" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>100 Half-Duplex</FONT></TD>
+<TD COLSPAN="2" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>&nbsp;</FONT></TD>
+</TR>
+<TR>
+<td WIDTH="25%" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;MAC Address:</B></FONT></TD>
+<td WIDTH="25%" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>{{hwaddr}}</FONT></TD>	
+</TR>
+<TR>
+<TD COLSPAN="4"><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>&nbsp;</FONT></TD>
+</TR>
+<TR>
+<td WIDTH="25%" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;Host Name:</B></FONT></TD>
+<TD COLSPAN="3" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>{{hostname}}</FONT></TD>
+</TR>
+<!-- <TR>
+<td WIDTH="25%" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;Domain Name:</B></FONT></TD>
+<TD COLSPAN="3"><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>MTM</FONT></TD>
+</TR>
+<TR>
+<TD COLSPAN="4"><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>&nbsp;</FONT></TD>
+</TR> -->
+
+</TABLE>
+</TD>
+</TR>
+
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<BR>
+
+<FORM METHOD="POST" ACTION="" NAME="network_form">
+
+<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0 WIDTH="100%"><TR><TD><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH="100%">
+<TR><td WIDTH="2%">&nbsp;</TD>
+<TD><table WIDTH="100%" BORDER=0 CELLSPACING=0 CELLPADDING=0>
+<TR><td ROWSPAN=2 WIDTH="1%"></TD>
+<td noWrap WIDTH="99%" HEIGHT=16 bgcolor=#336699><font color="#FFFFFF" face=Verdana,Arial,Helvetica,sans-serif size=2><B>Configure General Settings</B></FONT></TD>
+</TR>
+
+</TABLE>
+</TD>
+</TR>
+
+</TABLE>
+
+<TR><TD><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH="100%">
+<TR><td WIDTH="3%"><IMG SRC="Images/invis.gif" WIDTH=1 HEIGHT=4></TD>
+<TD><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH="70%" bgcolor=#f4f4f4>
+<TR>
+<td WIDTH="42%" bgcolor=#f4f4f4 noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;&nbsp;</B></FONT></TD>
+<TD COLSPAN=2 WIDTH="58%" bgcolor=#f4f4f4><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>&nbsp;&nbsp;</FONT></TD>
+</TR>
+<TR>
+<td WIDTH="25%" bgcolor=#f4f4f4 noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;Boot Mode:</B></FONT></TD>
+<TD COLSPAN=2 WIDTH="42%" bgcolor=#f4f4f4><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>{{form.bootmode}}</FONT></TD>
+<TR>
+<td WIDTH="42%" bgcolor=#f4f4f4 noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;&nbsp;</B></FONT></TD>
+<TD COLSPAN=2 WIDTH="58%" bgcolor=#f4f4f4><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>&nbsp;&nbsp;</FONT></TD>
+</TR>
+<TR>
+<td WIDTH="20%" bgcolor=#f4f4f4 noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;System IP:</B></FONT></TD>
+<td WIDTH="5%" bgcolor=#f4f4f4 noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>&nbsp;{{form.ipaddress}}
+<TD nowrap WIDTH="60%" bgcolor=#f4f4f4><FONT SIZE=2 color="red" face=Verdana,Arial,Helvetica,sans-serif>{{ form.ipaddress.errors }} </FONT></TD>
+
+
+</FONT></TD>
+</TR>
+<TR>
+<td WIDTH="42%" bgcolor=#f4f4f4 noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;&nbsp;</B></FONT></TD>
+<TD COLSPAN=2 WIDTH="58%" bgcolor=#f4f4f4><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>&nbsp;&nbsp;</FONT></TD>
+</TR>
+<TR>
+<td WIDTH="20%" bgcolor=#f4f4f4 noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;Subnet Mask:</B></FONT></TD>
+<TD WIDTH="5%" bgcolor=#f4f4f4><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>&nbsp;{{form.subnetmask}}
+<TD nowrap WIDTH="60%" bgcolor=#f4f4f4><FONT SIZE=2 color="red" face=Verdana,Arial,Helvetica,sans-serif>{{ form.subnetmask.errors }}
+
+</FONT></TD>
+</TR>
+<TR>
+<td WIDTH="42%" bgcolor=#f4f4f4 noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;&nbsp;</B></FONT></TD>
+<TD COLSPAN=2 WIDTH="58%" bgcolor=#f4f4f4><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>&nbsp;&nbsp;</FONT></TD>
+</TR>
+<TR>
+<td WIDTH="20%" bgcolor=#f4f4f4 noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;Default Gateway:</B></FONT></TD>
+<TD WIDTH="5%" bgcolor=#f4f4f4><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>&nbsp;{{form.gateway}}
+<TD nowrap WIDTH="60%" bgcolor=#f4f4f4><FONT SIZE=2 color="red" face=Verdana,Arial,Helvetica,sans-serif>{{ form.gateway.errors }}
+</FONT></TD>
+</TR>
+
+
+<!-- <TR>
+<td WIDTH="42%" bgcolor=#f4f4f4 noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;Ethernet Port Speed:</B></FONT></TD>
+<TD COLSPAN=2 WIDTH="58%" bgcolor=#f4f4f4><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>&nbsp;<SELECT NAME="tcp_PortSpeed" SIZE="1">
+<OPTION VALUE=1 SELECTED>Auto-negotiation
+<OPTION VALUE=2>10 Half-Duplex
+<OPTION VALUE=3>10 Full-Duplex
+<OPTION VALUE=4>100 Half-Duplex
+<OPTION VALUE=5>100 Full-Duplex
+</SELECT></FONT></TD>
+</TR> -->
+<TR>
+<td WIDTH="42%" bgcolor=#f4f4f4 noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;&nbsp;</B></FONT></TD>
+<TD COLSPAN=2 WIDTH="58%" bgcolor=#f4f4f4><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>&nbsp;&nbsp;</FONT></TD>
+</TR>
+<TR>
+<td WIDTH="42%" bgcolor=#f4f4f4 noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;Host Name:</B></FONT></TD>
+<TD WIDTH="58%" bgcolor=#f4f4f4><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>&nbsp;{{form.hostname}}
+</FONT></TD>
+{{ form.non_field_errors }}
+</TR>
+<!-- <TR>
+<td WIDTH="42%" bgcolor=#f4f4f4 noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;Domain Name:</B></FONT></TD>
+<TD COLSPAN=2 WIDTH="58%" bgcolor=#f4f4f4><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>&nbsp;<INPUT TYPE="TEXT" NAME="tcp_Domain" SIZE="33" MAXLENGTH="64" VALUE="MTM">
+</FONT></TD>
+</TR> -->
+<TR>
+<td WIDTH="42%" bgcolor=#f4f4f4 noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;&nbsp;</B></FONT></TD>
+<TD COLSPAN=2 WIDTH="58%" bgcolor=#f4f4f4><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>&nbsp;&nbsp;</FONT></TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+<TR><TD></TD>
+<TD><TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH="70%">
+<TR><td noWrap WIDTH="100%" bgcolor=#f4f4f4>&nbsp;<INPUT TYPE="SUBMIT" NAME="Submit" VALUE="Apply">
+<INPUT TYPE="RESET" VALUE="Cancel">
+</TD>
+</TR>
+</TABLE>
+</TD>
+</TR>
+
+</TABLE>
+</TD>
+</TR>
+</TABLE>
+<BR>
+{%csrf_token%}
+
+</FORM>
+
+
+{%endblock%}

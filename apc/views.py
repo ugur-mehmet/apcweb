@@ -14,10 +14,6 @@ import time
 HIGH = 0
 LOW = 1
 max_delay_time=0
-#cache.set('temp_all_pins_state',{})
-#cache.set('checked_pins_off',{})
-#cache.set('checked_pins_on', {})
-
 
 @login_required
 def index(request):
@@ -48,6 +44,58 @@ def login(request):
 def logout(request):
 	auth.logout(request)
 	return redirect('login')
+
+@login_required
+def network(request):
+	from ifconfig import ifconfig
+	import subprocess
+	from django.core.validators import validate_ipv46_address, RegexValidator
+	from django.core.exceptions import ValidationError
+	from apc.forms import NetForm
+	from apc.network import interfaces
+	c={}
+	eth0=ifconfig('eth0')
+	cmd_route="/sbin/ip route | awk \'/default/{print $3}\'"
+	p_route=subprocess.Popen(cmd_route,stdout=subprocess.PIPE,shell=True)
+	(gateway,err)=p_route.communicate()
+	cmd_hostname="/bin/hostname"
+	p_hostname=subprocess.Popen(cmd_hostname,stdout=subprocess.PIPE,shell=True)
+	(hostname,err)=p_hostname.communicate()
+	
+	if request.method == 'POST':
+		form = NetForm(request.POST)
+
+		if form.is_valid():
+			net_dict={}
+			net_dict['ipaddress']=form.cleaned_data.get('ipaddress')
+			net_dict['subnetmask']=form.cleaned_data.get('subnetmask')
+			net_dict['bootmode']=form.cleaned_data.get('bootmode')
+			net_dict['gateway']=form.cleaned_data.get('gateway')
+			net_dict['hostname']=form.cleaned_data.get('hostname')
+			network=interfaces()
+			network.write_template(net_dict['bootmode'],**net_dict)
+			
+
+			return redirect('/network/')
+	else:
+		
+		default_data = {'bootmode':'1','ipaddress': eth0['addr'], 'subnetmask': eth0['netmask'],'gateway':gateway[:-1], 'hostname':hostname[:-1]}
+		form=NetForm(default_data,auto_id=False)
+
+	
+
+	
+		#form=NetForm(auto_id=False)
+	c['form'] = form
+	c['gateway']=gateway[:-1]
+	c['hostname']=hostname[:-1]
+	c['ip']=eth0['addr']
+	c['mask']=eth0['netmask']
+	c['hwaddr']=eth0['hwaddr']
+
+	#ip link show eth0 | awk '/ether/ {print $2}'
+	c.update(csrf(request))
+	return render_to_response("network.html",c)
 
 def set_outlet(outlet_dict, on_off):
 		if on_off == HIGH:

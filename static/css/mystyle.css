@@ -45,3 +45,18 @@ th {
   line-height: 1.33;
   border-radius: 6px;
 }
+.table-bordered {
+
+  border: none;
+  border-collapse: collapse;
+}
+.caption{
+  background-color: #336699;
+  text-align: left;
+
+}
+.table{
+
+  width: 98%;
+  margin-left: 30px;
+}
