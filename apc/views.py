@@ -78,8 +78,14 @@ def network(request):
 
 			return redirect('/network/')
 	else:
-		
-		default_data = {'bootmode':'1','ipaddress': eth0['addr'], 'subnetmask': eth0['netmask'],'gateway':gateway[:-1], 'hostname':hostname[:-1]}
+		cmd_bootmode='cat /etc/network/interfaces |grep ^iface\\ lo | awk -F \' \' \'{print $4}\''
+		proc_bootmode=subprocess.Popen(cmd_bootmode,stdout=subprocess.PIPE,shell=True)
+		(bootmode,err)=proc_bootmode.communicate()
+		if bootmode[:-1]=='static':
+			bootmode='1'
+		else:
+			bootmode='2'
+		default_data = {'bootmode':bootmode,'ipaddress': eth0['addr'], 'subnetmask': eth0['netmask'],'gateway':gateway[:-1], 'hostname':hostname[:-1]}
 		form=NetForm(default_data,auto_id=False)
 
 	

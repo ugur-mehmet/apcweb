@@ -7,6 +7,16 @@ class interfaces:
 		subprocess.call(['sudo', 'mv', self.INTERFACES, self.BACKUP])
 		# Prepare to write the new interfaces file.
 		interfaces = open(self.TEMP_INTERFACES, "a")
+		proc=subprocess.Popen(["hostname"], stdout=subprocess.PIPE, shell=True)
+		(hostname,err)=proc.communicate()
+		current_hostname=hostname[:-1]
+		change_hostname_cmd='sudo sed -e \'s/'+current_hostname+'/'+net_dict['hostname']+'/g\''+' -i /etc/hosts'
+		cmd='echo '+net_dict['hostname']+'|sudo tee /etc/hostname'
+		#cmd2='echo '+ '127.0.1.1	' + net_dict['hostname']+'|sudo tee -a /etc/hosts'
+		subprocess.Popen(cmd,stdout=subprocess.PIPE,shell=True)
+		#subprocess.Popen(cmd2,stdout=subprocess.PIPE,shell=True)
+		subprocess.Popen(change_hostname_cmd,stdout=subprocess.PIPE,shell=True)
+		cmd_reboot='sudo shutdown -r now'
 
 		if template=='2':
 			interfaces.write(self.dhcp)
@@ -15,12 +25,11 @@ class interfaces:
 			net_dict['bootmode']='static'
 			interfaces.write(self.static_template.substitute(net_dict))
 			subprocess.call(['sudo', 'mv', self.TEMP_INTERFACES, self.INTERFACES])
-		if net_dict['hostname']:
-			cmd1='echo '+net_dict['hostname']+'|sudo tee /etc/hostname'
-			cmd2='echo '+ '127.0.1.1	' + net_dict['hostname']+'|sudo tee -a /etc/hosts'
-			subprocess.Popen(cmd1,stdout=subprocess.PIPE,shell=True)
-			subprocess.Popen(cmd2,stdout=subprocess.PIPE,shell=True)
 
+		subprocess.Popen(cmd_reboot,stdout=subprocess.PIPE,shell=True)
+
+
+			
 
 	def __init__(self):
 
