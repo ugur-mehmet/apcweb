@@ -1,4 +1,4 @@
-"""
+﻿"""
 Django settings for apcweb project.
 
 For more information on this file, see
@@ -94,3 +94,10 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_PATH,'static'),
 )
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/apc_django_cache',
+        'TIMEOUT': 99999999999999999,
+    }
+}
