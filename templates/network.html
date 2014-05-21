@@ -45,7 +45,7 @@
 </TR>
 <TR>
 <td WIDTH="25%" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif><B>&nbsp;Ethernet Port Speed:</B></FONT></TD>
-<td WIDTH="25%" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>100 Half-Duplex</FONT></TD>
+<td WIDTH="25%" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>{{speed}} {{speed_mode}}</FONT></TD>
 <TD COLSPAN="2" noWrap><FONT SIZE=2 color=#001144 face=Verdana,Arial,Helvetica,sans-serif>&nbsp;</FONT></TD>
 </TR>
 <TR>
@@ -138,3 +138,48 @@
 </FORM>
 
 {%endblock%}
+
+{% block customscripts %}
+<script type="text/javascript">
+
+$(document).ready(function(){ 
+			if($("#bootmode option:selected").val()=='2'){
+				
+				$("#ipaddress").prop('disabled',true);
+                $("#subnetmask").prop('disabled',true);
+                $("#gateway").prop('disabled',true);
+			}
+
+			else{
+				$("#ipaddress").prop('disabled',false);
+                $("#subnetmask").prop('disabled',false);
+                $("#gateway").prop('disabled',false);
+
+
+			}
+            
+            $('#bootmode').change(function(){
+                //alert($(this).val()); 
+                var selected=$(this).val();
+                if (selected=='2'){
+
+                	$("#ipaddress").prop('disabled',true);
+                	$("#subnetmask").prop('disabled',true);
+                	$("#gateway").prop('disabled',true);
+                }
+                else{
+                	$("#ipaddress").prop('disabled',false);
+            	    $("#subnetmask").prop('disabled',false);
+                	$("#gateway").prop('disabled',false);
+	
+
+                }
+
+
+
+            });
+ });
+
+ </script>
+
+{% endblock %}

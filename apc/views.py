@@ -61,6 +61,12 @@ def network(request):
 	cmd_hostname="/bin/hostname"
 	p_hostname=subprocess.Popen(cmd_hostname,stdout=subprocess.PIPE,shell=True)
 	(hostname,err)=p_hostname.communicate()
+	cmd_speed="dmesg|grep -i eth0:\\ link\\ up|cut -d\',\' -f2"
+	cmd_speed_mode="dmesg|grep -i eth0:\\ link\\ up|cut -d\',\' -f3"
+	speed_proc=subprocess.Popen(cmd_speed,stdout=subprocess.PIPE,shell=True)
+	(speed,err)=speed_proc.communicate()
+	speed_mode_proc=subprocess.Popen(cmd_speed_mode,stdout=subprocess.PIPE,shell=True)
+	(speed_mode,err)=speed_mode_proc.communicate()
 	
 	if request.method == 'POST':
 		form = NetForm(request.POST)
@@ -86,7 +92,7 @@ def network(request):
 		else:
 			bootmode='2'
 		default_data = {'bootmode':bootmode,'ipaddress': eth0['addr'], 'subnetmask': eth0['netmask'],'gateway':gateway[:-1], 'hostname':hostname[:-1]}
-		form=NetForm(default_data,auto_id=False)
+		form=NetForm(default_data,auto_id=True)
 
 	
 
@@ -98,6 +104,12 @@ def network(request):
 	c['ip']=eth0['addr']
 	c['mask']=eth0['netmask']
 	c['hwaddr']=eth0['hwaddr']
+	if speed and speed_mode:
+		c['speed']=speed
+		c['speed_mode']=speed_mode
+	else:
+		c['speed']='Could not retrieved.'
+		c['speed_mode']='...check interface card'
 
 	#ip link show eth0 | awk '/ether/ {print $2}'
 	c.update(csrf(request))
