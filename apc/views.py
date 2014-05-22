@@ -67,10 +67,21 @@ def network(request):
 	(speed,err)=speed_proc.communicate()
 	speed_mode_proc=subprocess.Popen(cmd_speed_mode,stdout=subprocess.PIPE,shell=True)
 	(speed_mode,err)=speed_mode_proc.communicate()
-	
+	c['gateway']=gateway[:-1]
+	c['hostname']=hostname[:-1]
+	c['ip']=eth0['addr']
+	c['mask']=eth0['netmask']
+	cmd_bootmode='cat /etc/network/interfaces |grep ^iface\\ eth0 | awk -F \' \' \'{print $4}\''
+	proc_bootmode=subprocess.Popen(cmd_bootmode,stdout=subprocess.PIPE,shell=True)
+	(bootmod,err)=proc_bootmode.communicate()
+	if bootmod[:-1]=='static':
+		bootmode='1'
+	else:
+		bootmode='2'
+
 	if request.method == 'POST':
 		form = NetForm(request.POST)
-
+		
 		if form.is_valid():
 			net_dict={}
 			net_dict['ipaddress']=form.cleaned_data.get('ipaddress')
@@ -78,20 +89,18 @@ def network(request):
 			net_dict['bootmode']=form.cleaned_data.get('bootmode')
 			net_dict['gateway']=form.cleaned_data.get('gateway')
 			net_dict['hostname']=form.cleaned_data.get('hostname')
-			network=interfaces()
-			network.write_template(net_dict['bootmode'],**net_dict)
-			
-
-			return redirect('/network/')
+			if (c['ip']==net_dict['ipaddress']) and (c['mask']==net_dict['subnetmask']) and \
+			(c['gateway']==net_dict['gateway']) and (c['hostname']==net_dict['hostname']) and \
+			(bootmode==net_dict['bootmode']):
+				return redirect('/network/')
+			else:
+				network=interfaces()
+				network.write_template(net_dict['bootmode'],**net_dict)
+				return HttpResponse("The system is rebooting now to effect the changes, Please wait...")
 	else:
-		cmd_bootmode='cat /etc/network/interfaces |grep ^iface\\ lo | awk -F \' \' \'{print $4}\''
-		proc_bootmode=subprocess.Popen(cmd_bootmode,stdout=subprocess.PIPE,shell=True)
-		(bootmode,err)=proc_bootmode.communicate()
-		if bootmode[:-1]=='static':
-			bootmode='1'
-		else:
-			bootmode='2'
-		default_data = {'bootmode':bootmode,'ipaddress': eth0['addr'], 'subnetmask': eth0['netmask'],'gateway':gateway[:-1], 'hostname':hostname[:-1]}
+		
+		
+		default_data = {'bootmode':'2','ipaddress': eth0['addr'], 'subnetmask': eth0['netmask'],'gateway':gateway[:-1], 'hostname':hostname[:-1]}
 		form=NetForm(default_data,auto_id=True)
 
 	
@@ -99,10 +108,7 @@ def network(request):
 	
 		#form=NetForm(auto_id=False)
 	c['form'] = form
-	c['gateway']=gateway[:-1]
-	c['hostname']=hostname[:-1]
-	c['ip']=eth0['addr']
-	c['mask']=eth0['netmask']
+	c['bootmode']=bootmod[:-1]
 	c['hwaddr']=eth0['hwaddr']
 	if speed and speed_mode:
 		c['speed']=speed
